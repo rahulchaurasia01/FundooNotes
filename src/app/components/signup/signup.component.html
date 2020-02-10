@@ -1,0 +1,121 @@
+<div class="signUpContainer" fxLayoutAlign="center center">
+  <div class="contentCard" fxLayout="row">
+    <div class="signUpSection">
+      <div class="matHeaderDiv">
+        <span class="F_Class">F</span>
+        <span class="U_Class">u</span>
+        <span class="N_Class">n</span>
+        <span class="D_Class">d</span>
+        <span class="O_Class">o</span>
+        <span class="O2_Class">o</span>
+        <h1 id="headingText">Create your Fundoo Account</h1>
+        <p class="headingSubText">
+          Continue to Notes
+        </p>
+      </div>
+      <div class="signUpFormDiv">
+        <form [formGroup]="signUpInformation" onvalidate>
+          <div class="firstLastColumn" fxLayout="row" fxLayoutGap="10px" fxLayoutGap.xs="0px" fxLayout.xs="column">
+            <div class="firstName" fxFlex=45>
+              <mat-form-field appearance="outline" hideRequiredMarker>
+                <mat-label>First name</mat-label>
+                <input matInput placeholder="First name" formControlName="firstName" required>
+                <mat-hint></mat-hint>
+                <mat-error *ngIf="hasError('firstName', 'required')">
+                  <i class="material-icons ">error</i>
+                  <span> Enter first name </span>
+                </mat-error>
+                <mat-error *ngIf="hasError('firstName', 'maxlength')">
+                  <i class="material-icons ">error</i>
+                  First Name Length should not be More than 12
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="lastName" fxFlex=45>
+              <mat-form-field appearance="outline" hideRequiredMarker>
+                <mat-label>Last name</mat-label>
+                <input matInput placeholder="Last name" formControlName="lastName" required>
+                <mat-hint></mat-hint>
+                <mat-error *ngIf="hasError('lastName', 'required')">
+                  <i class="material-icons ">error</i>
+                  Enter last name
+                </mat-error>
+                <mat-error *ngIf="hasError('lastName', 'maxlength')">
+                  <i class="material-icons ">error</i>
+                  Last Name Length should not be More than 12
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="userName">
+            <mat-form-field appearance="outline" hideRequiredMarker>
+              <mat-label>Username</mat-label>
+              <input matInput placeholder="Username" formControlName="userName" required>
+              <mat-hint>you can use letters, numbers & periods</mat-hint>
+              <mat-error *ngIf="hasError('userName', 'required')">
+                <i class="material-icons ">error</i>
+                Choose a Fundoo address
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row">
+            <div fxLayout="row wrap" fxLayoutGap="12px">
+              <div class="passWord" fxFlex="45" fxFlex.xs="100">
+                <mat-form-field appearance="outline" hideRequiredMarker>
+                  <mat-label>Password</mat-label>
+                  <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password" required>
+                  <mat-error *ngIf="hasError('password', 'required')">
+                    <i class="material-icons ">error</i>
+                    Password is Required
+                  </mat-error>
+                  <mat-error *ngIf="hasError('password', 'minLength')">
+                   <i class="material-icons ">error</i>
+                    Password Length should be greater than 5
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="confirm" fxFlex="45" fxFlex.xs="100">
+                <mat-form-field appearance="outline" hideRequiredMarker>
+                  <mat-label>Confirm</mat-label>
+                  <input matInput placeholder="Confirm" [type]="hide ? 'password' : 'text'" required>
+            
+                </mat-form-field>
+              </div>
+              <div class="passwordHint"> 
+                Use 8 or more characters with a mix of letters, numbers & symbols
+              </div>
+            </div>
+            <div class="hidePassword">
+              <button mat-icon-button matSuffix (click)="hide = !hide" type="button" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon class="hideIcon" >{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </div>
+          </div>
+          <br>
+          <div fxLayout="row" fxLayoutGap="20px">
+            <div class="basicOption">
+              <button class="basicButtonSelected" mat-button type="button" >Basic</button>
+            </div>
+            <div class="advancedOption">
+              <button mat-button type="button" >Advanced</button>
+            </div>
+          </div>
+          <br>
+          <div fxLayoutAlign="space-between" fxLayout.xs="column-reverse" fxLayoutGap="20px">
+            <button mat-button type="button" (click)="goToSignInComponent()">Sign in instead</button>
+            <button mat-flat-button type="button" (click)="onCreateAccountClick()">Create Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col_2" fxHide.sm fxHide.xs>
+      <div class="imageDiv">
+        <figure class="figureImage" fxLayout="column" fxLayoutAlign="center center" >
+          <img class="accountCreationImage" src="../../../assets/account.svg" alt="Account Creation Image">
+          <figcaption class="accountCreationText">One account. All of Google working for you.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</div>

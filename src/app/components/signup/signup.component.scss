@@ -1,0 +1,167 @@
+.signUpContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.contentCard {
+    width: 748px;
+    height: 538px;
+    padding: 40px 32px 28px;
+    border: 0.5px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: gray;;
+}
+
+.F_Class, .D_Class {
+    color: #4285f4;
+    font-size: 24px;
+}
+
+.U_Class, .O2_Class {
+    color: #ea4335;
+    font-size: 24px;
+}
+
+.N_Class {
+    color: #fbbc05;
+    font-size: 24px;
+}
+
+.O_Class {
+    color: #34a853;
+    font-size: 24px;
+}
+
+#headingText {
+    padding: 16px 0px 0px;
+    color: #202124;
+    font-size: 24px;
+    margin: 0px;
+    font-weight: 400;
+}
+
+.headingSubText {
+    font-size: 16px;
+    letter-spacing: .1px;
+    line-height: 1.5;
+    position: relative;
+    padding: 8px 0px 0px;
+    margin: 0px;
+}
+
+.signUpFormDiv {
+    padding: 24px 0px 0px;
+    width: inherit;
+}
+
+.firstLastColumn {
+    justify-content: space-between;
+}
+
+.firstName, .lastName {
+    padding: 5px 0px;
+}
+
+.userName {
+    padding: 3px 0px;
+}
+
+.passWord, .confirm {
+    padding: 5px 0px 8px;
+}
+
+.passwordHint {
+    padding: 2px;
+    font-size: 12px;
+    width: 100%;
+}
+
+.hidePassword {
+    padding: 5px 0px 8px;
+    
+}
+
+.hideIcon {
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.mat-form-field {
+    width: 100%;
+    font-size: 12px;
+}
+
+.material-icons {
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.mat-flat-button {
+    background-color: #1a73e8;
+    color: white;
+}
+
+.mat-button {
+    color: #1a73e8;
+}
+
+.col_2 {
+    padding: 0px 0px 0px 48px;
+}
+
+.imageDiv {
+    width: 252px;
+    height: 100%;
+}
+
+.figureImage {
+    height: 100%;
+}
+
+.accountCreationImage {
+    width: 244px;
+    height: 244px;
+}
+
+.accountCreationText {
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.basicButtonSelected :focus :hover :active {
+    border: solid 1px;
+    color: red;
+}
+
+@media only screen and(max-width: 959px) {
+
+    .contentCard {
+        width: 448px;
+        height: 538px;
+    }
+
+}
+
+@media only screen and (max-width: 600px) {
+
+    .contentCard {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .firstName, .lastName, .signUpSection, .passWord, .confirm {
+        width: 100%;
+    }
+
+    .lastName, .userName, .passWord {
+        padding-top: 2px;
+    }
+
+    .confirm, .firstName {
+        padding: 0px;
+    }
+
+}
+

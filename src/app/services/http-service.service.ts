@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
-import { Login } from '../Model/login';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,14 +14,8 @@ export class HttpServiceService {
 
   constructor(private http: HttpClient) { }
 
-
-  post(url, body: Login) : Observable<any> {
-    console.log(this.baseUrl+" "+url+" "+body.EmailId+" "+body.password);
-    return this.http.post(this.baseUrl+url, body, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
+  post(url, body, tokenRequired: boolean = false, headerOption = null) : Observable<any> {
+    return this.http.post(this.baseUrl+url, body, tokenRequired && headerOption);
   }
   
 

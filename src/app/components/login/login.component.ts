@@ -5,6 +5,8 @@ import { Login } from 'src/app/Model/login';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,7 +17,7 @@ export class LoginComponent implements OnInit {
   loginInformation: FormGroup;
   hide = true;
 
-  constructor(private user: UserService, private _router: Router) { }
+  constructor(private user: UserService, private _router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
@@ -43,10 +45,12 @@ export class LoginComponent implements OnInit {
 
     this.user.login(login)
       .subscribe(data => {
-        console.log(data);
+        localStorage.setItem("fundooToken", data.token);
       },
       (error => {
-        console.log(error.error.message);
+        this._snackBar.open(error.error.message, "Close", {
+          duration: 3000,
+        });
       }))
 
   }

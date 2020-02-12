@@ -10,7 +10,7 @@
     border: 0.5px;
     border-radius: 10px;
     border-style: solid;
-    border-color: gray;;
+    border-color: gray;
 }
 
 .F_Class, .D_Class {
@@ -127,6 +127,7 @@
 .accountCreationText {
     font-size: 16px;
     font-weight: 300;
+    text-align: center;
 }
 
 .basicButtonSelected :focus :hover :active {

@@ -14,7 +14,7 @@
         </p>
       </div>
       <div class="signUpFormDiv">
-        <form [formGroup]="signUpInformation" onvalidate>
+        <form [formGroup]="signUpInformation" (ngSubmit)="signUpData(signUpInformation.value)" onvalidate>
           <div class="firstLastColumn" fxLayout="row" fxLayoutGap="10px" fxLayoutGap.xs="0px" fxLayout.xs="column">
             <div class="firstName" fxFlex=45>
               <mat-form-field appearance="outline" hideRequiredMarker>
@@ -54,6 +54,10 @@
               <mat-hint>you can use letters, numbers & periods</mat-hint>
               <mat-error *ngIf="hasError('userName', 'required')">
                 <i class="material-icons ">error</i>
+                Email-Id is Required.
+              </mat-error>
+              <mat-error *ngIf="hasError('userName', 'email')">
+                <i class="material-icons ">error</i>
                 Choose a Fundoo address
               </mat-error>
             </mat-form-field>
@@ -77,8 +81,15 @@
               <div class="confirm" fxFlex="45" fxFlex.xs="100">
                 <mat-form-field appearance="outline" hideRequiredMarker>
                   <mat-label>Confirm</mat-label>
-                  <input matInput placeholder="Confirm" [type]="hide ? 'password' : 'text'" required>
-            
+                  <input matInput placeholder="Confirm" [type]="hide ? 'password' : 'text'" formControlName="conformPassword" required>
+                  <mat-error *ngIf="hasError('password', 'required')">
+                    <i class="material-icons ">error</i>
+                    Confirm Password is Required
+                  </mat-error>
+                  <mat-error *ngIf="hasError('password', 'minLength')">
+                   <i class="material-icons ">error</i>
+                   Password Do Not Match
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="passwordHint"> 
@@ -93,18 +104,20 @@
             </div>
           </div>
           <br>
-          <div fxLayout="row" fxLayoutGap="20px">
-            <div class="basicOption">
-              <button class="basicButtonSelected" mat-button type="button" >Basic</button>
-            </div>
-            <div class="advancedOption">
-              <button mat-button type="button" >Advanced</button>
-            </div>
+          <div fxLayout="row" fxLayoutGap="10px">
+            <mat-button-toggle-group name="fontStyle" formControlName="userType" >
+              <mat-button-toggle value="Basic" (change)="onToggleSelected()" >Basic</mat-button-toggle>
+              <mat-button-toggle value="Advanced" (change)="onToggleSelected()">Advanced</mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-error *ngIf="toggleErrorFlag">
+              <i class="material-icons ">error</i>
+              UserType is Required
+            </mat-error>
           </div>
           <br>
           <div fxLayoutAlign="space-between" fxLayout.xs="column-reverse" fxLayoutGap="20px">
             <button mat-button type="button" (click)="goToSignInComponent()">Sign in instead</button>
-            <button mat-flat-button type="button" (click)="onCreateAccountClick()">Create Account</button>
+            <button mat-flat-button type="submit">Create Account</button>
           </div>
         </form>
       </div>

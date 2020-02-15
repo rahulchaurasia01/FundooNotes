@@ -1,0 +1,64 @@
+<div class="dashboardContainer" fxLayout="row">
+  <div class="leftSideBoard" fxLayoutAlign="start center">
+    <div class="hamBurgerDiv">
+      <button mat-button class="menuButton">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div class="title" fxLayoutAlign="center center">
+      <img class="notesImg" src="../../../assets/keep_48dp.png" alt="Notes">
+      <span class="subTitleContent">Keep</span>
+    </div>
+  </div>
+
+
+  <div class="centerSideBoard" fxLayout="row" fxLayoutAlign="center center">
+    <div class="searchDiv">
+      <form class="example-form" fxLayout="row">
+        <button mat-button class="menuButton">
+          <mat-icon>search</mat-icon>
+        </button>
+        <div class="searchInputField">
+        <mat-form-field class="example-full-width">
+          <input class="inputField" type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of options" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-button class="menuButton">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      </form>
+    </div>
+    <div class="refreshDiv" fxLayoutAlign="center center">
+      <button mat-button class="menuButton">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+    <div class="viewListDiv" fxLayoutAlign="center center">
+      <button mat-button class="menuButton">
+        <mat-icon>view_list</mat-icon>
+      </button>
+    </div>
+    <div class="settingDiv" fxLayoutAlign="center center">
+      <button mat-button class="menuButton">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="accountDetail">
+    <img class="profilePicImage" src="../../../assets/profilePic.png" [matMenuTriggerFor]="menu"  alt="profile Pic" >
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="fileInput.click()">
+        <span>Add Profile Pic</span>
+        <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+      </button>
+      <button mat-menu-item (click)="doLogout()" >LogOut</button>
+    </mat-menu>
+  </div>
+
+</div>

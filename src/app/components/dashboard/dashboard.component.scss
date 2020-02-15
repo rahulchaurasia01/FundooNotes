@@ -1,0 +1,81 @@
+.dashboardContainer {
+    width: 100%;
+    height: 64px;
+    padding: 8px;
+    border-bottom: 1px solid grey;
+    justify-content: space-between;
+}
+
+.leftSideBoard {
+    min-width: 232px;
+    padding-right: 30px;
+}
+
+.hamBurgerDiv {
+    border-radius: 50px;
+    margin: 0px 4px;
+    padding: 12px;
+}
+
+.menuButton {
+    padding: 0px;
+    width: 24px;
+    min-width: unset;
+    border-radius: 50%;
+}
+
+.title {
+    display: inline-block;
+    outline: none;
+}
+
+.notesImg {
+    
+    width: 40px;
+    height: 40px;
+}
+
+.subTitleContent {
+    display: inline-block;
+    padding-left: 4px;
+    line-height: 24px;
+    vertical-align: middle;
+    font-size: 22px;
+    position: relative;
+    color: #5f6368;
+    opacity: 1;
+}
+
+.centerSideBoard {
+    height: 46px;
+}
+
+.inputField {
+    width: 100%;
+}
+
+.searchDiv {
+    padding: 0px 10px;
+    background-color: #f1f3f4;
+    border-radius: 10px;
+}
+
+.refreshDiv, .settingDiv, .viewListDiv {
+    width: 48px;
+    height: 48px;
+}
+
+.searchInputField {
+    padding: 5px 0px;
+    font-size: 12px;
+    width: 100%;
+}
+
+.accountDetail {
+    padding: 0px 4px 0px 0px;
+}
+
+.profilePicImage {
+    width: 40px;
+    height: 40px;
+}

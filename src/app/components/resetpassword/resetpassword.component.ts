@@ -59,7 +59,6 @@ export class ResetpasswordComponent implements OnInit {
         this._snackBar.open(data.message, "Close", {
           duration: 3000,
         });
-        this.resetPasswordInformation.reset();
         this._router.navigate(['login']);
       }, 
       (error => {

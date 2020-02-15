@@ -40,6 +40,7 @@ export class ForgetpasswordComponent implements OnInit {
 
     this.user.forgetPassword(forgetPassword)
       .subscribe(data => {
+        this.forgetPasswordInformation.reset();
         this._snackBar.open(data.message, "Close", {
           duration: 3000,
         });

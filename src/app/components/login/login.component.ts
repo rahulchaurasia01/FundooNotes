@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   constructor(private user: UserService, private _router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-
     this.loginInformation = new FormGroup( {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(5)])
@@ -45,7 +44,9 @@ export class LoginComponent implements OnInit {
 
     this.user.login(login)
       .subscribe(data => {
+        localStorage.removeItem("fundooToken");
         localStorage.setItem("fundooToken", data.token);
+        this._router.navigate(['dashboard']);
       },
       (error => {
         this._snackBar.open(error.error.message, "Close", {

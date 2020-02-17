@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class HttpServiceService {
 
-  baseUrl: string = environment.BaseUrl;
+  private baseUrl: string = environment.BaseUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -19,8 +19,8 @@ export class HttpServiceService {
   }
   
 
-  get(url) {
-    return this.http.get(this.baseUrl+url);
+  get(url, tokenRequired: boolean = false, headerOption =null) : Observable<any> {
+    return this.http.get(this.baseUrl+url, tokenRequired && headerOption);
   }
 
   // get(url, param) {

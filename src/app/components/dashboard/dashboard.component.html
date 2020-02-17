@@ -1,64 +1,107 @@
-<div class="dashboardContainer" fxLayout="row">
-  <div class="leftSideBoard" fxLayoutAlign="start center">
-    <div class="hamBurgerDiv">
-      <button mat-button class="menuButton">
-        <mat-icon>menu</mat-icon>
+<div class="dashboardContainer">
+  <mat-toolbar class="headerToolbar" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" class="leftSideBoard">
+      <button mat-icon-button (click)="snav.toggle()">
+        <i class="material-icons-outlined">menu</i>
       </button>
+      <div class="title" fxLayoutAlign="center center">
+        <img class="notesImg" src="../../../assets/keep_48dp.png" alt="Notes">
+        <span class="subTitleContent">{{ title }}</span>
+      </div>
     </div>
-    <div class="title" fxLayoutAlign="center center">
-      <img class="notesImg" src="../../../assets/keep_48dp.png" alt="Notes">
-      <span class="subTitleContent">Keep</span>
-    </div>
-  </div>
 
-
-  <div class="centerSideBoard" fxLayout="row" fxLayoutAlign="center center">
-    <div class="searchDiv">
-      <form class="example-form" fxLayout="row">
-        <button mat-button class="menuButton">
-          <mat-icon>search</mat-icon>
-        </button>
-        <div class="searchInputField">
-        <mat-form-field class="example-full-width">
-          <input class="inputField" type="text" placeholder="Search" aria-label="Search" matInput [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of options" [value]="option">
-              {{option}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-button class="menuButton">
-          <mat-icon>close</mat-icon>
+    <div class="centerSideBoard" fxLayout="row" fxLayoutAlign="center center" fxFlex>
+      <div class="searchDiv" fxLayout="row">
+        <form class="searchForm" fxLayout="row" >
+            <mat-form-field class="searchInputField">
+              <input type="text" placeholder="Search" aria-label="Search" matInput
+                [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of options" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+               <button matPrefix mat-icon-button>
+                <i class="material-icons-outlined">search</i>
+              </button>
+              <button matSuffix mat-icon-button>
+                <i class="material-icons-outlined">close</i>
+              </button>
+            </mat-form-field>
+        </form>
+      </div>
+      <div class="refreshDiv" fxLayoutAlign="center center">
+        <button mat-icon-button>
+          <i class="material-icons-outlined">refresh</i>
         </button>
       </div>
-      </form>
+      <div class="viewListDiv" fxLayoutAlign="center center">
+        <button mat-icon-button>
+          <i class="material-icons-outlined">view_list</i>
+        </button>
+      </div>
+      <div class="settingDiv" fxLayoutAlign="center center">
+        <button mat-icon-button>
+          <i class="material-icons-outlined">settings</i>
+        </button>
+      </div>
     </div>
-    <div class="refreshDiv" fxLayoutAlign="center center">
-      <button mat-button class="menuButton">
-        <mat-icon>refresh</mat-icon>
-      </button>
-    </div>
-    <div class="viewListDiv" fxLayoutAlign="center center">
-      <button mat-button class="menuButton">
-        <mat-icon>view_list</mat-icon>
-      </button>
-    </div>
-    <div class="settingDiv" fxLayoutAlign="center center">
-      <button mat-button class="menuButton">
-        <mat-icon>settings</mat-icon>
-      </button>
-    </div>
-  </div>
 
-  <div class="accountDetail">
-    <img class="profilePicImage" src="../../../assets/profilePic.png" [matMenuTriggerFor]="menu"  alt="profile Pic" >
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="fileInput.click()">
-        <span>Add Profile Pic</span>
-        <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
-      </button>
-      <button mat-menu-item (click)="doLogout()" >LogOut</button>
-    </mat-menu>
-  </div>
-
+    <div class="accountDetail">
+      <img class="profilePicImage" src="../../../assets/profilePic.png" [matMenuTriggerFor]="menu" alt="profile Pic">
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="fileInput.click()">
+          <span>Add Profile Pic</span>
+          <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+        </button>
+        <button mat-menu-item (click)="doLogout()">LogOut</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
 </div>
+
+
+<mat-sidenav-container class="sidenavContainer" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+  <mat-sidenav #snav class="sideNav" opened [mode]="mobileQuery.matches ? 'over' : 'side'"
+  [fixedInViewport]="true" [fixedTopGap]="65">
+    <mat-nav-list>
+      <a mat-list-item routerLink="notes" routerLinkActive="active">
+        <i class="material-icons-outlined" matListIcons>notes</i>
+        <span class="sideBarComponentAlignment">Notes</span>
+      </a>
+      <a mat-list-item routerLink="reminder" routerLinkActive="active">
+        <i class="material-icons-outlined" matListIcons>notification_important</i>
+        <span class="sideBarComponentAlignment">Reminder</span>
+      </a>
+      <mat-divider></mat-divider>
+        <h3 mat-subheader>LABELS</h3>
+        <a mat-list-item href="#" *ngFor="let label of labels">
+          <i class="material-icons-outlined" matListIcons>label</i>
+          <span class="sideBarComponentAlignment">{{label.name}}</span>
+        </a>
+      <a mat-list-item >
+        <i class="material-icons-outlined" matListIcons>edit</i>
+        <span class="sideBarComponentAlignment">Edit Label</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item>
+        <i class="material-icons-outlined" matListIcons>archive</i>
+        <span class="sideBarComponentAlignment">Archive</span>
+      </a>
+      <a mat-list-item>
+        <i class="material-icons-outlined" matListIcons>delete</i>
+        <span class="sideBarComponentAlignment">Trash</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<div fxLayoutAlign="center center">
+  <router-outlet></router-outlet>
+</div>
+

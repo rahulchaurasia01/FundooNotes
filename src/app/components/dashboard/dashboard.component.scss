@@ -1,9 +1,11 @@
+.headerToolbar {
+    background-color: white;
+}
+
 .dashboardContainer {
     width: 100%;
     height: 64px;
-    padding: 8px;
     border-bottom: 1px solid grey;
-    justify-content: space-between;
 }
 
 .leftSideBoard {
@@ -55,9 +57,14 @@
 }
 
 .searchDiv {
-    padding: 0px 10px;
+    padding: 5px 10px;
     background-color: #f1f3f4;
+    font-size: 12px;
     border-radius: 10px;
+}
+
+.searchForm {
+    width: 100%;
 }
 
 .refreshDiv, .settingDiv, .viewListDiv {
@@ -66,7 +73,6 @@
 }
 
 .searchInputField {
-    padding: 5px 0px;
     font-size: 12px;
     width: 100%;
 }
@@ -78,4 +84,23 @@
 .profilePicImage {
     width: 40px;
     height: 40px;
+}
+
+.sidenavContainer {
+    width: 250px;
+}
+
+.sideNav {
+    width: inherit;
+}
+
+.sideBarComponentAlignment {
+    padding-left: 32px;
+    display: inline-block;
+    line-height: 40px;
+    vertical-align: top;
+    width: 176px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
 }

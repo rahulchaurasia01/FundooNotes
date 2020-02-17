@@ -22,11 +22,11 @@
                 <input matInput placeholder="First name" formControlName="firstName" required>
                 <mat-hint></mat-hint>
                 <mat-error *ngIf="hasError('firstName', 'required')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined">error</i>
                   <span> Enter first name </span>
                 </mat-error>
                 <mat-error *ngIf="hasError('firstName', 'maxlength')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined">error</i>
                   First Name Length should not be More than 12
                 </mat-error>
               </mat-form-field>
@@ -37,11 +37,11 @@
                 <input matInput placeholder="Last name" formControlName="lastName" required>
                 <mat-hint></mat-hint>
                 <mat-error *ngIf="hasError('lastName', 'required')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined">error</i>
                   Enter last name
                 </mat-error>
                 <mat-error *ngIf="hasError('lastName', 'maxlength')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined">error</i>
                   Last Name Length should not be More than 12
                 </mat-error>
               </mat-form-field>
@@ -53,11 +53,11 @@
               <input matInput placeholder="Username" formControlName="userName" required>
               <mat-hint>you can use letters, numbers & periods</mat-hint>
               <mat-error *ngIf="hasError('userName', 'required')">
-                <i class="material-icons ">error</i>
+                <i class="material-icons-outlined">error</i>
                 Email-Id is Required.
               </mat-error>
               <mat-error *ngIf="hasError('userName', 'email')">
-                <i class="material-icons ">error</i>
+                <i class="material-icons-outlined">error</i>
                 Choose a Fundoo address
               </mat-error>
             </mat-form-field>
@@ -69,11 +69,11 @@
                   <mat-label>Password</mat-label>
                   <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password" required>
                   <mat-error *ngIf="hasError('password', 'required')">
-                    <i class="material-icons ">error</i>
+                    <i class="material-icons-outlined">error</i>
                     Password is Required
                   </mat-error>
-                  <mat-error *ngIf="hasError('password', 'minLength')">
-                   <i class="material-icons ">error</i>
+                  <mat-error *ngIf="hasError('password', 'minlength')">
+                   <i class="material-icons-outlined">error</i>
                     Password Length should be greater than 5
                   </mat-error>
                 </mat-form-field>
@@ -83,11 +83,11 @@
                   <mat-label>Confirm</mat-label>
                   <input matInput placeholder="Confirm" [type]="hide ? 'password' : 'text'" formControlName="conformPassword" required>
                   <mat-error *ngIf="hasError('password', 'required')">
-                    <i class="material-icons ">error</i>
+                    <i class="material-icons-outlined">error</i>
                     Confirm Password is Required
                   </mat-error>
-                  <mat-error *ngIf="hasError('password', 'minLength')">
-                   <i class="material-icons ">error</i>
+                  <mat-error *ngIf="hasError('password', 'minlength')">
+                   <i class="material-icons-outlined">error</i>
                    Password Do Not Match
                   </mat-error>
                 </mat-form-field>
@@ -99,7 +99,7 @@
             <div class="hidePassword">
               <button mat-icon-button matSuffix (click)="hide = !hide" type="button" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
-                <mat-icon class="hideIcon" >{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <i class="material-icons-outlined hideIcon">{{hide ? 'visibility_off' : 'visibility'}}</i>
               </button>
             </div>
           </div>
@@ -110,7 +110,7 @@
               <mat-button-toggle value="Advanced" (change)="onToggleSelected()">Advanced</mat-button-toggle>
             </mat-button-toggle-group>
             <mat-error *ngIf="toggleErrorFlag">
-              <i class="material-icons ">error</i>
+              <i class="material-icons-outlined">error</i>
               UserType is Required
             </mat-error>
           </div>

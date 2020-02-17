@@ -16,10 +16,15 @@ export class LoginComponent implements OnInit {
 
   loginInformation: FormGroup;
   hide = true;
+  chckError: string;
 
   constructor(private user: UserService, private _router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
+
+    if(localStorage.getItem("fundooToken"))
+      this._router.navigate(['dashboard']);
+
     this.loginInformation = new FormGroup( {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(5)])
@@ -36,6 +41,7 @@ export class LoginComponent implements OnInit {
       this.sendDataToServer(userLoginData);
   }
 
+  
   private sendDataToServer(userLoginData) {
     var login: Login = {
       EmailId: userLoginData.email,
@@ -49,7 +55,13 @@ export class LoginComponent implements OnInit {
         this._router.navigate(['dashboard']);
       },
       (error => {
-        this._snackBar.open(error.error.message, "Close", {
+
+        if(error.error.message)
+          this.chckError = error.error.message;
+        else
+          this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
           duration: 3000,
         });
       }))

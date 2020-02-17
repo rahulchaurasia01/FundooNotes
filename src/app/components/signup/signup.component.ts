@@ -21,6 +21,9 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
 
+    if(localStorage.getItem("fundooToken"))
+      this._router.navigate(['dashboard']);
+
     this.signUpInformation = new FormGroup({
       firstName: new FormControl('', Validators.maxLength(12)),
       lastName: new FormControl('', Validators.maxLength(12)),

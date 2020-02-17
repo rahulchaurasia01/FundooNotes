@@ -23,11 +23,11 @@
                 <input matInput placeholder="Email-Id" formControlName="email" required>
                 <mat-hint></mat-hint>
                 <mat-error *ngIf="hasError('email', 'required')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined ">error</i>
                   Email-Id is Required
                 </mat-error>
                 <mat-error *ngIf="hasError('email', 'email')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined">error</i>
                   Email-Id is Invalid
                 </mat-error>
               </mat-form-field>
@@ -39,14 +39,14 @@
                   required>
                 <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                   [attr.aria-pressed]="hide">
-                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <i class="material-icons-outlined">{{hide ? 'visibility_off' : 'visibility'}}</i>
                 </button>
                 <mat-error *ngIf="hasError('password', 'required')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined">error</i>
                   Password is Required
                 </mat-error>
                 <mat-error *ngIf="hasError('password', 'minlength')">
-                  <i class="material-icons ">error</i>
+                  <i class="material-icons-outlined">error</i>
                   Password Length should be greater than 5
                 </mat-error>
               </mat-form-field>

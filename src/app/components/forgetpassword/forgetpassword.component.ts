@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Forgetpassword } from 'src/app/Model/forgetpassword';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,9 +15,12 @@ export class ForgetpasswordComponent implements OnInit {
 
   forgetPasswordInformation: FormGroup;
 
-  constructor(private user: UserService, private _snackBar: MatSnackBar) { }
+  constructor(private user: UserService, private _snackBar: MatSnackBar, private _router: Router) { }
 
   ngOnInit() {
+
+    if(localStorage.getItem("fundooToken"))
+      this._router.navigate(['dashboard']);
 
     this.forgetPasswordInformation = new FormGroup( {
       email: new FormControl('', [Validators.required, Validators.email])

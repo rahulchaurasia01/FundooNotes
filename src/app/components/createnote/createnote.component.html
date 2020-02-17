@@ -1,0 +1,60 @@
+<p>
+  createnote works!
+</p>
+
+
+
+<div class="createNoteContainer">
+  <div class="TitleAndNoteDiv" fxLayout="column">
+    <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex >
+      <mat-form-field>
+        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" placeholder="Title"></textarea>
+      </mat-form-field>
+      <div class="pinUnpinNote">
+        <i class="material-icons-outlined">alert</i>
+      </div>
+    </div>
+    <div class="takeANoteDiv">
+      <mat-form-field>
+        <textarea matInput (click)="NoteClick()" cdkTextareaAutosize  cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="NoteActionContainer" [fxHide]="showTakeANoteAndAction"  fxLayoutAlign="space-between center">
+    <div class="NoteAction" fxLayout="row" fxLayoutAlign="center center">
+      <div class="iconActionDiv" fxLayoutAlign="center center">
+        <button mat-icon-button title="Remind Me" >
+          <i class="material-icons-outlined">notification_important</i>
+        </button>
+      </div>
+      <div class="iconActionDiv" fxLayoutAlign="center center">
+        <button mat-icon-button title="Collaborator">
+          <i class="material-icons-outlined">person_add</i>
+        </button>
+      </div>
+      <div class="iconActionDiv" fxLayoutAlign="center center">
+        <button mat-icon-button title="Change Color">
+          <i class="material-icons-outlined">color_lens</i>
+        </button>
+      </div>
+      <div class="iconActionDiv" fxLayoutAlign="center center">
+        <button mat-icon-button>
+          <i class="material-icons-outlined">image</i>
+        </button>
+      </div>
+      <div class="iconActionDiv" fxLayoutAlign="center center">
+        <button mat-icon-button>
+          <i class="material-icons-outlined">archive</i>
+        </button>
+      </div>
+      <div class="iconActionDiv" fxLayoutAlign="center center">
+        <button mat-icon-button>
+          <i class="material-icons-outlined">more_vert</i>
+        </button>
+      </div>
+    </div>
+    <div>
+      <button mat-button>Close</button>
+    </div>
+  </div>
+</div>

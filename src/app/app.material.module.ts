@@ -11,7 +11,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [
@@ -25,7 +28,11 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonToggleModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatDividerModule
   ], 
   exports: [
     MatFormFieldModule,
@@ -37,7 +44,11 @@ import { MatMenuModule } from '@angular/material/menu';
     MatGridListModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatDividerModule
   ],
   declarations: []
 })

@@ -7,6 +7,10 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NotesComponent } from './components/notes/notes.component';
+import { ReminderComponent } from './components/reminder/reminder.component';
+import { CreatenoteComponent } from './components/createnote/createnote.component';
+import { DisplaynoteComponent } from './components/displaynote/displaynote.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -24,7 +28,11 @@ import { HttpClientModule } from '@angular/common/http';
     SignupComponent,
     ForgetpasswordComponent,
     ResetpasswordComponent,
-    DashboardComponent
+    DashboardComponent,
+    NotesComponent,
+    CreatenoteComponent,
+    DisplaynoteComponent,
+    ReminderComponent
   ],
   imports: [
     BrowserModule,

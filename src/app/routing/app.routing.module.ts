@@ -7,16 +7,38 @@ import { ForgetpasswordComponent } from '../components/forgetpassword/forgetpass
 import { ResetpasswordComponent } from '../components/resetpassword/resetpassword.component';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
 import { AuthGuard } from '../services/auth.guard';
+import { NotesComponent } from '../components/notes/notes.component';
+import { CreatenoteComponent } from '../components/createnote/createnote.component';
+import { DisplaynoteComponent } from '../components/displaynote/displaynote.component';
+import { ReminderComponent } from '../components/reminder/reminder.component';
 
 const routes: Routes = [
 
-  { path: '',  component: LoginComponent },
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent },
   { path: 'forgetpassword', component: ForgetpasswordComponent },
   { path: 'resetpassword', redirectTo: "" },
   { path: 'resetpassword/:token', component: ResetpasswordComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
+  { path: '',  component: LoginComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
+      
+    children: [
+      { path: 'notes', component: NotesComponent, 
+        children: [
+          { path: 'create', component: CreatenoteComponent },
+          { path: '', component: DisplaynoteComponent }
+        ]
+      },
+      {
+        path: 'reminder', component: ReminderComponent,
+        children: [
+          { path: 'create', component: CreatenoteComponent },
+          { path: '', component: DisplaynoteComponent }
+        ]
+      }
+    ]
+
+  }
 
 ]
 

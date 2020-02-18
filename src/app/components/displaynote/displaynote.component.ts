@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NotesService } from '../../services/notes.service'
+
 @Component({
   selector: 'app-displaynote',
   templateUrl: './displaynote.component.html',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisplaynoteComponent implements OnInit {
 
-  constructor() { }
+  token: string;
+  notes: any;
+
+  constructor(private note: NotesService) { }
 
   ngOnInit() {
+
+    this.token = localStorage.getItem("fundooToken");
+
+    this.note.GetAllNotes(this.token).
+      subscribe(data => {
+        this.notes = data.data;
+        console.log(data);
+      },
+      error => {
+        console.log(error.error.message);
+      })
+
   }
 
 }

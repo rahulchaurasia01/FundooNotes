@@ -1,3 +1,7 @@
-<p>
-  displaynote works!
-</p>
+<div class="testing">
+<div class="displayNoteContainer" fxLayout="row"  fxLayoutGap="15px">
+  <div class="displayNote" *ngFor="let note of notes">
+    {{ note.title }}
+  </div>
+</div>
+</div>

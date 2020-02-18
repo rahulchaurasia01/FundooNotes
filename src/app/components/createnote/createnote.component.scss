@@ -2,6 +2,7 @@
     border: 0.5px solid grey;
     border-radius: 5px;
     width: 600px;
+    margin: 32px auto 16px auto !important;
 }
 
 
@@ -32,4 +33,27 @@
     width: 32px;
 }
 
+.closeButton {
+    margin-right: 15px;
+}
 
+
+@media only screen and (max-width: 835px) {
+
+    .createNoteContainer {
+        width: 472px;
+    }
+
+}
+
+
+@media only screen and (max-width: 600px) {
+
+    .createNoteContainer {
+
+        width: auto;
+        margin: 16px 16px 8px 16px !important;
+
+    }
+
+}

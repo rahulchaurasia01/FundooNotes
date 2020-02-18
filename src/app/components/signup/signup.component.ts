@@ -16,6 +16,7 @@ export class SignupComponent implements OnInit {
   signUpInformation: FormGroup;
   hide = true;
   toggleErrorFlag = false;
+  chckError: string;
 
   constructor(private user: UserService, private _router: Router, private _snackBar: MatSnackBar) { }
 
@@ -85,7 +86,14 @@ export class SignupComponent implements OnInit {
         console.log(data);
       },
         (error => {
-          this._snackBar.open(error.error.message, "Close", {
+
+          if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+
+          this._snackBar.open(this.chckError, "Close", {
             duration: 3000,
           });
         }))

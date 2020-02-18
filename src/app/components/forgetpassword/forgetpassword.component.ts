@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ForgetpasswordComponent implements OnInit {
 
   forgetPasswordInformation: FormGroup;
+  chckError: string;
 
   constructor(private user: UserService, private _snackBar: MatSnackBar, private _router: Router) { }
 
@@ -50,7 +51,13 @@ export class ForgetpasswordComponent implements OnInit {
         });
       },
       (error => {
-        this._snackBar.open(error.error.message, "Close", {
+
+        if(error.error.message)
+          this.chckError = error.error.message;
+        else
+          this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
           duration: 3000,
         });
       }))

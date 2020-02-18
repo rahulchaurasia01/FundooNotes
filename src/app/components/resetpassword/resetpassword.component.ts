@@ -20,6 +20,7 @@ export class ResetpasswordComponent implements OnInit {
   newPasswordShow = true;
   confirmPasswordShow = true;
   token: string;
+  chckError: string;
 
   constructor(private http: HttpClient, private _route: ActivatedRoute, private _router: Router, 
       private user: UserService, private _snackBar: MatSnackBar) { }
@@ -62,6 +63,12 @@ export class ResetpasswordComponent implements OnInit {
         this._router.navigate(['login']);
       }, 
       (error => {
+
+        if(error.error.message)
+          this.chckError = error.error.message;
+        else
+          this.chckError= "Connection to the Server Failed";
+
         this._snackBar.open(error.error.message, "Close", {
           duration: 3000,
         });

@@ -8,8 +8,6 @@ import { ResetpasswordComponent } from '../components/resetpassword/resetpasswor
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
 import { AuthGuard } from '../services/auth.guard';
 import { NotesComponent } from '../components/notes/notes.component';
-import { CreatenoteComponent } from '../components/createnote/createnote.component';
-import { DisplaynoteComponent } from '../components/displaynote/displaynote.component';
 import { ReminderComponent } from '../components/reminder/reminder.component';
 
 const routes: Routes = [
@@ -23,19 +21,11 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
       
     children: [
-      { path: 'notes', component: NotesComponent, 
-        children: [
-          { path: 'create', component: CreatenoteComponent },
-          { path: '', component: DisplaynoteComponent }
-        ]
-      },
-      {
-        path: 'reminder', component: ReminderComponent,
-        children: [
-          { path: 'create', component: CreatenoteComponent },
-          { path: '', component: DisplaynoteComponent }
-        ]
-      }
+    
+      { path: 'notes', component: NotesComponent },
+      { path: 'reminder', component: ReminderComponent },
+      { path: '', redirectTo:'notes', pathMatch:'full' }
+    
     ]
 
   }

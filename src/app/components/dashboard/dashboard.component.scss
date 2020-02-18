@@ -13,26 +13,12 @@
     padding-right: 30px;
 }
 
-.hamBurgerDiv {
-    border-radius: 50px;
-    margin: 0px 4px;
-    padding: 12px;
-}
-
-.menuButton {
-    padding: 0px;
-    width: 24px;
-    min-width: unset;
-    border-radius: 50%;
-}
-
 .title {
     display: inline-block;
     outline: none;
 }
 
 .notesImg {
-    
     width: 40px;
     height: 40px;
 }
@@ -49,22 +35,30 @@
 }
 
 .centerSideBoard {
-    height: 46px;
-}
-
-.inputField {
-    width: 100%;
+    height: 48px;
 }
 
 .searchDiv {
-    padding: 5px 10px;
-    background-color: #f1f3f4;
-    font-size: 12px;
-    border-radius: 10px;
+    padding-right: 30px;
+    padding-left: 10px;
+    width: 100%;
+    align-content: center;
+    justify-content: flex-start;
 }
 
 .searchForm {
+    font-size: 12px;
+    border-radius: 8px;
+    background: #f1f3f4;
+    border: 1px solid transparent;
     width: 100%;
+    max-width: 720px;
+    transition: background 100ms ease-in,width 100ms ease-out;
+}
+
+.searchButton, .closeButton {
+    padding: 0px 8px;
+    margin: 3px;
 }
 
 .refreshDiv, .settingDiv, .viewListDiv {
@@ -79,6 +73,8 @@
 
 .accountDetail {
     padding: 0px 4px 0px 0px;
+    padding-left: 30px;
+    justify-content: flex-end;
 }
 
 .profilePicImage {
@@ -103,4 +99,57 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis
+}
+
+.mat-nav-list a {
+    border-radius: 0px 25px 25px 0px;
+}
+
+.mat-nav-list a.active {
+    background: #feefc3;
+}
+
+@media only screen and (max-width: 780px) {
+
+    .searchInputField, .closeButton {
+        display: none;
+    }
+
+    .searchForm {
+        background-color: #fff;
+        width: 40px;
+    }
+
+    .searchDiv {
+        padding: 0px;
+        width: 40px;
+    }
+
+    .centerSideBoard {
+        justify-content: flex-end;
+    }
+
+}
+
+@media only screen and (max-width: 600px) {
+
+    .leftSideBoard {
+        padding-right: 14px;
+        flex: 1 1 auto;
+    }
+
+    .centerSideBoard {
+        justify-content: flex-end;
+    }
+
+    .searchForm {
+        background-color: #fff;
+        width: 40px;
+    }
+
+    .searchDiv {
+        padding: 0px;
+        width: 40px;
+    }
+
 }

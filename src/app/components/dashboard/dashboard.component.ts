@@ -17,7 +17,9 @@ export class DashboardComponent implements OnInit {
 
   labels: any;
   token: string;
-  title: string = "Keep";
+  title: string = "Fundoo";
+  chckError: string;
+  showSearch: boolean;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
     private label: LabelsService, private _snackBar: MatSnackBar) {
@@ -29,10 +31,15 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.token = localStorage.getItem("fundooToken");
     this.GetAllLabels(this.token);
+    this.showSearch = false;
   }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  showSearchField() {
+    this.showSearch = true;
   }
 
 
@@ -42,7 +49,13 @@ export class DashboardComponent implements OnInit {
         this.labels = data.data; 
       },
       error => {
-        this._snackBar.open(error.error.message, "Close", {
+
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
           duration: 3000,
         });
       })

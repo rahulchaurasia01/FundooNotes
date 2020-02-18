@@ -10,14 +10,25 @@ export class NotesService {
 
   constructor(private http: HttpServiceService) { }
 
-  createNote(noteData) {
+  createNote(noteData, token) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        //'Authorization': "Bearer "+ token
+        'Authorization': "Bearer "+ token
       })
     };
-    return this.http.post("api/Notes", noteData, true, httpOptions);
+    return this.http.post("Notes", noteData, true, httpOptions);
+  }
+
+  GetAllNotes(token) {
+    console.log(token);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': "Bearer "+ token
+      })
+    };
+    return this.http.get("Notes", true, httpOptions);
   }
 
 

@@ -1,10 +1,10 @@
 .createNoteContainer {
-    border: 0.5px solid grey;
-    border-radius: 5px;
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 8px;
     width: 600px;
     margin: 32px auto 16px auto !important;
 }
-
 
 .createTitleDiv {
     padding: 5px 15px;
@@ -26,6 +26,7 @@
 .NoteActionContainer{
     margin: 0px 0px 4px 0px;
     height: 36px;
+    color: rgba(0,0,0,.54);
 }
 
 .iconActionDiv {
@@ -35,6 +36,7 @@
 
 .closeButton {
     margin-right: 15px;
+    color: rgba(0,0,0,0.87);
 }
 
 
@@ -50,10 +52,8 @@
 @media only screen and (max-width: 600px) {
 
     .createNoteContainer {
-
         width: auto;
         margin: 16px 16px 8px 16px !important;
-
     }
 
 }

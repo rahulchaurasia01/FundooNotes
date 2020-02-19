@@ -1,6 +1,5 @@
-
 <div class="createNoteContainer" >
-  <div class="TitleAndNoteDiv" fxLayout="column">
+  <div fxLayout="column">
     <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex >
       <mat-form-field>
         <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" placeholder="Title"></textarea>
@@ -49,7 +48,7 @@
       </div>
     </div>
     <div class="closeButton">
-      <button mat-button>Close</button>
+      <button mat-button type="button" (click)="closeButtonClick()">Close</button>
     </div>
   </div>
 </div>

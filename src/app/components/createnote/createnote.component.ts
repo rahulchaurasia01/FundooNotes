@@ -19,4 +19,8 @@ export class CreatenoteComponent implements OnInit {
     this.showTakeANoteAndAction = false;
   }
 
+  closeButtonClick() {
+    this.showTakeANoteAndAction = true;
+  }
+
 }

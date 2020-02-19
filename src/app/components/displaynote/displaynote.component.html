@@ -1,7 +1,49 @@
-<div class="testing">
-<div class="displayNoteContainer" fxLayout="row"  fxLayoutGap="15px">
+<div class="displayNoteContainer" fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" >
   <div class="displayNote" *ngFor="let note of notes">
-    {{ note.title }}
+    <div class="titleDescription">
+      {{ note.title }}
+    </div>
+    <div class="NoteDescription" *ngIf="(note.description == '') ? false : true ">
+      {{ note.description }}
+    </div>
+    <div class="collaboratorList" *ngIf="(note.collaborators.length <= 0) ? false : true">
+      <div class="collaborator" *ngFor="let collaborator of note.collaborators">
+        {{ collaborator.firstName }}
+      </div>
+    </div>
+    <div class="noteActionDiv">
+      <div class="noteActionToobar">
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button title="Remind Me" >
+            <i class="material-icons-outlined">notification_important</i>
+          </button>
+        </div>
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button title="Collaborator">
+            <i class="material-icons-outlined">person_add</i>
+          </button>
+        </div>
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button title="Change Color">
+            <i class="material-icons-outlined">color_lens</i>
+          </button>
+        </div>
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button>
+            <i class="material-icons-outlined">image</i>
+          </button>
+        </div>
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button>
+            <i class="material-icons-outlined">archive</i>
+          </button>
+        </div>
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button>
+            <i class="material-icons-outlined">more_vert</i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 </div>

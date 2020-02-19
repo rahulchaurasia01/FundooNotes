@@ -21,7 +21,6 @@ export class NotesService {
   }
 
   GetAllNotes(token) {
-    console.log(token);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',

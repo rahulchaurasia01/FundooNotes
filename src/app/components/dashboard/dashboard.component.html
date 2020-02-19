@@ -1,5 +1,5 @@
-<div class="dashboardContainer">
-  <mat-toolbar class="headerToolbar" fxLayout="row" fxLayoutAlign="space-between center">
+<div class="dashboardContainer" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar class="headerToolbar" style="height: 65px;" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" class="leftSideBoard" fxLayout="center center">
       <button mat-icon-button (click)="snav.toggle()">
         <i class="material-icons-outlined">menu</i>
@@ -16,12 +16,12 @@
           <button mat-icon-button (click)="showSearchField()" class="searchButton">
             <i class="material-icons-outlined">search</i>
           </button>
-            <mat-form-field  class="searchInputField" appearance="none">
-              <input type="text" placeholder="Search" aria-label="Search" matInput>
-            </mat-form-field>
-            <button mat-icon-button class="closeButton">
-              <i class="material-icons-outlined">close</i>
-            </button>
+          <mat-form-field class="searchInputField" appearance="none">
+            <input type="text" placeholder="Search" aria-label="Search" matInput>
+          </mat-form-field>
+          <button mat-icon-button class="closeButton">
+            <i class="material-icons-outlined">close</i>
+          </button>
         </form>
       </div>
       <div class="refreshDiv" fxLayoutAlign="center center">
@@ -52,47 +52,45 @@
       </mat-menu>
     </div>
   </mat-toolbar>
-</div>
 
 
-<mat-sidenav-container class="sidenavContainer" >
-  <mat-sidenav #snav class="sideNav" opened [mode]="mobileQuery.matches ? 'over' : 'side'"
-  [fixedInViewport]="true" [fixedTopGap]="65">
-    <mat-nav-list>
-      <a mat-list-item routerLink="notes" routerLinkActive="active">
-        <i class="material-icons-outlined" matListIcons>emoji_objects</i>
-        <span class="sideBarComponentAlignment">Notes</span>
-      </a>
-      <a mat-list-item routerLink="reminder" routerLinkActive="active">
-        <i class="material-icons-outlined" matListIcons>notification_important</i>
-        <span class="sideBarComponentAlignment">Reminder</span>
-      </a>
-      <mat-divider></mat-divider>
+
+  <mat-sidenav-container class="sidenavContainer" [style.marginTop.px]="mobileQuery.matches ? 65 : 0">
+    <mat-sidenav #snav opened [mode]="mobileQuery.matches ? 'over' : 'side'"
+     [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="65">
+      <mat-nav-list>
+        <a mat-list-item routerLink="notes" routerLinkActive="active">
+          <i class="material-icons-outlined" matListIcons>emoji_objects</i>
+          <span class="sideBarComponentAlignment">Notes</span>
+        </a>
+        <a mat-list-item routerLink="reminder" routerLinkActive="active">
+          <i class="material-icons-outlined" matListIcons>notification_important</i>
+          <span class="sideBarComponentAlignment">Reminder</span>
+        </a>
+        <mat-divider></mat-divider>
         <h3 mat-subheader>LABELS</h3>
         <a mat-list-item href="#" *ngFor="let label of labels">
           <i class="material-icons-outlined" matListIcons>label</i>
           <span class="sideBarComponentAlignment">{{label.name}}</span>
         </a>
-      <a mat-list-item >
-        <i class="material-icons-outlined" matListIcons>edit</i>
-        <span class="sideBarComponentAlignment">Edit Label</span>
-      </a>
-      <mat-divider></mat-divider>
-      <a mat-list-item>
-        <i class="material-icons-outlined" matListIcons>archive</i>
-        <span class="sideBarComponentAlignment">Archive</span>
-      </a>
-      <a mat-list-item>
-        <i class="material-icons-outlined" matListIcons>delete</i>
-        <span class="sideBarComponentAlignment">Trash</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
+        <a mat-list-item>
+          <i class="material-icons-outlined" matListIcons>edit</i>
+          <span class="sideBarComponentAlignment">Edit Label</span>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item>
+          <i class="material-icons-outlined" matListIcons>archive</i>
+          <span class="sideBarComponentAlignment">Archive</span>
+        </a>
+        <a mat-list-item>
+          <i class="material-icons-outlined" matListIcons>delete</i>
+          <span class="sideBarComponentAlignment">Trash</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
 
-  <mat-sidenav-content>
-
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
-
-<router-outlet></router-outlet>
+    <mat-sidenav-content class="childComponent">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

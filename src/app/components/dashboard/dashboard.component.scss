@@ -1,16 +1,33 @@
 .headerToolbar {
     background-color: white;
+    border-bottom: 1px solid;
+    border-color: #e0e0e0;
 }
 
 .dashboardContainer {
-    width: 100%;
-    height: 64px;
-    border-bottom: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
+
+.example-is-mobile .headerToolbar {
+    position: fixed;
+    z-index: 2;
+}
+
+.example-is-mobile .sidenavContainer {
+    flex: 1 0 auto;
+  }
 
 .leftSideBoard {
     min-width: 232px;
     padding-right: 30px;
+    height: 48px;
+    color: rgba(0,0,0,.54);
 }
 
 .title {
@@ -36,6 +53,7 @@
 
 .centerSideBoard {
     height: 48px;
+    color: rgba(0,0,0,.54);
 }
 
 .searchDiv {
@@ -74,6 +92,7 @@
 .accountDetail {
     padding: 0px 4px 0px 0px;
     padding-left: 30px;
+    height: 48px;
     justify-content: flex-end;
 }
 
@@ -83,11 +102,7 @@
 }
 
 .sidenavContainer {
-    width: 250px;
-}
-
-.sideNav {
-    width: inherit;
+    flex: 1;
 }
 
 .sideBarComponentAlignment {
@@ -101,12 +116,20 @@
     text-overflow: ellipsis
 }
 
+.material-icons-outlined {
+    color: rgba(0,0,0,.54);
+}
+
 .mat-nav-list a {
     border-radius: 0px 25px 25px 0px;
 }
 
 .mat-nav-list a.active {
     background: #feefc3;
+}
+
+.childComponent {
+    background-color: #fff;
 }
 
 @media only screen and (max-width: 780px) {
@@ -129,6 +152,12 @@
         justify-content: flex-end;
     }
 
+    .accountDetail {
+        padding-left: 0px;
+        width: 48px;
+        height: 48px;
+    }
+
 }
 
 @media only screen and (max-width: 600px) {
@@ -136,6 +165,7 @@
     .leftSideBoard {
         padding-right: 14px;
         flex: 1 1 auto;
+        min-width: unset;
     }
 
     .centerSideBoard {
@@ -153,3 +183,39 @@
     }
 
 }
+
+// new sidenav css
+.example-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .example-is-mobile .example-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+    background-color: white;
+    
+  }
+  
+  h1.example-app-name {
+    margin-left: 8px;
+  }
+  
+  .example-sidenav-container {
+    /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+    flex: 1;
+  }
+  
+  .example-is-mobile .example-sidenav-container {
+    /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+       `<body>` to be our scrolling element for mobile layouts. */
+    flex: 1 0 auto;
+  }
+  

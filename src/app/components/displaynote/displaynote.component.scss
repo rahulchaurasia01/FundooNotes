@@ -6,6 +6,7 @@
 }
 
 .displayNote {
+    margin-top: 15px;
     margin-bottom: 15px;
     width: 240px;
     border: 1px solid;
@@ -27,6 +28,12 @@
         box-sizing: border-box;
         outline: none;
         word-wrap: break-word;
+    }
+
+    .pinUpinTheImage{
+        width: 42px;
+        height: 36px;
+        float: right;
     }
     
     .NoteDescription {
@@ -89,4 +96,30 @@
 .displayNote :hover{
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302),
         0 1px 3px 1px rgba(60,64,67,0.149);
+}
+
+.noNotePresent {
+    margin-top: 10vh;
+}
+
+.showIcon {
+    background-size: 120px 120px;
+    height: 120px;
+    margin: 20px;
+    width: 120px;
+    opacity: .1;
+    cursor: default;
+}
+
+.increaseSize {
+    font-size: 120px;
+}
+
+.showText {
+    color: #80868b;
+    font-size: 1.375rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.75rem;
+    cursor: default;
 }

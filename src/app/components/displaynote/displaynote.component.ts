@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
-import { NotesService } from '../../services/notes.service'
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-displaynote',
@@ -9,23 +7,15 @@ import { NotesService } from '../../services/notes.service'
 })
 export class DisplaynoteComponent implements OnInit {
 
-  token: string;
-  notes: any;
+  @Input() displayNotes: any;
 
-  constructor(private note: NotesService) { }
+  @Input() parentIcon: string;
+
+  @Input() emptyContentText: string;
+
+  constructor() { }
 
   ngOnInit() {
-
-    this.token = localStorage.getItem("fundooToken");
-
-    this.note.GetAllNotes(this.token).
-      subscribe(data => {
-        this.notes = data.data;
-        console.log(data);
-      },
-      error => {
-        console.log(error.error.message);
-      })
 
   }
 

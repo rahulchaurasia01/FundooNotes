@@ -1,12 +1,17 @@
-<div class="displayNoteContainer" fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" >
-  <div class="displayNote" *ngFor="let note of notes">
+<div class="displayNoteContainer" *ngIf="(displayNotes == null) ? false : true" fxLayout="row" fxLayout.xs="column"
+  fxLayoutGap="15px">
+  <div class="displayNote" *ngFor="let note of displayNotes">
+    <div class="pinUpinTheImage" fxLayoutAlign="center center">
+      <!-- <img style="height: 32px; width: 32px;" src="../../../assets/pin-outline.png" alt="Pin Image"> -->
+      <i class="material-icons-outlined">color_lens</i>
+    </div>
     <div class="titleDescription">
       {{ note.title }}
     </div>
     <div class="NoteDescription" *ngIf="(note.description == '') ? false : true ">
       {{ note.description }}
     </div>
-    <div class="collaboratorList" *ngIf="(note.collaborators.length <= 0) ? false : true">
+    <div class="collaboratorList" *ngIf="(note.collaborators == null) ? false : true">
       <div class="collaborator" *ngFor="let collaborator of note.collaborators">
         {{ collaborator.firstName }}
       </div>
@@ -14,7 +19,7 @@
     <div class="noteActionDiv">
       <div class="noteActionToobar">
         <div class="iconActionDiv" fxLayoutAlign="center center">
-          <button mat-icon-button title="Remind Me" >
+          <button mat-icon-button title="Remind Me">
             <i class="material-icons-outlined">notification_important</i>
           </button>
         </div>
@@ -45,5 +50,14 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="noNotePresent" *ngIf="(displayNotes != null) ? false : true" fxLayout="column" fxLayoutAlign="center center">
+  <div class="showIcon">
+    <i class="material-icons-outlined increaseSize">{{ parentIcon }}</i>
+  </div>
+  <div class="showText">
+    {{ emptyContentText }}
   </div>
 </div>

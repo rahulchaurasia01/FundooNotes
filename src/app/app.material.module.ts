@@ -12,6 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
@@ -32,7 +33,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule
   ], 
   exports: [
     MatFormFieldModule,
@@ -48,7 +50,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule
   ],
   declarations: []
 })

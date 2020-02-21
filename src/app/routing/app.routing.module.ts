@@ -9,6 +9,9 @@ import { DashboardComponent } from '../components/dashboard/dashboard.component'
 import { AuthGuard } from '../services/auth.guard';
 import { NotesComponent } from '../components/notes/notes.component';
 import { ReminderComponent } from '../components/reminder/reminder.component';
+import { ArchiveComponent } from '../components/archive/archive.component';
+import { TrashComponent } from '../components/trash/trash.component';
+import { LabelComponent } from '../components/label/label.component';
 
 const routes: Routes = [
 
@@ -24,6 +27,9 @@ const routes: Routes = [
     
       { path: 'notes', component: NotesComponent },
       { path: 'reminder', component: ReminderComponent },
+      { path: 'archive', component: ArchiveComponent },
+      { path: 'trash', component: TrashComponent },
+      { path: 'label/:id', component: LabelComponent },
       { path: '', redirectTo:'notes', pathMatch:'full' }
     
     ]

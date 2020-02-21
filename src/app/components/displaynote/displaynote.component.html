@@ -1,4 +1,4 @@
-<div class="displayNoteContainer" *ngIf="(displayNotes == null) ? false : true" fxLayout="row" fxLayout.xs="column"
+<div class="displayNoteContainer" *ngIf="(displayNotes.length <= 0) ? false : true" fxLayout="row" fxLayout.xs="column"
   fxLayoutGap="15px">
   <div class="displayNote" *ngFor="let note of displayNotes">
     <div class="pinUpinTheImage" fxLayoutAlign="center center">
@@ -11,7 +11,7 @@
     <div class="NoteDescription" *ngIf="(note.description == '') ? false : true ">
       {{ note.description }}
     </div>
-    <div class="collaboratorList" *ngIf="(note.collaborators == null) ? false : true">
+    <div class="collaboratorList" *ngIf="(note.collaborators == null || note.collaborators.length <= 0) ? false : true">
       <div class="collaborator" *ngFor="let collaborator of note.collaborators">
         {{ collaborator.firstName }}
       </div>
@@ -53,7 +53,7 @@
   </div>
 </div>
 
-<div class="noNotePresent" *ngIf="(displayNotes != null) ? false : true" fxLayout="column" fxLayoutAlign="center center">
+<div class="noNotePresent" *ngIf="(displayNotes.length <= 0 ) ? true : false" fxLayout="column" fxLayoutAlign="center center">
   <div class="showIcon">
     <i class="material-icons-outlined increaseSize">{{ parentIcon }}</i>
   </div>

@@ -18,14 +18,9 @@ export class HttpServiceService {
     return this.http.post(this.baseUrl+url, body, tokenRequired && headerOption);
   }
   
-
   get(url, tokenRequired: boolean = false, headerOption =null) : Observable<any> {
     return this.http.get(this.baseUrl+url, tokenRequired && headerOption);
   }
-
-  // get(url, param) {
-  //   return this.http.get(this.baseUrl+url+param);
-  // }
 
   put(url, body) {
     return this.http.put(this.baseUrl+url, body);

@@ -14,6 +14,7 @@ import { DisplaynoteComponent } from './components/displaynote/displaynote.compo
 import { ArchiveComponent } from './components/archive/archive.component';
 import { TrashComponent } from './components/trash/trash.component';
 import { LabelComponent } from './components/label/label.component';
+import { EditlabelComponent } from './components/editlabel/editlabel.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -38,7 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
     ReminderComponent,
     ArchiveComponent,
     TrashComponent,
-    LabelComponent
+    LabelComponent,
+    EditlabelComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +53,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ],
   providers: [AuthGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [EditlabelComponent]
 })
 export class AppModule { }

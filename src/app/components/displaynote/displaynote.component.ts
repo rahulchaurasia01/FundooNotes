@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DisplaynoteComponent implements OnInit {
 
-  @Input() displayNotes: any;
+  @Input() displayNotes=[];
 
   @Input() parentIcon: string;
 

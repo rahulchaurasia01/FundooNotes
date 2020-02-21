@@ -1,0 +1,52 @@
+.editLabelContainer {
+    border-radius: 1px;
+    width: 300px;
+    border: none;
+}
+
+.editLabelActionDiv {
+    padding: 15px;
+}
+
+.editLabelHeader {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    height: 25px;
+}
+
+.createLabel, .labelName {
+    display: flex;
+    align-items: center;
+    height: 45px;
+}
+
+.closeButton, .doneButton {
+    font-size: 24px;
+    opacity: .54;
+    display: inline-block;
+}
+
+.createLabelField {
+    width: 100%;
+    height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 15px;
+    outline: none;
+    box-shadow: none;
+    color: #3c4043;
+    border: none;
+
+    :focus {
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+    }
+}
+
+.editLabelFooter {
+    border-top: 1px solid #dadce0;
+    padding: 15px 10px;
+    text-align: right;
+    color: rgba(0,0,0,0.87);
+}
+

@@ -1,0 +1,29 @@
+<div class="editLabelContainer">
+  <div class="editLabelActionDiv">
+    <div mat-dialog-title class="editLabelHeader">
+      Edit labels
+    </div>
+    <div class="createLabel" >
+      <button mat-icon-button class="closeButton" tabindex="-1">
+        <i class="material-icons-outlined">close</i>
+      </button>
+      <input type="text" class="createLabelField" placeholder="Create new label" aria-label="Create new label" >
+      <button mat-icon-button class="doneButton">
+        <i class="material-icons-outlined">done</i>
+      </button>
+    </div>
+    <div class="labelName">
+      <button mat-icon-button class="closeButton">
+        <i class="material-icons-outlined">label</i>
+      </button>
+      <input type="text" class="createLabelField" placeholder="Create new label" aria-label="Create new label">
+      <button mat-icon-button class="doneButton">
+        <i class="material-icons-outlined">edit</i>
+      </button>
+    </div>
+    
+  </div>
+  <div class="editLabelFooter">
+    <button mat-button (click)="doneAddingLabel()">Done</button>
+  </div>
+</div>

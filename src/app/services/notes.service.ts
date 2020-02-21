@@ -21,28 +21,28 @@ export class NotesService {
     return httpOptions;
   }
 
-  createNote(noteData: any, token: string) {
-    const httpOptions = this.createHttpOptions(token);
+  createNote(noteData: any) {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
     return this.http.post("Notes", noteData, true, httpOptions);
   }
 
-  GetAllNotes(token: string) {
-    const httpOptions = this.createHttpOptions(token);
+  GetAllNotes() {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
     return this.http.get("Notes", true, httpOptions);
   }
 
-  GetAllReminderNotes(token: string) {
-    const httpOptions = this.createHttpOptions(token);
+  GetAllReminderNotes() {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
     return this.http.get("Notes/Reminder", true, httpOptions);
   }
 
-  GetAllArchiveNotes(token: string) {
-    const httpOptions = this.createHttpOptions(token);
+  GetAllArchiveNotes() {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
     return this.http.get("Notes/Archive", true, httpOptions);
   }
 
-  GetAllDeletedNotes(token: string) {
-    const httpOptions = this.createHttpOptions(token);
+  GetAllDeletedNotes() {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
     return this.http.get("Notes/Delete", true, httpOptions);
   }
 

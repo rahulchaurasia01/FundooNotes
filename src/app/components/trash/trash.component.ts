@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class TrashComponent implements OnInit {
 
-  token: string;
   deletedNotes=[];
   chckError: string;
   deleteIcon: string;
@@ -20,17 +19,17 @@ export class TrashComponent implements OnInit {
 
   ngOnInit() {
 
-    this.token = localStorage.getItem("fundooToken");
     this.deleteIcon = "delete";
     this.emptyDeleteContentText = "No notes in Trash";
-    this.GetAllDeletedNotes(this.token);
+    this.GetAllDeletedNotes();
 
   }
 
-  GetAllDeletedNotes(token: string) {
-    this.notes.GetAllDeletedNotes(token).
+  GetAllDeletedNotes() {
+    this.notes.GetAllDeletedNotes().
       subscribe(data => {
-        this.deletedNotes = data.data;
+        if(data.status)
+          this.deletedNotes = data.data;
       },
       error => {
 

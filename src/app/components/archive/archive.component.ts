@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ArchiveComponent implements OnInit {
 
-  token: string;
   archiveNotes=[];
   archiveIcon: string;
   emptyArchiveContent: string;
@@ -20,17 +19,16 @@ export class ArchiveComponent implements OnInit {
 
   ngOnInit() {
 
-    this.token = localStorage.getItem("fundooToken");
     this.archiveIcon = "archive";
     this.emptyArchiveContent = "Your archived notes appear here";
 
-    this.GetAllArchiveNotes(this.token);
+    this.GetAllArchiveNotes();
 
   }
 
 
-  GetAllArchiveNotes(token) {
-    this.notes.GetAllArchiveNotes(token).
+  GetAllArchiveNotes() {
+    this.notes.GetAllArchiveNotes().
       subscribe(data => {
         if(data.status)
           this.archiveNotes = data.data;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { NotesService } from '../../services/notes.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-notes',
@@ -9,29 +10,38 @@ import { NotesService } from '../../services/notes.service';
 })
 export class NotesComponent implements OnInit {
 
-  token: string;
   icon: string;
   notes=[];
+  chckError: string;
   emptyNotesText: string;
 
-  constructor(private note: NotesService) { }
+  constructor(private note: NotesService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
-    this.token = localStorage.getItem("fundooToken");
     this.icon = "emoji_objects";
     this.emptyNotesText = "Notes you add appear here";
-    this.GetAllNotes(this.token);
+    this.GetAllNotes();
 
   }
 
-  GetAllNotes(token) {
-    this.note.GetAllNotes(token).
+  GetAllNotes() {
+    this.note.GetAllNotes().
       subscribe(data => {
-        this.notes = data.data;
+        if(data.status) 
+          this.notes = data.data;
       },
       error => {
-        console.log(error.error.message);
+        
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+
       })
   }
 

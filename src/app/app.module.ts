@@ -11,6 +11,9 @@ import { NotesComponent } from './components/notes/notes.component';
 import { ReminderComponent } from './components/reminder/reminder.component';
 import { CreatenoteComponent } from './components/createnote/createnote.component';
 import { DisplaynoteComponent } from './components/displaynote/displaynote.component';
+import { ArchiveComponent } from './components/archive/archive.component';
+import { TrashComponent } from './components/trash/trash.component';
+import { LabelComponent } from './components/label/label.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -32,7 +35,10 @@ import { HttpClientModule } from '@angular/common/http';
     NotesComponent,
     CreatenoteComponent,
     DisplaynoteComponent,
-    ReminderComponent
+    ReminderComponent,
+    ArchiveComponent,
+    TrashComponent,
+    LabelComponent
   ],
   imports: [
     BrowserModule,

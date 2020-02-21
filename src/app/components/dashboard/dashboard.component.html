@@ -5,7 +5,7 @@
         <i class="material-icons-outlined">menu</i>
       </button>
       <div class="title" fxLayoutAlign="center center">
-        <img fxHide.xs class="notesImg" src="../../../assets/keep_48dp.png" alt="Notes">
+        <img [fxHide]="showKeepIcon" fxHide.xs class="notesImg" src="../../../assets/keep_48dp.png" alt="Notes">
         <span class="subTitleContent">{{ title }}</span>
       </div>
     </div>
@@ -59,30 +59,30 @@
     <mat-sidenav #snav opened [mode]="mobileQuery.matches ? 'over' : 'side'"
      [fixedInViewport]="mobileQuery.matches" [fixedTopGap]="65">
       <mat-nav-list>
-        <a mat-list-item routerLink="notes" routerLinkActive="active">
+        <a mat-list-item routerLink="notes" aria-label="notes" (click)="notesClick()" routerLinkActive="active">
           <i class="material-icons-outlined" matListIcons>emoji_objects</i>
           <span class="sideBarComponentAlignment">Notes</span>
         </a>
-        <a mat-list-item routerLink="reminder" routerLinkActive="active">
+        <a mat-list-item routerLink="reminder" aria-label="Reminder" (click)="reminderClick()" routerLinkActive="active">
           <i class="material-icons-outlined" matListIcons>notification_important</i>
           <span class="sideBarComponentAlignment">Reminder</span>
         </a>
         <mat-divider></mat-divider>
         <h3 mat-subheader>LABELS</h3>
-        <a mat-list-item href="#" *ngFor="let label of labels">
+        <a mat-list-item (click)="onLabelClick(label.labelId, label.name)" routerLinkActive="active" *ngFor="let label of labels">
           <i class="material-icons-outlined" matListIcons>label</i>
           <span class="sideBarComponentAlignment">{{label.name}}</span>
         </a>
-        <a mat-list-item>
+        <a mat-list-item aria-label="Edit label" (click)="openDialog()">
           <i class="material-icons-outlined" matListIcons>edit</i>
           <span class="sideBarComponentAlignment">Edit Label</span>
         </a>
         <mat-divider></mat-divider>
-        <a mat-list-item>
+        <a mat-list-item routerLink="archive" aria-label="Archive" (click)="archiveClick()" routerLinkActive="active">
           <i class="material-icons-outlined" matListIcons>archive</i>
           <span class="sideBarComponentAlignment">Archive</span>
         </a>
-        <a mat-list-item>
+        <a mat-list-item routerLink="trash" aria-label="Trash" (click)="deleteClick()" routerLinkActive="active" >
           <i class="material-icons-outlined" matListIcons>delete</i>
           <span class="sideBarComponentAlignment">Trash</span>
         </a>

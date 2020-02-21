@@ -10,24 +10,40 @@ export class NotesService {
 
   constructor(private http: HttpServiceService) { }
 
-  createNote(noteData, token) {
+  createHttpOptions(token: string) : any {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': "Bearer "+ token
       })
     };
+
+    return httpOptions;
+  }
+
+  createNote(noteData: any, token: string) {
+    const httpOptions = this.createHttpOptions(token);
     return this.http.post("Notes", noteData, true, httpOptions);
   }
 
-  GetAllNotes(token) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': "Bearer "+ token
-      })
-    };
+  GetAllNotes(token: string) {
+    const httpOptions = this.createHttpOptions(token);
     return this.http.get("Notes", true, httpOptions);
+  }
+
+  GetAllReminderNotes(token: string) {
+    const httpOptions = this.createHttpOptions(token);
+    return this.http.get("Notes/Reminder", true, httpOptions);
+  }
+
+  GetAllArchiveNotes(token: string) {
+    const httpOptions = this.createHttpOptions(token);
+    return this.http.get("Notes/Archive", true, httpOptions);
+  }
+
+  GetAllDeletedNotes(token: string) {
+    const httpOptions = this.createHttpOptions(token);
+    return this.http.get("Notes/Delete", true, httpOptions);
   }
 
 

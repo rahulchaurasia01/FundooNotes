@@ -11,14 +11,26 @@ export class LabelsService {
   constructor(private http: HttpServiceService) { }
 
 
-  GetAllLabels(token) {
+  GetAllLabels() {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
+    return this.http.get("Label", true, httpOptions);
+  }
+
+  GetNotesByLabelId(labelId: number) {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
+    return this.http.get("Label/"+labelId, true, httpOptions);
+  }
+
+  private createHttpOptions(token: string) : any {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': "Bearer "+ token
       })
     };
-    return this.http.get("Label", true, httpOptions);
+
+    return httpOptions;
   }
+
 
 }

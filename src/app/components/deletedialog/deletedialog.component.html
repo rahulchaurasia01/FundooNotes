@@ -1,0 +1,13 @@
+<div class="deleteContainer">
+  <div class="deleteText">
+    {{ data.deleteText }}
+  </div>
+  <div class="deleteActionDiv">
+    <button mat-button class="cancelButton" (click)="cancelDeleteNote()" tabindex="-1">
+      Cancel
+    </button>
+    <button mat-button class="deleteButton" (click)="deleteNote()" tabindex="-1">
+      {{ data.deleteButtonText }}
+    </button>
+  </div>
+</div>

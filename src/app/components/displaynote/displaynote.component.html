@@ -1,9 +1,28 @@
+<div class="deleteContainer" *ngIf="(parentIcon == 'delete') ? true : false">
+  <div class="deleteContent" fxLayoutAlign="center center">
+    <div class="deleteText" fxLayoutAlign="center center">
+      Notes in Trash are deleted after 7 days.
+      <div class="emptyTrashDiv">
+        <button mat-button type="button" (click)="bulkDelete()">Empty Trash</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="displayNoteContainer" *ngIf="(displayNotes.length <= 0) ? false : true" fxLayout="row" fxLayout.xs="column"
   fxLayoutGap="15px">
   <div class="displayNote" *ngFor="let note of displayNotes">
-    <div class="pinUpinTheImage" fxLayoutAlign="center center">
-      <!-- <img style="height: 32px; width: 32px;" src="../../../assets/pin-outline.png" alt="Pin Image"> -->
-      <i class="material-icons-outlined">color_lens</i>
+    <div class="pinUpinTheImage" fxLayoutAlign="center center" *ngIf="(parentIcon == 'delete') ? false : true">
+      <svg xmlns="http://www.w3.org/2000/svg" *ngIf="!note.isPin" width="32" height="32" viewBox="0 0 24 24">
+        <path fill="none" d="M0 0h24v24H0z"/>
+        <path fill="#000" d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z"/>
+      </svg>
+
+      <svg xmlns="http://www.w3.org/2000/svg" *ngIf="note.isPin" width="32" height="32" viewBox="0 0 24 24">
+        <path fill="none" d="M0 0h24v24H0z"/>
+        <path fill="#000" d="M17 4a2 2 0 0 0-2-2H9c-1.1 0-2 .9-2 2v7l-2 3v2h6v5l1 1 1-1v-5h6v-2l-2-3V4z"/>
+      </svg>
     </div>
     <div class="titleDescription">
       {{ note.title }}
@@ -17,7 +36,7 @@
       </div>
     </div>
     <div class="noteActionDiv">
-      <div class="noteActionToobar">
+      <div class="noteActionToobar" *ngIf="(parentIcon != 'delete') ? true : false">
         <div class="iconActionDiv" fxLayoutAlign="center center">
           <button mat-icon-button title="Remind Me">
             <i class="material-icons-outlined">notification_important</i>
@@ -34,18 +53,33 @@
           </button>
         </div>
         <div class="iconActionDiv" fxLayoutAlign="center center">
-          <button mat-icon-button>
+          <button mat-icon-button title="Image">
             <i class="material-icons-outlined">image</i>
           </button>
         </div>
         <div class="iconActionDiv" fxLayoutAlign="center center">
-          <button mat-icon-button>
+          <button mat-icon-button title="Archive" (click)="archiveUnarchiveTheNote(note.noteId, true)" *ngIf="!note.isArchived">
             <i class="material-icons-outlined">archive</i>
+          </button>
+          <button mat-icon-button title="Unarchive" (click)="archiveUnarchiveTheNote(note.noteId, false)" *ngIf="note.isArchived">
+            <i class="material-icons-outlined">unarchive</i>
           </button>
         </div>
         <div class="iconActionDiv" fxLayoutAlign="center center">
           <button mat-icon-button>
             <i class="material-icons-outlined">more_vert</i>
+          </button>
+        </div>
+      </div>
+      <div class="noteActionToobar" *ngIf="(parentIcon == 'delete') ? true : false">
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button title="Delete Forever" (click)="singleDeleteNote(note.noteId)">
+            <i class="material-icons-outlined">delete_forever</i>
+          </button>
+        </div>
+        <div class="iconActionDiv" fxLayoutAlign="center center">
+          <button mat-icon-button title="Restore from Trash" (click)="restoreNote(note.noteId)">
+            <i class="material-icons-outlined">restore_from_trash</i>
           </button>
         </div>
       </div>

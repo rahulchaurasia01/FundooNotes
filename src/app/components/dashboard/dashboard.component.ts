@@ -4,7 +4,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LabelsService } from '../../services/labels.service';
-import {MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { EditlabelComponent } from '../editlabel/editlabel.component';
 
 @Component({

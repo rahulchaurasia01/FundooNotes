@@ -18,13 +18,17 @@ export class HttpServiceService {
     return this.http.post(this.baseUrl+url, body, tokenRequired && headerOption);
   }
   
-  get(url, tokenRequired: boolean = false, headerOption =null) : Observable<any> {
+  get(url: string, tokenRequired: boolean = false, headerOption = null) : Observable<any> {
     return this.http.get(this.baseUrl+url, tokenRequired && headerOption);
   }
 
-  put(url, body) {
-    return this.http.put(this.baseUrl+url, body);
+  put(url, body, tokenRequired: boolean = false, headerOption = null) : Observable<any> {
+    console.log(body);
+    return this.http.put(this.baseUrl+url, body, tokenRequired && headerOption);
   }
 
+  delete(url: string, tokenRequired: boolean = false, headerOption = null) : Observable<any> {
+    return this.http.delete(this.baseUrl+url, tokenRequired && headerOption);
+  }
 
 }

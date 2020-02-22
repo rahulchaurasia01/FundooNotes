@@ -15,6 +15,7 @@ import { ArchiveComponent } from './components/archive/archive.component';
 import { TrashComponent } from './components/trash/trash.component';
 import { LabelComponent } from './components/label/label.component';
 import { EditlabelComponent } from './components/editlabel/editlabel.component';
+import { DeletedialogComponent } from './components/deletedialog/deletedialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -40,7 +41,8 @@ import { HttpClientModule } from '@angular/common/http';
     ArchiveComponent,
     TrashComponent,
     LabelComponent,
-    EditlabelComponent
+    EditlabelComponent,
+    DeletedialogComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +56,6 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
-  entryComponents: [EditlabelComponent]
+  entryComponents: [EditlabelComponent, DeletedialogComponent]
 })
 export class AppModule { }

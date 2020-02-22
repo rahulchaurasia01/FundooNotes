@@ -1,3 +1,29 @@
+.deleteContainer{
+    width: 100%;
+}
+
+.deleteContent {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.deleteText {
+    color: #202124;
+    cursor: default;
+    display: flex;
+    font-size: 17px;
+    font-style: italic;
+    padding-top: 24px;
+    padding-bottom: 8px;
+}
+
+.emptyTrashDiv {
+    color: #1a73e8;
+    margin-left: 16px;
+    font-style: normal;
+}
+
 .displayNoteContainer {
 
     margin: auto;
@@ -34,6 +60,7 @@
         width: 42px;
         height: 36px;
         float: right;
+        opacity: 0.71;
     }
     
     .NoteDescription {

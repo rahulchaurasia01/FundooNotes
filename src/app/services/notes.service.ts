@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpServiceService } from '../services/http-service.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Archivenote } from '../Model/archivenote';
+import { Pinnote } from '../Model/pinnote';
 
 @Injectable({
   providedIn: 'root'
@@ -47,9 +48,9 @@ export class NotesService {
     return this.http.get("Notes/Delete", true, httpOptions);
   }
 
-  archiveTheNote(noteId: number, archiveNote: Archivenote) {
+  bulkDeleteNote() {
     const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
-    return this.http.put("Notes/" + noteId + "/Archive", archiveNote, true, httpOptions);
+    return this.http.delete("Notes/BulkDelete", true, httpOptions);
   }
 
   deleteNote(noteId: number) {
@@ -57,15 +58,19 @@ export class NotesService {
     return this.http.delete("Notes/"+noteId, true, httpOptions);
   }
 
-  bulkDeleteNote() {
-    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
-    return this.http.delete("Notes/BulkDelete", true, httpOptions);
-  }
-
   restoreTheNote(noteId: number) {
     const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
-    console.log(httpOptions);
-    return this.http.put("Notes/Restore/"+noteId, true, httpOptions);
+    return this.http.put("Notes/Restore/"+noteId, null, true, httpOptions);
+  }
+
+  archiveTheNote(noteId: number, archiveNote: Archivenote) {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
+    return this.http.put("Notes/" + noteId + "/Archive", archiveNote, true, httpOptions);
+  }
+
+  pinTheNote(noteId: number, pinNote: Pinnote) {
+    const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
+    return this.http.put("Notes/"+ noteId + "/Pin", pinNote, true, httpOptions);
   }
 
 }

@@ -1,0 +1,55 @@
+<div class="noteActionDiv">
+  <div class="noteActionToobar" *ngIf="(grandParentIcon != 'delete') ? true : false">
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button title="Remind Me">
+        <i class="material-icons-outlined">notification_important</i>
+      </button>
+    </div>
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button title="Collaborator">
+        <i class="material-icons-outlined">person_add</i>
+      </button>
+    </div>
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button title="Change Color">
+        <i class="material-icons-outlined">color_lens</i>
+      </button>
+    </div>
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button title="Image">
+        <i class="material-icons-outlined">image</i>
+      </button>
+    </div>
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button title="Archive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, true)" *ngIf="!grandParentNote.isArchived">
+        <i class="material-icons-outlined">archive</i>
+      </button>
+      <button mat-icon-button title="Unarchive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, false)" *ngIf="grandParentNote.isArchived">
+        <i class="material-icons-outlined">unarchive</i>
+      </button>
+    </div>
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button [matMenuTriggerFor]="moreMenu">
+        <i class="material-icons-outlined">more_vert</i>
+      </button>
+      <mat-menu #moreMenu="matMenu" xPosition="after" yPosition="below">
+        <button mat-menu-item (click)="sendToTrash(grandParentNote.noteId)" >Delete note</button>
+        <button mat-menu-item *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false">Add label</button>
+        <button mat-menu-item *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <=0) ? false : true">Change labels</button>
+        <button mat-menu-item>Make a copy</button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="noteActionToobar" *ngIf="(grandParentIcon == 'delete') ? true : false">
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button title="Delete Forever" (click)="singleDeleteNote(grandParentNote.noteId)">
+        <i class="material-icons-outlined">delete_forever</i>
+      </button>
+    </div>
+    <div class="iconActionDiv" fxLayoutAlign="center center">
+      <button mat-icon-button title="Restore from Trash" (click)="restoreNote(grandParentNote.noteId)">
+        <i class="material-icons-outlined">restore_from_trash</i>
+      </button>
+    </div>
+  </div>
+</div>

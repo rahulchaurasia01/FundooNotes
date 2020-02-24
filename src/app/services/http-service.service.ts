@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
+import { Archivenote } from '../Model/archivenote';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,7 @@ export class HttpServiceService {
     return this.http.get(this.baseUrl+url, tokenRequired && headerOption);
   }
 
-  put(url, body, tokenRequired: boolean = false, headerOption = null) : Observable<any> {
-    console.log(body);
+  put(url: string, body, tokenRequired: boolean = false, headerOption = null) : Observable<any> {
     return this.http.put(this.baseUrl+url, body, tokenRequired && headerOption);
   }
 

@@ -17,9 +17,6 @@ export class DeletedialogComponent implements OnInit {
     private _snackBar: MatSnackBar ) { }
 
   ngOnInit() {
-
-    console.log(this.data.deleteText +" " + this.data.deleteButtonText +" "+ this.data.noteId);
-
   }
 
   deleteNote() {
@@ -44,6 +41,14 @@ export class DeletedialogComponent implements OnInit {
       })
     }
     else {
+      if(!this.data.noOfNotes.length && this.data.noOfNotes.length <= 0 )
+      {
+        this._snackBar.open("No Notes Present to Delete", "Close", {
+          duration: 3000,
+        });
+        this.dialogRef.close();
+        return;
+      }
       this.note.bulkDeleteNote().
         subscribe(data => {
           if(data.status)
@@ -60,6 +65,7 @@ export class DeletedialogComponent implements OnInit {
           this._snackBar.open(this.chckError, "Close", {
             duration: 3000,
           });
+
         });
     }
 

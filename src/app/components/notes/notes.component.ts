@@ -30,6 +30,7 @@ export class NotesComponent implements OnInit {
       subscribe(data => {
         if(data.status) 
           this.notes = data.data;
+          console.log(this.notes);
       },
       error => {
         

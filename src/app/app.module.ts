@@ -16,6 +16,7 @@ import { TrashComponent } from './components/trash/trash.component';
 import { LabelComponent } from './components/label/label.component';
 import { EditlabelComponent } from './components/editlabel/editlabel.component';
 import { DeletedialogComponent } from './components/deletedialog/deletedialog.component';
+import { NoteiconComponent } from './components/noteicon/noteicon.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -42,7 +43,8 @@ import { HttpClientModule } from '@angular/common/http';
     TrashComponent,
     LabelComponent,
     EditlabelComponent,
-    DeletedialogComponent
+    DeletedialogComponent,
+    NoteiconComponent
   ],
   imports: [
     BrowserModule,

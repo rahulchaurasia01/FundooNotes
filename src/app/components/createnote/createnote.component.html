@@ -1,23 +1,36 @@
-<div class="createNoteContainer" >
+<div class="createNoteContainer">
   <div fxLayout="column">
-    <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex >
+    <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
       <mat-form-field>
-        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" placeholder="Title"></textarea>
+        <textarea matInput cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1"
+          placeholder="Title"></textarea>
       </mat-form-field>
-      <div class="pinUnpinNote">
-        <i class="material-icons-outlined">alert</i>
+      <div class="pinUnpinNote" fxLayoutAlign="center center">
+        <svg xmlns="http://www.w3.org/2000/svg" (click)="userPinnedTheNote(true)" *ngIf="!isPinned" class="pinUnpin"
+          width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path fill="#000"
+            d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" (click)="userPinnedTheNote(false)" *ngIf="isPinned" class="pinUnpin"
+          width="24" height="24" viewBox="0 0 24 24">
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path fill="#000" d="M17 4a2 2 0 0 0-2-2H9c-1.1 0-2 .9-2 2v7l-2 3v2h6v5l1 1 1-1v-5h6v-2l-2-3V4z" />
+        </svg>
       </div>
     </div>
     <div class="takeANoteDiv">
       <mat-form-field>
-        <textarea matInput (click)="NoteClick()" cdkTextareaAutosize  cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
+        <textarea matInput (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
+          cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
       </mat-form-field>
     </div>
   </div>
-  <div class="NoteActionContainer" [fxHide]="showTakeANoteAndAction"  fxLayoutAlign="space-between center">
+  <div class="NoteActionContainer" [fxHide]="showTakeANoteAndAction" fxLayoutAlign="space-between center">
     <div class="NoteAction" fxLayout="row" fxLayoutAlign="center center">
       <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button title="Remind Me" >
+        <button mat-icon-button title="Remind Me">
           <i class="material-icons-outlined">notification_important</i>
         </button>
       </div>
@@ -37,18 +50,29 @@
         </button>
       </div>
       <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button>
+        <button mat-icon-button (click)="userArchiveTheNote(true)" *ngIf="!isArchive" title="Archive Note">
           <i class="material-icons-outlined">archive</i>
+        </button>
+        <button mat-icon-button (click)="userArchiveTheNote(false)" *ngIf="isArchive" title="Unarchive Note">
+          <i class="material-icons-outlined">unarchive</i>
         </button>
       </div>
       <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button>
+        <button mat-icon-button [matMenuTriggerFor]="moreMenu">
           <i class="material-icons-outlined">more_vert</i>
         </button>
+        <mat-menu #moreMenu="matMenu" xPosition="after" yPosition="below">
+          <!-- <button mat-menu-item
+            *ngIf="(createNoteTitle != null || createNoteDesciption != null) ? true : false">Delete note</button> -->
+          <button mat-menu-item>Add label</button>
+          <!-- <button mat-menu-item>Change labels</button> -->
+          <!-- <button mat-menu-item>Make a copy</button> -->
+        </mat-menu>
       </div>
     </div>
     <div class="closeButton">
       <button mat-button type="button" (click)="closeButtonClick()">Close</button>
     </div>
   </div>
+  
 </div>

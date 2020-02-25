@@ -4,6 +4,7 @@ import { HttpServiceService } from '../services/http-service.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Archivenote } from '../Model/archivenote';
 import { Pinnote } from '../Model/pinnote';
+import { Createnote } from '../Model/createnote';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class NotesService {
     return httpOptions;
   }
 
-  createNote(noteData: any) {
+  createNote(noteData: Createnote) {
     const httpOptions = this.createHttpOptions(localStorage.getItem("fundooToken"));
     return this.http.post("Notes", noteData, true, httpOptions);
   }

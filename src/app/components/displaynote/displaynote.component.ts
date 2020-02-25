@@ -25,7 +25,6 @@ export class DisplaynoteComponent implements OnInit {
   constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit() {
-
   }
 
   recieveDataFromIconChild($event: any) {
@@ -81,19 +80,21 @@ export class DisplaynoteComponent implements OnInit {
 
   openBulkDeleteDialog(): void {
     const dialogRef = this.dialog.open(DeletedialogComponent, {
-      data:  {deleteText: this.deleteText,
-         deleteButtonText: this.deleteButtonText,
-         noOfNotes: this.displayNotes.length},
+      data:  {
+        type: "Note",
+        deleteText: this.deleteText,
+        deleteButtonText: this.deleteButtonText,
+        noOfNotes: this.displayNotes.length},
 
-         panelClass: 'editLabelDialogContainer',
-         width: '430px'
+        panelClass: 'editLabelDialogContainer',
+        width: '430px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if(result == true) {
         this.displayNotes = [];
       }
-      else {
+      else if(result == false){
         this._snackBar.open("Unable to delete the Note", "Close", {
           duration: 5000,
         });

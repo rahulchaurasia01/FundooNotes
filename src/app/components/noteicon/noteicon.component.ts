@@ -134,12 +134,14 @@ export class NoteiconComponent implements OnInit {
 
   openSingleDeleteDialog(noteId: number): void {
     const dialogRef = this.dialog.open(DeletedialogComponent, {
-      data:  {deleteText: this.deleteText,
-         deleteButtonText: this.deleteButtonText,
-         noteId: noteId},
+      data:  {
+        type: "Note",
+        deleteText: this.deleteText,
+        deleteButtonText: this.deleteButtonText,
+        noteId: noteId},
       
-         panelClass: 'editLabelDialogContainer',
-         width: '430px'
+        panelClass: 'editLabelDialogContainer',
+        width: '430px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

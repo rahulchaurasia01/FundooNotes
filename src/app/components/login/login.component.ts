@@ -50,8 +50,12 @@ export class LoginComponent implements OnInit {
 
     this.user.login(login)
       .subscribe(data => {
+        localStorage.removeItem("fundooUserEmail");
         localStorage.removeItem("fundooToken");
+        localStorage.removeItem("fundooUserName");
         localStorage.setItem("fundooToken", data.token);
+        localStorage.setItem("fundooUserEmail", data.data.emailId);
+        localStorage.setItem("fundooUserName", data.data.firstName+" "+data.data.lastName);
         this._router.navigate(['dashboard']);
       },
       (error => {

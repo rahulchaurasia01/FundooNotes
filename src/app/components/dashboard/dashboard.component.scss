@@ -98,8 +98,8 @@
 }
 
 .profilePicImage {
-    width: 40px;
-    height: 40px;
+    width: inherit;
+    height: inherit;
 }
 
 .sidenavContainer {
@@ -135,6 +135,61 @@
 
 .mat-dialog-container {
     padding: 0px;
+}
+
+.userImageDiv {
+    width: 280px;
+    height: 225px;
+}
+
+.userImage{
+    width: 80px;
+    height: 80px;
+}
+
+.divider {
+    width: 100%;
+}
+
+.iconButton {
+    //width: 45px;
+    //height: 45px;
+    font-size: 24px;
+}
+
+span.mat-button-wrapper {
+    padding: 10px 0px;
+}
+
+.userInital {
+    padding: 10px;
+}
+
+.logoutButton {
+    margin: 16px;
+}
+
+.userName {
+    color: #202124;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: .29px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.userEmail {
+    text-align: center;
+    padding: 10px 0px;
+    color: #5f6368;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.logoutDiv {
+
 }
 
 @media only screen and (max-width: 780px) {

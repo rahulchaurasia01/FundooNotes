@@ -4,6 +4,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LabelsService } from '../../services/labels.service';
+import { LabeldataService } from '../../services/labeldata.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditlabelComponent } from '../editlabel/editlabel.component';
 
@@ -19,13 +20,16 @@ export class DashboardComponent implements OnInit {
 
   labels: any;
   title: string = "Fundoo";
+  fundooUserEmail: string;
+  fundooUserName: string;
   chckError: string;
   labelBackground: string;
   showSearch: boolean;
   showKeepIcon: boolean = false;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
-    private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog) {
+    private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog,
+    private labelData: LabeldataService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -33,8 +37,17 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.GetAllLabels();
+
     this.showSearch = false;
     this.showKeepIcon = false;
+
+    this.labelData.currentLabelData.
+      subscribe(data => {
+        this.labels = data;
+      })
+
+    this.fundooUserEmail = localStorage.getItem("fundooUserEmail");
+    this.fundooUserName = localStorage.getItem("fundooUserName");
 
     if(localStorage.getItem("fundooTitle")) {
       this.title = localStorage.getItem("fundooTitle");
@@ -59,7 +72,6 @@ export class DashboardComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-
 
   notesClick() {
     this.showKeepIcon = false;
@@ -98,7 +110,8 @@ export class DashboardComponent implements OnInit {
   GetAllLabels() : any {
     this.label.GetAllLabels().
       subscribe(data => {
-        this.labels = data.data; 
+        this.labels = data.data;
+        this.labelData.labelReceive(this.labels);
       },
       error => {
 
@@ -120,6 +133,8 @@ export class DashboardComponent implements OnInit {
   doLogout(): void {
     localStorage.removeItem("fundooToken");
     localStorage.removeItem("fundooTitle");
+    localStorage.removeItem("fundooUserEmail");
+    localStorage.removeItem("fundooUserName");
     this._router.navigate(['login']);
   }
 

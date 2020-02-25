@@ -42,14 +42,28 @@
     </div>
 
     <div class="accountDetail" fxLayoutAlign="center center">
-      <img class="profilePicImage" src="../../../assets/profilePic.png" [matMenuTriggerFor]="menu" alt="profile Pic">
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="fileInput.click()">
-          <span>Add Profile Pic</span>
-          <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
-        </button>
-        <button mat-menu-item (click)="doLogout()">LogOut</button>
+      <button class="iconButton" mat-fab color="warn" [matMenuTriggerFor]="menu" aria-label="User icon">
+        {{ fundooUserName[0] }}
+      </button>
+      <mat-menu #menu="matMenu" xPosition="after" yPosition="below">
+        <div class="userImageDiv" fxLayout="column" fxLayoutAlign="center center" >
+          <div class="userImage" fxLayoutAlign="center center">
+            <button mat-fab color="warn" style="font-size: 24px;" (click)="fileInput.click()" aria-label="user Profile"> {{ fundooUserName[0] }} </button>
+            <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+          </div>
+          <div class="userName">
+            {{ fundooUserName }}
+          </div>
+          <div class="userEmail">
+            {{ fundooUserEmail }}
+          </div>
+          <mat-divider class="divider"></mat-divider>
+          <div class="logoutDiv" fxLayoutAlign="center center">
+            <button class="logoutButton" mat-stroked-button (click)="doLogout()">Sign Out</button>
+          </div>
+        </div>
       </mat-menu>
+    
     </div>
   </mat-toolbar>
 
@@ -90,7 +104,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="childComponent">
-      <router-outlet></router-outlet>
+      <router-outlet ></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

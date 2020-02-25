@@ -1,2 +1,2 @@
-<app-createnote></app-createnote>
+<app-createnote (noteCreated)="addNoteCreated($event)" ></app-createnote>
 <app-displaynote [displayNotes]="notes" [parentIcon]="icon" [emptyContentText]="emptyNotesText"></app-displaynote>

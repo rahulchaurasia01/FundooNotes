@@ -25,6 +25,11 @@ export class NotesComponent implements OnInit {
 
   }
 
+  addNoteCreated($event) {
+    if(!$event.isArchived)
+      this.notes.push($event);
+  }
+
   GetAllNotes() {
     this.note.GetAllNotes().
       subscribe(data => {

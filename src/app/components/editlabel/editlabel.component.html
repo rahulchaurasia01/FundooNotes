@@ -4,19 +4,22 @@
       Edit labels
     </div>
     <div class="createLabel" >
-      <button mat-icon-button class="closeButton" tabindex="-1">
+      <button mat-icon-button class="closeButton" (click)="onClearLabelClick()" tabindex="-1">
         <i class="material-icons-outlined">close</i>
       </button>
-      <input type="text" class="createLabelField" placeholder="Create new label" aria-label="Create new label" >
-      <button mat-icon-button class="doneButton">
+      <input type="text" class="createLabelField" [(ngModel)]="newLabel" placeholder="Create new label" aria-label="Create new label" >
+      <button mat-icon-button class="doneButton" (click)="oncreateLabelClick()">
         <i class="material-icons-outlined">done</i>
       </button>
     </div>
-    <div class="labelName">
+    <div class="labelName" *ngFor="let label of labels" >
       <button mat-icon-button class="closeButton">
         <i class="material-icons-outlined">label</i>
       </button>
-      <input type="text" class="createLabelField" placeholder="Create new label" aria-label="Create new label">
+      <button mat-icon-button (click)="ondeleteLabelClick(label.labelId)" class="deleteButton">
+        <i class="material-icons-outlined">delete</i>
+      </button>
+      <input type="text" class="createLabelField" [value]="label.name" placeholder="Create new label" aria-label="Create new label">
       <button mat-icon-button class="doneButton">
         <i class="material-icons-outlined">edit</i>
       </button>

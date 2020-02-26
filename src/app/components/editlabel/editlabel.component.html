@@ -19,9 +19,12 @@
       <button mat-icon-button (click)="ondeleteLabelClick(label.labelId)" class="deleteButton">
         <i class="material-icons-outlined">delete</i>
       </button>
-      <input type="text" class="createLabelField" [value]="label.name" placeholder="Create new label" aria-label="Create new label">
-      <button mat-icon-button class="doneButton">
+      <input type="text" class="editLabelField" (click)="editLabelClicked(label.labelId)" [(ngModel)]="label.name" placeholder="Create new label" aria-label="Create new label">
+      <button mat-icon-button *ngIf="(checkLabelId == label.labelId) ? false : true" class="editButton">
         <i class="material-icons-outlined">edit</i>
+      </button>
+      <button mat-icon-button *ngIf="(checkLabelId == label.labelId) ? true : false" (click)="submitEditLabel(label.labelId, label.name)" class="editDoneButton">
+        <i class="material-icons-outlined">done</i>
       </button>
     </div>
     

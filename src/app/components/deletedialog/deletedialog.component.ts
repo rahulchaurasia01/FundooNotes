@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NotesService } from '../../services/notes.service';
-import { LabelsService } from '../../services/labels.service';
+import { NotesService } from '../../services/note/notes.service';
+import { LabelsService } from '../../services/label/labels.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -18,7 +18,6 @@ export class DeletedialogComponent implements OnInit {
     private _snackBar: MatSnackBar, private label: LabelsService) { }
 
   ngOnInit() {
-    console.log(this.data);
   }
 
   deleteNote() {

@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LabeldataService } from '../../services/labeldata.service';
-import { LabelsService } from '../../services/labels.service';
+import { LabeldataService } from '../../services/dataservice/labeldata.service';
+import { LabelsService } from '../../services/label/labels.service';
 import { Label } from 'src/app/Model/label';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 
@@ -18,6 +18,8 @@ export class EditlabelComponent implements OnInit {
   newLabel: string;
   labelDeleteText: string;
   labelDeleteButton: string;
+  hideLabelShowDelete: boolean;
+  checkLabelId: number;
 
   constructor(public dialogRef: MatDialogRef<EditlabelComponent>, private labelDataService: LabeldataService,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
@@ -35,7 +37,6 @@ export class EditlabelComponent implements OnInit {
   onClearLabelClick() {
     this.newLabel = '';
   }
-
 
   ondeleteLabelClick(labelId: number) {
     this.labelDeleteText = "We’ll delete this label and remove it from all of your Keep notes. Your notes won’t be deleted.";
@@ -66,6 +67,40 @@ export class EditlabelComponent implements OnInit {
         });
       }
     });
+
+  }
+
+  editLabelClicked(labelId: number) {
+    this.checkLabelId = labelId;
+  }
+
+  submitEditLabel(labelId: number, labelName: string) {
+    
+    var label: Label = {
+      Name: labelName
+    }
+
+    this.label.updateLabelById(labelId, label).
+      subscribe(data => {
+        if(!data.status) {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+        else {
+          this.checkLabelId = -1;
+        }
+      },
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
 
   }
 

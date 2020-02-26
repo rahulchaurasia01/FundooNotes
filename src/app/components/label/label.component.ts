@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
-import { LabelsService } from '../../services/labels.service';
+import { LabelsService } from '../../services/label/labels.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

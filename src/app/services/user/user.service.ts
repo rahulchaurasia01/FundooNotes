@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { HttpServiceService } from './http-service.service';
-import { Login } from '../Model/login';
-import { Signup } from '../Model/signup';
-import { Forgetpassword } from '../Model/forgetpassword';
-import { Resetpassword } from '../Model/resetpassword';
+import { HttpServiceService } from '../httpservice/http-service.service';
+import { Login } from '../../Model/login';
+import { Signup } from '../../Model/signup';
+import { Forgetpassword } from '../../Model/forgetpassword';
+import { Resetpassword } from '../../Model/resetpassword';
 import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -27,14 +27,7 @@ export class UserService {
   }
 
   resetPassword(resetPasswordInformation: Resetpassword, token: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': "Bearer "+ token
-      })
-    };
-
-    return this.httpService.post("User/ResetPassword", resetPasswordInformation, true, httpOptions);
+    return this.httpService.post("User/ResetPassword", resetPasswordInformation, true);
   }
 
 

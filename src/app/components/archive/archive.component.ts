@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NotesService } from '../../services/notes.service';
+import { NotesService } from '../../services/note/notes.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

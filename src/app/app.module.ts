@@ -17,13 +17,14 @@ import { LabelComponent } from './components/label/label.component';
 import { EditlabelComponent } from './components/editlabel/editlabel.component';
 import { DeletedialogComponent } from './components/deletedialog/deletedialog.component';
 import { NoteiconComponent } from './components/noteicon/noteicon.component';
+import { NotedialogComponent } from './components/notedialog/notedialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { AppMaterialModule } from './app.material.module';
+import { AppMaterialModule } from './module/material/app.material.module';
 import { AppRoutingModule } from './routing/app.routing.module';
-import { AuthGuard } from './services/auth.guard';
+import { AuthGuard } from './services/authguard/auth.guard';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -44,7 +45,8 @@ import { HttpClientModule } from '@angular/common/http';
     LabelComponent,
     EditlabelComponent,
     DeletedialogComponent,
-    NoteiconComponent
+    NoteiconComponent,
+    NotedialogComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +60,6 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
-  entryComponents: [EditlabelComponent, DeletedialogComponent]
+  entryComponents: [EditlabelComponent, DeletedialogComponent, NotedialogComponent]
 })
 export class AppModule { }

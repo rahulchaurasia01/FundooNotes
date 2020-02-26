@@ -8,7 +8,9 @@
     line-height: 26px;
     margin: 4px 0;
     height: 34px;
-    transition: background-color .218s ease-in-out,box-shadow .218s ease-in-out;
+    transition-duration: .218s;
+    transition-property: opacity;
+    transition-timing-function: ease-in;
 }
 
 .noteActionToobar {

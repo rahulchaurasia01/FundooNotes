@@ -3,8 +3,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LabelsService } from '../../services/labels.service';
-import { LabeldataService } from '../../services/labeldata.service';
+import { LabelsService } from '../../services/label/labels.service';
+import { LabeldataService } from '../../services/dataservice/labeldata.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditlabelComponent } from '../editlabel/editlabel.component';
 
@@ -68,9 +68,6 @@ export class DashboardComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(EditlabelComponent, { panelClass: 'editLabelDialogContainer' });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
   }
 
   notesClick() {

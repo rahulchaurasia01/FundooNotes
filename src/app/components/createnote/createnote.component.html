@@ -1,11 +1,11 @@
 <div class="createNoteContainer">
   <div fxLayout="column">
-    <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
-      <mat-form-field>
-        <textarea matInput cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1"
+    <div class="titleAndPinRow" style="width: inherit;" fxLayoutAlign="center center">
+      <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
+        <textarea class="createTitle" cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1"
           placeholder="Title"></textarea>
-      </mat-form-field>
-      <div class="pinUnpinNote" fxLayoutAlign="center center">
+      </div>
+      <div class="pinUnpinNote" *ngIf="!showTakeANoteAndAction" fxLayoutAlign="center center">
         <svg xmlns="http://www.w3.org/2000/svg" (click)="userPinnedTheNote(true)" *ngIf="!isPinned" class="pinUnpin"
           width="24" height="24" viewBox="0 0 24 24">
           <path fill="none" d="M0 0h24v24H0z" />
@@ -21,10 +21,8 @@
       </div>
     </div>
     <div class="takeANoteDiv">
-      <mat-form-field>
-        <textarea matInput (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
-          cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
-      </mat-form-field>
+      <textarea class="createDescription" (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
+        cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
     </div>
   </div>
   <div class="NoteActionContainer" [fxHide]="showTakeANoteAndAction" fxLayoutAlign="space-between center">
@@ -74,5 +72,5 @@
       <button mat-button type="button" (click)="closeButtonClick()">Close</button>
     </div>
   </div>
-  
+
 </div>

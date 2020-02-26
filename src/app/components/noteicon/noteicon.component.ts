@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Archivenote } from 'src/app/Model/archivenote';
-import { NotesService } from '../../services/notes.service';
+import { NotesService } from '../../services/note/notes.service';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';

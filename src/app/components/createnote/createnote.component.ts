@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Createnote } from 'src/app/Model/createnote';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NotesService } from '../../services/notes.service';
+import { NotesService } from '../../services/note/notes.service';
 
 @Component({
   selector: 'app-createnote',

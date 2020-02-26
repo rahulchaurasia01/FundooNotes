@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { NotesService } from '../../services/notes.service';
+import { NotesService } from '../../services/note/notes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { Pinnote } from 'src/app/Model/pinnote';
+import { NotedialogComponent } from '../notedialog/notedialog.component';
 
 @Component({
   selector: 'app-displaynote',
@@ -30,6 +31,18 @@ export class DisplaynoteComponent implements OnInit {
   recieveDataFromIconChild($event: any) {
     this.displayNotes = this.displayNotes.filter(note => note.noteId !== $event);
   }
+
+
+  editNoteDialog(note: any) {
+    this.dialog.open(NotedialogComponent, {
+      data: {
+        note: note
+      },
+      panelClass: 'editLabelDialogContainer',
+      width: '600px'
+    });
+  }
+
 
   pinTheNote(noteId: number, flag: boolean) {
 
@@ -84,10 +97,11 @@ export class DisplaynoteComponent implements OnInit {
         type: "Note",
         deleteText: this.deleteText,
         deleteButtonText: this.deleteButtonText,
-        noOfNotes: this.displayNotes.length},
+        noOfNotes: this.displayNotes.length
+      },
 
-        panelClass: 'editLabelDialogContainer',
-        width: '430px'
+      panelClass: 'editLabelDialogContainer',
+      width: '430px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

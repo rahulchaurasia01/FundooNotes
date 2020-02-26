@@ -6,7 +6,7 @@ import { SignupComponent } from '../components/signup/signup.component';
 import { ForgetpasswordComponent } from '../components/forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from '../components/resetpassword/resetpassword.component';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
-import { AuthGuard } from '../services/auth.guard';
+import { AuthGuard } from '../services/authguard/auth.guard';
 import { NotesComponent } from '../components/notes/notes.component';
 import { ReminderComponent } from '../components/reminder/reminder.component';
 import { ArchiveComponent } from '../components/archive/archive.component';

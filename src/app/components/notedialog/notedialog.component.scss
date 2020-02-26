@@ -1,0 +1,72 @@
+.createTitleDiv {
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.75rem;
+    padding: 12px 12px;
+    height: 55px;
+    color: #80868b;
+}
+
+
+.titleField, .descriptionField {
+    border: none;
+    width: 100%;
+    height: 25px;
+    outline: none;
+}
+
+.titleField {
+    font-size: 20px;
+}
+
+.descriptionField {
+    font-size: 16px;
+}
+
+.pinUnpinNote {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.takeANoteDiv {
+    padding: 4px 12px 12px 12px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5rem;
+    height: 35px;
+}
+
+.NoteActionContainer {
+    padding: 4px 12px 16px 0px;
+}
+
+.NoteAction {
+    color: #202124;
+    opacity: .71;
+}
+
+.iconActionDiv {
+    margin: 0px 8px;
+}
+
+.labelAndCollaboratorList {
+    padding: 4px 12px 12px 12px;
+}
+
+.collaboratorButton {
+    height: 35px;
+    width: 35px;
+}
+
+.collaboratorUserIcon {
+    height: 35px;
+    width: 35px;
+    border: 2px solid #fff;
+}
+
+::ng-deep {
+    .mat-fab .mat-button-wrapper {
+        padding: 0px;
+    }
+}

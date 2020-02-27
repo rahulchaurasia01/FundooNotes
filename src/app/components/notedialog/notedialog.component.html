@@ -22,9 +22,9 @@
       <textarea class="descriptionField" tabindex="-1" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
         cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
     </div>
-    <div class="labelAndCollaboratorList" fxLayout="row" fxLayout="center center" fxLayoutGap="5px" >
+    <div class="labelAndCollaboratorList" fxLayout="row" fxLayout="center center" fxLayoutGap="5px">
       <div class="collaborator" *ngFor="let collaborator of note.collaborators">
-        <div class="collaboratorButton" fxLayoutAlign="center center" >
+        <div class="collaboratorButton" fxLayoutAlign="center center">
           <button mat-fab class="collaboratorUserIcon" [title]="collaborator.emailId"
             color="warn">{{ collaborator.firstName[0]+collaborator.lastName[0] }}</button>
         </div>

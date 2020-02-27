@@ -27,11 +27,12 @@
     min-width: 232px;
     padding-right: 30px;
     height: 48px;
+    overflow: hidden;
     color: rgba(0,0,0,.54);
 }
 
 .title {
-    display: inline-block;
+    display: block;
     outline: none;
 }
 
@@ -152,9 +153,9 @@
 }
 
 .iconButton {
-    //width: 45px;
-    //height: 45px;
-    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
 }
 
 span.mat-button-wrapper {
@@ -188,10 +189,6 @@ span.mat-button-wrapper {
     line-height: 19px;
 }
 
-.logoutDiv {
-
-}
-
 @media only screen and (max-width: 780px) {
 
     .searchInputField, .closeButton {
@@ -221,6 +218,11 @@ span.mat-button-wrapper {
 }
 
 @media only screen and (max-width: 600px) {
+
+    .headerToolbar {
+        padding: 0px 5px;
+        height: 56px;
+    }
 
     .leftSideBoard {
         padding-right: 14px;

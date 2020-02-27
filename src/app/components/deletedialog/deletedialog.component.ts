@@ -43,7 +43,7 @@ export class DeletedialogComponent implements OnInit {
             })
       }
       else {
-        if (!this.data.noOfNotes.length && this.data.noOfNotes.length <= 0) {
+        if (!this.data.noOfNotes.length || this.data.noOfNotes.length <= 0) {
           this._snackBar.open("No Notes Present to Delete", "Close", {
             duration: 3000,
           });

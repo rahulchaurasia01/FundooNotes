@@ -12,6 +12,7 @@ export class CreatenoteComponent implements OnInit {
 
   chckError: string;
   showTakeANoteAndAction: boolean;
+  hideNoteWithImagesDiv: boolean;
   createNoteTitle: string;
   createNoteDesciption: string;
   isPinned: boolean = false;
@@ -24,6 +25,7 @@ export class CreatenoteComponent implements OnInit {
 
   ngOnInit() {
     this.showTakeANoteAndAction = true;
+    this.hideNoteWithImagesDiv = true;
   }
 
   sendMessageToParent(note: any) {
@@ -32,6 +34,7 @@ export class CreatenoteComponent implements OnInit {
 
   NoteClick() {
     this.showTakeANoteAndAction = false;
+    this.hideNoteWithImagesDiv = false;
   }
 
   userPinnedTheNote(flag: boolean) {
@@ -44,6 +47,7 @@ export class CreatenoteComponent implements OnInit {
 
   closeButtonClick() {
     this.showTakeANoteAndAction = true;
+    this.hideNoteWithImagesDiv = true;
     if((this.createNoteDesciption != null && this.createNoteDesciption != '') || 
             (this.createNoteTitle != null && this.createNoteTitle != ''))
     {

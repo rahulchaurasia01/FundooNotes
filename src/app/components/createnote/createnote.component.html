@@ -1,4 +1,4 @@
-<div class="createNoteContainer">
+<div class="createNoteContainer" >
   <div fxLayout="column">
     <div class="titleAndPinRow" style="width: inherit;" fxLayoutAlign="center center">
       <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
@@ -20,12 +20,20 @@
         </svg>
       </div>
     </div>
-    <div class="takeANoteDiv">
+    <div class="takeANoteDiv" fxLayout="row" fxLayoutAlign="center center">
       <textarea class="createDescription" (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
         cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
+      <div class="noteWithImages" *ngIf="hideNoteWithImagesDiv" fxLayout="row" fxLayoutAlign="center center" >
+        <button mat-icon-button>
+          <i class="material-icons-outlined">assignment_turned_in</i>
+        </button>
+        <button mat-icon-button>
+          <i class="material-icons-outlined">photo</i>
+        </button>
+      </div>
     </div>
   </div>
-  <div class="NoteActionContainer" [fxHide]="showTakeANoteAndAction" fxLayoutAlign="space-between center">
+  <div class="NoteActionContainer" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxLayoutAlign="space-between center">
     <div class="NoteAction" fxLayout="row" fxLayoutAlign="center center">
       <div class="iconActionDiv" fxLayoutAlign="center center">
         <button mat-icon-button title="Remind Me">

@@ -5,6 +5,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Archivenote } from '../../Model/archivenote';
 import { Pinnote } from '../../Model/pinnote';
 import { Createnote } from '../../Model/createnote';
+import { Imageupload } from 'src/app/Model/imageupload';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +53,11 @@ export class NotesService {
   pinTheNote(noteId: number, pinNote: Pinnote) {
     return this.http.put("Notes/"+ noteId + "/Pin", pinNote, true);
   }
+
+  uploadNoteImage(noteId: number, file) {
+    console.log(file);
+    return this.http.put("Notes/" + noteId + "/Image", file, true);
+  }
+
 
 }

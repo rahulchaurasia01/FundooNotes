@@ -82,13 +82,13 @@
         align-items: center;
         flex-wrap: wrap;
         padding: 5px 10px;
-        height: 30px;
     }
-    
-    .collaborator {
-        height: 24px;
-        margin: 6px 6px 0 0;
-        display: inline-block;
+
+    .collaboratorUserIcon {
+        height: 30px;
+        width: 30px;
+        outline: none;
+        border: 2px solid #fff;
     }
     
     .noteActionDiv {
@@ -122,6 +122,12 @@
         height: 34px;
         display: inline-block;
         outline: none;
+    }
+}
+
+::ng-deep {
+    .mat-fab .mat-button-wrapper {
+        padding: 3px;
     }
 }
 
@@ -166,4 +172,37 @@
     letter-spacing: 0;
     line-height: 1.75rem;
     cursor: default;
+}
+
+.notesImageDiv {
+    display: inline-block;
+}
+
+.notesImage {
+    width: 100%;
+    height: inherit;
+}
+
+
+@media only screen and (max-width: 835px) {
+
+    .displayNoteContainer {
+        width: 525px;
+    }
+
+}
+
+@media only screen and (max-width: 600px) {
+
+    .displayNoteContainer {
+        width: 90%;
+        margin: 16px 16px 8px 16px !important;
+    }
+
+    .displayNote {
+        width: 100%;
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+    }
+
 }

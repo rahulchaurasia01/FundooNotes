@@ -21,7 +21,7 @@
     height: 45px;
 }
 
-.closeButton, .doneButton, .deleteButton, .editButton, .editDoneButton {
+.closeButton, .doneButton, .deleteButton, .editButton, .editDoneButton, .addButton, .labelButton {
     font-size: 24px;
     opacity: .54;
     display: inline-block;
@@ -44,7 +44,7 @@
     border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
-.labelName:hover .closeButton {
+.labelName:hover .labelButton {
     display: none;
 }
 

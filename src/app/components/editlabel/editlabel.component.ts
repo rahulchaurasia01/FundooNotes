@@ -1,10 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LabeldataService } from '../../services/dataservice/labeldata.service';
 import { LabelsService } from '../../services/label/labels.service';
 import { Label } from 'src/app/Model/label';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-editlabel',
@@ -20,11 +21,19 @@ export class EditlabelComponent implements OnInit {
   labelDeleteButton: string;
   hideLabelShowDelete: boolean;
   checkLabelId: number;
+  editLabelClick: boolean;
+  hideCloseButton: boolean;
+  hideAddButton: boolean;
+
+  @ViewChild("labelName") newLabelField: ElementRef;
 
   constructor(public dialogRef: MatDialogRef<EditlabelComponent>, private labelDataService: LabeldataService,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.editLabelClick = true;
+    this.hideCloseButton = true;
+    this.hideAddButton = false;
     this.labelDataService.currentLabelData.
       subscribe(data => {
         this.labels = data;
@@ -34,8 +43,24 @@ export class EditlabelComponent implements OnInit {
       });
   }
 
-  onClearLabelClick() {
+  onCloseLabelClick() {
     this.newLabel = '';
+    this.editLabelClick = false;
+    this.hideCloseButton = false;
+    this.hideAddButton = true;
+  }
+
+  onAddLabelClick() {
+    this.editLabelClick = true;
+    this.hideCloseButton = true;
+    this.hideAddButton = false;
+    this.newLabelField.nativeElement.focus();
+  }
+
+  createNewLabel() {
+    this.editLabelClick = true;
+    this.hideAddButton = false;
+    this.hideCloseButton = true;
   }
 
   ondeleteLabelClick(labelId: number) {
@@ -71,6 +96,9 @@ export class EditlabelComponent implements OnInit {
   }
 
   editLabelClicked(labelId: number) {
+    this.editLabelClick = false;
+    this.hideAddButton = true;
+    this.hideCloseButton = false
     this.checkLabelId = labelId;
   }
 
@@ -121,6 +149,7 @@ export class EditlabelComponent implements OnInit {
           this.labels.push(data.data);
           this.labelDataService.labelReceive(this.labels);
           this.newLabel = '';
+          this.newLabelField.nativeElement.focus();
         }
       }, 
       error => {

@@ -4,6 +4,7 @@ import { NotesService } from '../../services/note/notes.service';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Imageupload } from 'src/app/Model/imageupload';
 
 @Component({
   selector: 'app-noteicon',
@@ -25,6 +26,7 @@ export class NoteiconComponent implements OnInit {
   infoMsg: string;
   deleteText: string;
   deleteButtonText: string;
+  Image: File;
 
   constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
 
@@ -154,6 +156,39 @@ export class NoteiconComponent implements OnInit {
         });
       }
     });
+  }
+
+  onFileInput(files: File, noteId: number) : void {
+
+    let file = <File>files[0];
+
+    console.log(file);
+
+    const filed: FormData = new FormData();
+    filed.append("file", file);
+
+    this.note.uploadNoteImage(noteId, file).
+      subscribe(data => {
+        if(!data.status) {
+          this._snackBar.open(data.message, "Close", {
+            duration: 5000,
+          });
+        }
+        else {
+          console.log(data.status);
+        }
+      },
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
   }
 
 }

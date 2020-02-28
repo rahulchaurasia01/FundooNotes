@@ -49,11 +49,127 @@
     width: 32px;
 }
 
+.createNoteCollab {
+    width: 30px;
+    height: 30px;
+}
+
+.collaboratorListDiv {
+    padding: 5px 16px;
+}
+
 .closeButton {
     margin-right: 15px;
     color: rgba(0,0,0,0.87);
 }
 
+.collaboratorContainer {
+    padding: 15px 15px 0;
+}
+
+.collaboratorTitle {
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+    font-size: 18px;
+    font-weight: 500;
+    height: 25px;
+    padding: 0 0 10px 0;   
+}
+
+.collaboratorUserContainer {
+    max-height: 201px;
+    min-height: 150px;
+    overflow-y: auto;
+}
+
+.collaboratorUserField {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 0;
+}
+
+.collaboratorUserFontSize {
+    font-size: 13px;
+}
+
+.CollaboratorCurrentUser {
+    padding: 5px;
+    display: flex;
+}
+
+.collaboratorUserIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: 0 1px 1px 1px rgba(60,64,67,0.149);
+}
+
+.collaboratorCurrentUserNameEmail {
+    flex: 1 0 auto;
+    margin: 0 13px;
+}
+
+.collaboratorUserName {
+    font-weight: 700;
+}
+
+.collaboratorOwnerSpan {
+    font-style: italic;
+    margin-left: 5px;
+}
+
+.collaboratorEmail {
+    color: #5f6368;
+}
+
+.collaboratorAddUser {
+    position: relative;
+    align-items: center;
+    display: flex;
+    padding: 5px;
+}
+
+.newUserIcon {
+    border: 1px solid rgba(0,0,0,0.6);
+    opacity: .5;
+}
+
+.collaboratorInputField {
+    margin: 0 13px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: #3c4043;
+    font-size: 13px;
+    height: 25px;
+    outline: none;
+}
+
+.collaboratorDoneButton {
+    height: 25px;
+    width: 25px;
+    opacity: .5;
+    vertical-align: top;
+}
+
+.collaboratorToolbar {
+    background-color: rgba(0,0,0,0.07);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.collaboratoredUser {
+    margin: 0 13px;
+    flex: 1 0 auto;
+}
+
+.cancelCollaboratorButton {
+    margin-right: 16px;
+    padding: 0px;
+}
 
 @media only screen and (max-width: 835px) {
 

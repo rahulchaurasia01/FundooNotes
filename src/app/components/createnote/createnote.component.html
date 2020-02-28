@@ -1,5 +1,5 @@
-<div class="createNoteContainer" >
-  <div fxLayout="column">
+<div class="createNoteContainer">
+  <div fxLayout="column" *ngIf="collaboratorClicked">
     <div class="titleAndPinRow" style="width: inherit;" fxLayoutAlign="center center">
       <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
         <textarea class="createTitle" cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1"
@@ -23,7 +23,7 @@
     <div class="takeANoteDiv" fxLayout="row" fxLayoutAlign="center center">
       <textarea class="createDescription" (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
         cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
-      <div class="noteWithImages" *ngIf="hideNoteWithImagesDiv" fxLayout="row" fxLayoutAlign="center center" >
+      <div class="noteWithImages" *ngIf="hideNoteWithImagesDiv" fxLayout="row" fxLayoutAlign="center center">
         <button mat-icon-button>
           <i class="material-icons-outlined">assignment_turned_in</i>
         </button>
@@ -32,8 +32,18 @@
         </button>
       </div>
     </div>
+    <div class="collaboratorListDiv" fxLayout="row" fxLayoutGap="5px"
+    *ngIf="(collaboratorUserList == null || collaboratorUserList.length <= 0) ? false : true">
+      <div class="collaborator" *ngFor="let userCollaborator of collaboratorUserList">
+        <div class="collaboratorButton" fxLayoutAlign="center center">
+          <button mat-fab class="createNoteCollab" [title]="userCollaborator.emailId" fxLayoutAlign="center center"
+            color="warn">{{ userCollaborator }}</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="NoteActionContainer" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxLayoutAlign="space-between center">
+  <div class="NoteActionContainer" *ngIf="collaboratorClicked" fxLayout="row" [fxHide]="showTakeANoteAndAction"
+    fxLayoutAlign="space-between center">
     <div class="NoteAction" fxLayout="row" fxLayoutAlign="center center">
       <div class="iconActionDiv" fxLayoutAlign="center center">
         <button mat-icon-button title="Remind Me">
@@ -41,7 +51,7 @@
         </button>
       </div>
       <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button title="Collaborator">
+        <button mat-icon-button (click)="collaboratorClickedByUser()" title="Collaborator">
           <i class="material-icons-outlined">person_add</i>
         </button>
       </div>
@@ -80,5 +90,55 @@
       <button mat-button type="button" (click)="closeButtonClick()">Close</button>
     </div>
   </div>
+
+  <div class="collaboratorContainer" *ngIf="!collaboratorClicked">
+    <div class="collaboratorTitle">
+      Collaborators
+    </div>
+    <div class="collaboratorUserContainer">
+      <div class="collaboratorUserField">
+        <div class="collaboratorUserFontSize">
+          <div class="CollaboratorCurrentUser" fxLayout="column" fxLayoutGap="5px">
+            <div fxLayout="row">
+              <img class="collaboratorUserIcon" src="../../../assets/profilePic.png" alt="user Icon">
+              <div class="collaboratorCurrentUserNameEmail" fxLayout="column" fxLayoutAlign="center">
+                <div>
+                  <span class="collaboratorUserName">{{ userName }}</span>
+                  <span class="collaboratorOwnerSpan">(Owner)</span>
+                </div>
+                <span class="collaboratorEmail">{{ userEmail }}</span>
+              </div>
+            </div>
+            <div *ngIf="(tempCollaboratorUserList == null || tempCollaboratorUserList.length <= 0) ? false : true">
+              <div fxLayout="row" *ngFor="let userCollaborator of tempCollaboratorUserList" fxLayoutAlign="center center">
+                <img class="collaboratorUserIcon" src="../../../assets/profilePic.png" alt="user Icon">
+                <span class="collaboratoredUser">{{ userCollaborator }}</span>
+                <button mat-icon-button class="collaboratorDoneButton" [title]="Delete" (click)="deleteCollaboratedUser(userCollaborator)" >
+                  <i class="material-icons-outlined" style="vertical-align: top;">close</i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="collaboratorAddUser">
+            <i fxLayoutAlign="center center"
+              class="material-icons-outlined collaboratorUserIcon newUserIcon">person_add</i>
+            <input class="collaboratorInputField" #collab [(ngModel)]="newCollaborator" type="text"
+              placeholder="Person or email to share with">
+            <button mat-icon-button class="collaboratorDoneButton" (click)="addCollaboratorToArray()"
+              *ngIf="(newCollaborator != null && newCollaborator != '') ? true : false">
+              <i class="material-icons-outlined" style="vertical-align: top;">done</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="collaboratorToolbar" *ngIf="!collaboratorClicked">
+    <button class="cancelCollaboratorButton" mat-button type="button"
+      (click)="cancelCollaboratorButtonClick()">Cancel</button>
+    <button class="saveCollaboratorButton" mat-button type="button"
+      (click)="saveCollaboratorButtonClick()">Save</button>
+  </div>
+
 
 </div>

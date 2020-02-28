@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Createnote } from 'src/app/Model/createnote';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotesService } from '../../services/note/notes.service';
@@ -17,15 +17,25 @@ export class CreatenoteComponent implements OnInit {
   createNoteDesciption: string;
   isPinned: boolean = false;
   isArchive: boolean = false;
+  collaboratorClicked: boolean = true;
+  userName: string;
+  userEmail: string;
+  newCollaborator: string;
+  collaboratorUserList=[];
+  tempCollaboratorUserList=[];
 
   @Output()
   noteCreated = new EventEmitter<any>();
+
+  @ViewChild("collab") collabFocus: ElementRef;
 
   constructor(private note: NotesService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.showTakeANoteAndAction = true;
     this.hideNoteWithImagesDiv = true;
+    this.userName = localStorage.getItem("fundooUserName");
+    this.userEmail = localStorage.getItem("fundooUserEmail");
   }
 
   sendMessageToParent(note: any) {
@@ -35,6 +45,39 @@ export class CreatenoteComponent implements OnInit {
   NoteClick() {
     this.showTakeANoteAndAction = false;
     this.hideNoteWithImagesDiv = false;
+  }
+
+  collaboratorClickedByUser() {
+    this.collaboratorClicked = false;
+    this.tempCollaboratorUserList = this.collaboratorUserList;
+  }
+
+  cancelCollaboratorButtonClick() {
+    console.log(this.tempCollaboratorUserList.length);
+    this.tempCollaboratorUserList = [];
+    console.log(this.tempCollaboratorUserList.length);
+    this.newCollaborator = '';
+    this.collaboratorClicked = true;
+    console.log(this.collaboratorUserList.length);
+  }
+
+  addCollaboratorToArray() {
+    this.tempCollaboratorUserList.push(this.newCollaborator);
+    this.newCollaborator = '';
+    this.collabFocus.nativeElement.focus();
+  }
+
+  saveCollaboratorButtonClick() {
+    console.log("hola");
+    this.collaboratorUserList = this.tempCollaboratorUserList;
+    this.newCollaborator = '';
+    this.collaboratorClicked = true;
+  }
+
+  
+
+  deleteCollaboratedUser(user: string) {
+    this.tempCollaboratorUserList = this.tempCollaboratorUserList.filter(users => users !== user);
   }
 
   userPinnedTheNote(flag: boolean) {

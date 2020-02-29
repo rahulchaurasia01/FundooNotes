@@ -55,7 +55,7 @@ export class ResetpasswordComponent implements OnInit {
       password: resetPasswordData.newPassword
     }
 
-    this.user.resetPassword(resetPassword, this.token).
+    this.user.resetPassword(resetPassword).
       subscribe(data => {
         this._snackBar.open(data.message, "Close", {
           duration: 3000,

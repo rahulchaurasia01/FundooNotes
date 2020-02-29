@@ -57,7 +57,6 @@ export class NoteiconComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         if (this.accessFrom == "Create Note") {
-          console.log(result);
           this.UpdateCollaboratorToCreateNote.emit(result);
         }
         else if (this.accessFrom == "Display Note") {

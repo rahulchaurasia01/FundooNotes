@@ -18,6 +18,7 @@ import { EditlabelComponent } from './components/editlabel/editlabel.component';
 import { DeletedialogComponent } from './components/deletedialog/deletedialog.component';
 import { NoteiconComponent } from './components/noteicon/noteicon.component';
 import { NotedialogComponent } from './components/notedialog/notedialog.component';
+import { CollaboratordialogComponent } from './components/collaboratordialog/collaboratordialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -46,7 +47,8 @@ import { HttpClientModule } from '@angular/common/http';
     EditlabelComponent,
     DeletedialogComponent,
     NoteiconComponent,
-    NotedialogComponent
+    NotedialogComponent,
+    CollaboratordialogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +62,6 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
-  entryComponents: [EditlabelComponent, DeletedialogComponent, NotedialogComponent]
+  entryComponents: [EditlabelComponent, DeletedialogComponent, NotedialogComponent, CollaboratordialogComponent]
 })
 export class AppModule { }

@@ -12,7 +12,7 @@
 
 <div class="displayNoteContainer" *ngIf="(displayNotes.length <= 0) ? false : true" fxLayout="row" fxLayout.xs="column"
   fxLayoutGap="15px">
-  <div class="displayNote" *ngFor="let note of displayNotes">
+  <div class="displayNote" [style.background]="note.color" *ngFor="let note of displayNotes">
     <div class="pinUpinTheImage" fxLayoutAlign="center center" *ngIf="(parentIcon == 'delete') ? false : true">
       <svg xmlns="http://www.w3.org/2000/svg" class="pinUnpin" (click)="pinTheNote(note.noteId, true)"
         *ngIf="!note.isPin" width="24" height="24" viewBox="0 0 24 24">

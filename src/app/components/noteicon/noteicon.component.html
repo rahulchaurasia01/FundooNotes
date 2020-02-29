@@ -6,7 +6,7 @@
       </button>
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Collaborator">
+      <button mat-icon-button (click)="collaboratorClickedByUser()" title="Collaborator">
         <i class="material-icons-outlined">person_add</i>
       </button>
     </div>
@@ -22,10 +22,12 @@
       <input #file type="file" accept="image/*" (change)="onFileInput(file.files, grandParentNote.noteId)" style="display:none;" />
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Archive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, true)" *ngIf="!grandParentNote.isArchived">
+      <button mat-icon-button title="Archive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, true)"
+       *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? !isArchive : !grandParentNote.isArchived">
         <i class="material-icons-outlined">archive</i>
       </button>
-      <button mat-icon-button title="Unarchive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, false)" *ngIf="grandParentNote.isArchived">
+      <button mat-icon-button title="Unarchive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, false)"
+       *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? isArchive : grandParentNote.isArchived">
         <i class="material-icons-outlined">unarchive</i>
       </button>
     </div>

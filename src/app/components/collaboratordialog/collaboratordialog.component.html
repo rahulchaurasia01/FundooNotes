@@ -1,0 +1,53 @@
+<div class="collaboratorContainer" *ngIf="!collaboratorClicked">
+  <div class="collaboratorTitle">
+    Collaborators
+  </div>
+  <div class="collaboratorUserContainer">
+    <div class="collaboratorUserField">
+      <div class="collaboratorUserFontSize">
+        <div class="CollaboratorCurrentUser" fxLayout="column" fxLayoutGap="5px">
+          <div fxLayout="row">
+            <img class="collaboratorUserIcon" src="../../../assets/profilePic.png" alt="user Icon">
+            <div class="collaboratorCurrentUserNameEmail" fxLayout="column" fxLayoutAlign="center">
+              <div>
+                <span class="collaboratorUserName">{{ userName }}</span>
+                <span class="collaboratorOwnerSpan">(Owner)</span>
+              </div>
+              <span class="collaboratorEmail">{{ userEmail }}</span>
+            </div>
+          </div>
+          <div *ngIf="(tempCollaboratorUserListed == null || tempCollaboratorUserListed.length <= 0) ? false : true">
+            <div fxLayout="row" *ngFor="let userCollaborator of tempCollaboratorUserListed" fxLayoutAlign="center center">
+              <img class="collaboratorUserIcon" src="../../../assets/profilePic.png" alt="user Icon">
+              <span class="collaboratoredUser">{{ userCollaborator.emailId }}</span>
+              <button mat-icon-button class="collaboratorDoneButton" [title]="Delete" (click)="deleteCollaboratedUser(userCollaborator)" >
+                <i class="material-icons-outlined" style="vertical-align: top;">close</i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="collaboratorAddUser">
+          <i fxLayoutAlign="center center"
+            class="material-icons-outlined collaboratorUserIcon newUserIcon">person_add</i>
+          <input class="collaboratorInputField" #collab [(ngModel)]="newCollaborator" (input)="newCollaborators($event.target.value)" [matAutocomplete]="auto"
+           type="text" placeholder="Person or email to share with">
+            <mat-autocomplete #auto="matAutocomplete" >
+              <mat-option *ngFor="let option of listOfUser" [value]="option.emailId">
+                {{option.emailId}}
+              </mat-option>
+            </mat-autocomplete>
+          <button mat-icon-button class="collaboratorDoneButton" (click)="addCollaboratorToArray()"
+            *ngIf="(newCollaborator != null && newCollaborator != '') ? true : false">
+            <i class="material-icons-outlined" style="vertical-align: top;">done</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="collaboratorToolbar" *ngIf="!collaboratorClicked">
+  <button class="cancelCollaboratorButton" mat-button type="button"
+    (click)="cancelCollaboratorButtonClick()">Cancel</button>
+  <button class="saveCollaboratorButton" mat-button type="button"
+    (click)="saveCollaboratorButtonClick()">Save</button>
+</div>

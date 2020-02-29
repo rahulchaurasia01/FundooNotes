@@ -6,6 +6,7 @@ import { Archivenote } from '../../Model/archivenote';
 import { Pinnote } from '../../Model/pinnote';
 import { Createnote } from '../../Model/createnote';
 import { Imageupload } from 'src/app/Model/imageupload';
+import { Collaborator } from 'src/app/Model/collaborator';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class NotesService {
   constructor(private http: HttpServiceService) { }
 
   createNote(noteData: Createnote) {
+    console.log(noteData);
     return this.http.post("Notes", noteData, true);
   }
 
@@ -56,7 +58,11 @@ export class NotesService {
 
   uploadNoteImage(noteId: number, file) {
     console.log(file);
-    return this.http.put("Notes/" + noteId + "/Image", file, true);
+    return this.http.putImage("Notes/" + noteId + "/Image", file, true);
+  }
+
+  addCollaboratorToNote(noteId: number, collab) {
+    return this.http.put("Notes/" + noteId + "/Collaborator", collab, true);
   }
 
 

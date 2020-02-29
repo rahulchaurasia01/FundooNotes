@@ -57,9 +57,12 @@
     }
 
     .pinUpinTheImage{
+        margin-left: 192px;
+        margin-top: 5px;
         width: 42px;
         height: 36px;
         float: right;
+        position: absolute;
         opacity: 0.71;
         visibility: hidden;
     }

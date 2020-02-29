@@ -22,14 +22,24 @@ export class DisplaynoteComponent implements OnInit {
   infoMsg: string;
   deleteText: string;
   deleteButtonText: string;
+  displayFromIcon: string;
 
   constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.displayFromIcon = "Display Note";
   }
 
   recieveDataFromIconChild($event: any) {
     this.displayNotes = this.displayNotes.filter(note => note.noteId !== $event);
+  }
+
+  updateCollabToNote($event : any) {
+    for(var note = 0; note < this.displayNotes.length; note++) {
+      if(this.displayNotes[note].noteId == $event.noteId ) {
+        this.displayNotes[note] = $event;
+      }
+    }
   }
 
 

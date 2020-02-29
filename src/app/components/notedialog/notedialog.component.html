@@ -32,50 +32,8 @@
     </div>
   </div>
   <div class="NoteActionContainer" fxLayoutAlign="space-between center">
-    <div class="NoteAction" fxLayout="row" fxLayoutAlign="center center">
-      <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button tabindex="-1" title="Remind Me">
-          <i class="material-icons-outlined">notification_important</i>
-        </button>
-      </div>
-      <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button tabindex="-1" title="Collaborator">
-          <i class="material-icons-outlined">person_add</i>
-        </button>
-      </div>
-      <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button tabindex="-1" title="Change Color">
-          <i class="material-icons-outlined">color_lens</i>
-        </button>
-      </div>
-      <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button tabindex="-1">
-          <i class="material-icons-outlined">image</i>
-        </button>
-      </div>
-      <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button tabindex="-1" (click)="userArchiveTheNote(true)" *ngIf="!isArchive"
-          title="Archive Note">
-          <i class="material-icons-outlined">archive</i>
-        </button>
-        <button mat-icon-button tabindex="-1" (click)="userArchiveTheNote(false)" *ngIf="isArchive"
-          title="Unarchive Note">
-          <i class="material-icons-outlined">unarchive</i>
-        </button>
-      </div>
-      <div class="iconActionDiv" fxLayoutAlign="center center">
-        <button mat-icon-button tabindex="-1" [matMenuTriggerFor]="moreMenu">
-          <i class="material-icons-outlined">more_vert</i>
-        </button>
-        <mat-menu #moreMenu="matMenu" xPosition="after" yPosition="below">
-          <!-- <button mat-menu-item
-            *ngIf="(createNoteTitle != null || createNoteDesciption != null) ? true : false">Delete note</button> -->
-          <button mat-menu-item>Add label</button>
-          <!-- <button mat-menu-item>Change labels</button> -->
-          <!-- <button mat-menu-item>Make a copy</button> -->
-        </mat-menu>
-      </div>
-    </div>
+    <app-noteicon class="hideIcon" (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
+      [grandParentIcon]="parentIcon"></app-noteicon>
     <div class="closeButton">
       <button mat-button type="button" tabindex="-1" (click)="closeButtonClick()">Close</button>
     </div>

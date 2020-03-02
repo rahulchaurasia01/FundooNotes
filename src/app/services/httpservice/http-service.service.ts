@@ -68,7 +68,6 @@ export class HttpServiceService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded',
         'Authorization': "Bearer "+ localStorage.getItem("fundooToken")
       })
     };

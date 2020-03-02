@@ -4,8 +4,8 @@ import { NotesService } from '../../services/note/notes.service';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Imageupload } from 'src/app/Model/imageupload';
 import { CollaboratordialogComponent } from '../collaboratordialog/collaboratordialog.component';
+import { Color } from 'src/app/Model/color';
 
 @Component({
   selector: 'app-noteicon',
@@ -21,25 +21,129 @@ export class NoteiconComponent implements OnInit {
   @Output() sendParentRefresh = new EventEmitter<number>();
   @Output() UpdateCollaboratorToCreateNote = new EventEmitter<any>();
   @Output() updateCollaboratorToDisplayNote = new EventEmitter<any>();
+  @Output() UpdateColorInCreateNote = new EventEmitter<string>();
+
+  @Output() UpdateNoteInDisplayNote = new EventEmitter<any>();
+  @Output() UpdateNoteInEditNote = new EventEmitter<any>();
+
+  @Output() UpdateArchiveInEditNote = new EventEmitter<any>();
 
   chckError: string;
   infoMsg: string;
   deleteText: string;
   deleteButtonText: string;
   Image: File;
+  userSelectColor: string;
 
   isArchive: boolean;
-  
+
+  colors = [
+    {
+      code: "#fff",
+      name: "Default"
+    },
+    {
+      code: "#f28b82",
+      name: "Red"
+    },
+    {
+      code: "#fbbc04",
+      name: "Orange"
+    },
+    {
+      code: "#fff475",
+      name: "Yellow"
+    },
+    {
+      code: "#ccff90",
+      name: "Green"
+    },
+    {
+      code: "#a7ffeb",
+      name: "Teal"
+    },
+    {
+      code: "#cbf0f8",
+      name: "Blue"
+    },
+    {
+      code: "#aecbfa",
+      name: "Dark Blue"
+    },
+    {
+      code: "#d7aefb",
+      name: "Purple"
+    },
+    {
+      code: "#fdcfe8",
+      name: "Pink"
+    },
+    {
+      code: "#e6c9a8",
+      name: "Brown"
+    },
+    {
+      code: "#e8eaed",
+      name: "Gray"
+    }
+  ];
 
   constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.isArchive = false;
+
+    if (this.accessFrom == "Display Note")
+      this.userSelectColor = this.grandParentNote.color;
+    else if (this.accessFrom == "Create Note") {
+      this.userSelectColor = "#fff";
+    }
   }
 
   sendMessageToParent(noteId: number) {
     this.sendParentRefresh.emit(noteId);
   }
+
+  userWantColorOnNote(noteId: number, color: string) {
+
+    this.userSelectColor = color;
+
+    if (this.accessFrom == "Display Note" || this.accessFrom == "Edit Note") {
+
+      var colour: Color = {
+        Color: color
+      }
+
+      this.note.updateColorToNote(noteId, colour).
+        subscribe(data => {
+          if (data.status) {
+            if (this.accessFrom == "Display Note")
+              this.UpdateNoteInDisplayNote.emit(data.data);
+            else if (this.accessFrom == "Edit Note")
+              this.UpdateNoteInEditNote.emit(data.data);
+          }
+          else {
+            this._snackBar.open(data.message, "Close", {
+              duration: 3000,
+            });
+          }
+        },
+          error => {
+            if (error.error.message)
+              this.chckError = error.error.message;
+            else
+              this.chckError = "Connection to the Server Failed";
+
+            this._snackBar.open(this.chckError, "Close", {
+              duration: 3000,
+            });
+          })
+    }
+    else if (this.accessFrom == "Create Note") {
+      this.UpdateColorInCreateNote.emit(color);
+    }
+  }
+
 
   collaboratorClickedByUser() {
 
@@ -62,6 +166,9 @@ export class NoteiconComponent implements OnInit {
         else if (this.accessFrom == "Display Note") {
           this.updateCollaboratorToDisplayNote.emit(result);
         }
+        else if(this.accessFrom == "Edit Note") {
+          this.UpdateNoteInEditNote.emit(result);
+        }
       }
     });
 
@@ -70,8 +177,8 @@ export class NoteiconComponent implements OnInit {
 
   archiveUnarchiveTheNote(noteId: number, flag: boolean) {
 
-    if (this.accessFrom == "Display Note") {
-    
+    if (this.accessFrom == "Display Note" || this.accessFrom == "Edit Note") {
+
       var archiveNote: Archivenote = {
         IsArchive: flag
       };
@@ -79,14 +186,19 @@ export class NoteiconComponent implements OnInit {
       this.note.archiveTheNote(noteId, archiveNote).
         subscribe(data => {
           if (data.status) {
-            this.sendMessageToParent(noteId);
-            if (flag)
-              this.infoMsg = "Note archived";
-            else
-              this.infoMsg = "Note unarchived";
-            this._snackBar.open(this.infoMsg, "Close", {
-              duration: 5000,
-            });
+            if (this.accessFrom == "Display Note") {
+              this.sendMessageToParent(noteId);
+              if (flag)
+                this.infoMsg = "Note archived";
+              else
+                this.infoMsg = "Note unarchived";
+              this._snackBar.open(this.infoMsg, "Close", {
+                duration: 5000,
+              });
+            }
+            else if(this.accessFrom == "Edit Note") {
+              this.UpdateArchiveInEditNote.emit(data.data);
+            }
           }
           else {
             if (flag)
@@ -109,7 +221,7 @@ export class NoteiconComponent implements OnInit {
             });
           })
     }
-    else if(this.accessFrom == "Create Note") {
+    else if (this.accessFrom == "Create Note") {
       this.isArchive = flag;
     }
   }
@@ -200,32 +312,37 @@ export class NoteiconComponent implements OnInit {
 
     let file: File = <File>imageFiles[0];
 
-    console.log(file);
-
     let filed = new FormData();
     filed.append("", file);
 
-    this.note.uploadNoteImage(noteId, filed).
-      subscribe(data => {
-        if (!data.status) {
-          this._snackBar.open(data.message, "Close", {
-            duration: 5000,
-          });
-        }
-        else {
-          console.log(data.status);
-        }
-      },
-        error => {
-          if (error.error.message)
-            this.chckError = error.error.message;
-          else
-            this.chckError = "Connection to the Server Failed";
+    if (this.accessFrom == "Display Note" || this.accessFrom == "Edit Note") {
+      this.note.uploadNoteImage(noteId, filed).
+        subscribe(data => {
+          if (!data.status) {
+            this._snackBar.open(data.message, "Close", {
+              duration: 5000,
+            });
+          }
+          else {
+            if(this.accessFrom == "Display Note")
+              this.UpdateNoteInDisplayNote.emit(data.data);
+            else if(this.accessFrom == "Edit Note") {
+              this.UpdateNoteInEditNote.emit(data.data);
+            }
+              
+          }
+        },
+          error => {
+            if (error.error.message)
+              this.chckError = error.error.message;
+            else
+              this.chckError = "Connection to the Server Failed";
 
-          this._snackBar.open(this.chckError, "Close", {
-            duration: 3000,
-          });
-        })
+            this._snackBar.open(this.chckError, "Close", {
+              duration: 3000,
+            });
+          })
+    }
 
   }
 

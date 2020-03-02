@@ -1,38 +1,50 @@
 <div class="noteActionDiv">
   <div class="noteActionToobar" *ngIf="(grandParentIcon != 'delete') ? true : false">
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Remind Me">
+      <button mat-icon-button tabindex="-1" matTooltip="Remind Me" >
         <i class="material-icons-outlined">notification_important</i>
       </button>
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button (click)="collaboratorClickedByUser()" title="Collaborator">
+      <button mat-icon-button tabindex="-1" (click)="collaboratorClickedByUser()" title="Collaborator">
         <i class="material-icons-outlined">person_add</i>
       </button>
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Change Color">
+      <button mat-icon-button tabindex="-1" title="Change Color" [matMenuTriggerFor]="colorMenu">
         <i class="material-icons-outlined">color_lens</i>
       </button>
+      <mat-menu #colorMenu="matMenu" xPosition="after" yPosition="below">
+        <div class="colorDiv" fxLayout="row wrap">
+          <div class="singleColor" *ngFor="let color of colors" >
+            <button class="colorButton" fxLayoutAlign="center center"
+             [style.border-color]="color.code" (click)="userWantColorOnNote(grandParentNote.noteId, color.code)"
+             [style.background-color]="color.code" [title]="color.name" >
+              <i *ngIf="(color.code == userSelectColor) ? true : false" class="material-icons-outlined">done</i>
+            </button>
+          </div>
+        </div>
+      </mat-menu>
+
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button (click)="file.click()" aria-label="user Profile" title="Image">
+      <button mat-icon-button (click)="file.click()" tabindex="-1" aria-label="user Profile" title="Image">
         <i class="material-icons-outlined">image</i>
       </button>
       <input #file type="file" accept="image/*" (change)="onFileInput(file.files, grandParentNote.noteId)" style="display:none;" />
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Archive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, true)"
+      <button mat-icon-button title="Archive" tabindex="-1" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, true)"
        *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? !isArchive : !grandParentNote.isArchived">
         <i class="material-icons-outlined">archive</i>
       </button>
-      <button mat-icon-button title="Unarchive" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, false)"
+      <button mat-icon-button title="Unarchive" tabindex="-1" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, false)"
        *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? isArchive : grandParentNote.isArchived">
         <i class="material-icons-outlined">unarchive</i>
       </button>
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button [matMenuTriggerFor]="moreMenu">
+      <button mat-icon-button tabindex="-1" [matMenuTriggerFor]="moreMenu">
         <i class="material-icons-outlined">more_vert</i>
       </button>
       <mat-menu #moreMenu="matMenu" xPosition="after" yPosition="below">
@@ -45,12 +57,12 @@
   </div>
   <div class="noteActionToobar" *ngIf="(grandParentIcon == 'delete') ? true : false">
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Delete Forever" (click)="singleDeleteNote(grandParentNote.noteId)">
+      <button mat-icon-button title="Delete Forever" tabindex="-1" (click)="singleDeleteNote(grandParentNote.noteId)">
         <i class="material-icons-outlined">delete_forever</i>
       </button>
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Restore from Trash" (click)="restoreNote(grandParentNote.noteId)">
+      <button mat-icon-button title="Restore from Trash" tabindex="-1" (click)="restoreNote(grandParentNote.noteId)">
         <i class="material-icons-outlined">restore_from_trash</i>
       </button>
     </div>

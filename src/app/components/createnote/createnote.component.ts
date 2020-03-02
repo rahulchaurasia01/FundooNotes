@@ -5,6 +5,7 @@ import { NotesService } from '../../services/note/notes.service';
 import { UserService } from '../../services/user/user.service';
 import { Alluser } from 'src/app/Model/alluser';
 import { Collaborator } from 'src/app/Model/collaborator';
+import { Listofcollaborator } from 'src/app/Model/listofcollaborator';
 
 @Component({
   selector: 'app-createnote',
@@ -20,6 +21,7 @@ export class CreatenoteComponent implements OnInit {
   createNoteDesciption: string;
   isPinned: boolean = false;
   isArchive: boolean = false;
+  color: string;
   collaboratorClicked: boolean = true;
   noteIconAccessFrom: string;
   collaboratorUserList=[];
@@ -36,6 +38,7 @@ export class CreatenoteComponent implements OnInit {
     this.showTakeANoteAndAction = true;
     this.hideNoteWithImagesDiv = true;
     this.noteIconAccessFrom = "Create Note";
+    this.color = "#fff";
   }
 
   sendMessageToParent(note: any) {
@@ -49,6 +52,10 @@ export class CreatenoteComponent implements OnInit {
   NoteClick() {
     this.showTakeANoteAndAction = false;
     this.hideNoteWithImagesDiv = false;
+  }
+
+  updateColor($event) {
+    this.color = $event;
   }
 
   userPinnedTheNote(flag: boolean) {
@@ -67,17 +74,29 @@ export class CreatenoteComponent implements OnInit {
 
     if ((this.createNoteDesciption != null && this.createNoteDesciption != '') ||
       (this.createNoteTitle != null && this.createNoteTitle != '')) {
+
+        for (var user = 0; user < this.collaboratorUserList.length; user++) {
+          var users: Collaborator = {
+            UserId: this.collaboratorUserList[user].userId
+          }
+          collaborator[user] = users;
+        }
+  
+        var collaborators: Listofcollaborator = {
+          Collaborators: collaborator
+        }
+
       var createNote: Createnote = {
         Title: this.createNoteTitle,
         Description: this.createNoteDesciption,
-        Color: '',
+        Color: this.color,
         Image: '',
         IsPin: this.isPinned,
         IsArchived: this.isArchive,
         IsDeleted: false,
         Reminder: '',
         Label: null,
-        Collaborators: collaborator
+        Collaborators: collaborators
       };
 
       this.note.createNote(createNote).
@@ -100,8 +119,10 @@ export class CreatenoteComponent implements OnInit {
     }
     this.createNoteDesciption = '';
     this.createNoteTitle = '';
+    this.collaboratorUserList = [];
     this.isPinned = false;
     this.isArchive = false;
+    this.color = "#fff";
   }
 
 }

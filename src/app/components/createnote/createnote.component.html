@@ -1,8 +1,8 @@
-<div class="createNoteContainer">
+<div [style.background]="color" class="createNoteContainer">
   <div fxLayout="column" *ngIf="collaboratorClicked">
     <div class="titleAndPinRow" style="width: inherit;" fxLayoutAlign="center center">
       <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
-        <textarea class="createTitle" cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1"
+        <textarea class="createTitle" [style.background]="color" cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1"
           placeholder="Title"></textarea>
       </div>
       <div class="pinUnpinNote" *ngIf="!showTakeANoteAndAction" fxLayoutAlign="center center">
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="takeANoteDiv" fxLayout="row" fxLayoutAlign="center center">
-      <textarea class="createDescription" (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
+      <textarea class="createDescription" [style.background]="color" (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
         cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
       <div class="noteWithImages" *ngIf="hideNoteWithImagesDiv" fxLayout="row" fxLayoutAlign="center center">
         <button mat-icon-button>
@@ -44,8 +44,8 @@
   </div>
   <div class="NoteActionContainer" *ngIf="collaboratorClicked" fxLayout="row" [fxHide]="showTakeANoteAndAction"
     fxLayoutAlign="space-between center">
-    <app-noteicon [accessFrom]="noteIconAccessFrom" (UpdateCollaboratorToCreateNote)="updateCollabToCreateNote($event)" (sendParentRefresh)="recieveDataFromIconChild($event)"
-    [grandParentNote]="collaboratorUserList" [grandParentIcon]="parentIcon"></app-noteicon>
+    <app-noteicon [accessFrom]="noteIconAccessFrom" (UpdateColorInCreateNote)="updateColor($event)" (UpdateCollaboratorToCreateNote)="updateCollabToCreateNote($event)"
+     (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="collaboratorUserList" [grandParentIcon]="parentIcon"></app-noteicon>
     <div class="closeButton">
       <button mat-button type="button" (click)="closeButtonClick()">Close</button>
     </div>

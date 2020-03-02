@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { HttpServiceService } from '../httpservice/http-service.service';
-import { HttpHeaders } from '@angular/common/http';
 import { Archivenote } from '../../Model/archivenote';
 import { Pinnote } from '../../Model/pinnote';
 import { Createnote } from '../../Model/createnote';
-import { Imageupload } from 'src/app/Model/imageupload';
-import { Collaborator } from 'src/app/Model/collaborator';
+import { Listofcollaborator } from '../../Model/listofcollaborator';
+import { Color } from 'src/app/Model/color';
+import { Updatenote } from 'src/app/Model/updatenote';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +47,10 @@ export class NotesService {
   restoreTheNote(noteId: number) {
     return this.http.put("Notes/Restore/"+noteId, null, true);
   }
+  
+  updateNote(noteId: number, updateTheNote: Updatenote) {
+    return this.http.put("Notes/" + noteId, updateTheNote, true);
+  }
 
   archiveTheNote(noteId: number, archiveNote: Archivenote) {
     return this.http.put("Notes/" + noteId + "/Archive", archiveNote, true);
@@ -57,12 +61,15 @@ export class NotesService {
   }
 
   uploadNoteImage(noteId: number, file) {
-    console.log(file);
     return this.http.putImage("Notes/" + noteId + "/Image", file, true);
   }
 
-  addCollaboratorToNote(noteId: number, collab) {
+  addCollaboratorToNote(noteId: number, collab: Listofcollaborator) {
     return this.http.put("Notes/" + noteId + "/Collaborator", collab, true);
+  }
+
+  updateColorToNote(noteId: number, color: Color) {
+    return this.http.put("Notes/" + noteId + "/Color", color, true);
   }
 
 

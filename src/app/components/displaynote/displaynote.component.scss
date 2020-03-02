@@ -35,6 +35,7 @@
     margin-top: 15px;
     margin-bottom: 15px;
     width: 240px;
+    height: fit-content;
     border: 1px solid;
     border-color: #e0e0e0;
     box-sizing: border-box;
@@ -132,6 +133,20 @@
     .mat-fab .mat-button-wrapper {
         padding: 3px;
     }
+
+    div.mat-chip-list-wrapper {
+        margin: 0px;
+    }
+}
+
+.mat-chip-list-wrapper .mat-standard-chip {
+    margin: 0px;
+}
+
+.labelcancel {
+    margin-left: 4px;
+    opacity: .54;
+    cursor: pointer;
 }
 
 .displayNote:hover{

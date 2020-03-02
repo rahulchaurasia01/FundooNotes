@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { Pinnote } from 'src/app/Model/pinnote';
 import { NotedialogComponent } from '../notedialog/notedialog.component';
+import { Updatenote } from 'src/app/Model/updatenote';
 
 @Component({
   selector: 'app-displaynote',
@@ -43,14 +44,80 @@ export class DisplaynoteComponent implements OnInit {
   }
 
 
+  removeLabelForNote(labelId: number, noteId: number) {
+
+    var updateNoteData: any;
+
+    for(var note = 0; note < this.displayNotes.length; note++) {
+      if(this.displayNotes[note].noteId == noteId) {
+        this.displayNotes[note].labels = this.displayNotes[note].labels.
+                            filter(label => label.labelId !== labelId);
+        
+        updateNoteData = this.displayNotes[note];
+        break;
+      }
+    }
+
+    var updateNotes: Updatenote = {
+      Title: updateNoteData.title,
+      Description: updateNoteData.description,
+      Reminder: updateNoteData.reminder,
+      Label: updateNoteData.labels,
+    };
+
+    this.note.updateNote(noteId, updateNotes).
+      subscribe(data => {
+        if(!data.status) {
+          this._snackBar.open("Unable to remove the label", "Close", {
+            duration: 5000,
+          });
+        }
+      }, 
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
+  }
+
+
   editNoteDialog(note: any) {
-    this.dialog.open(NotedialogComponent, {
+    const dialogRef =  this.dialog.open(NotedialogComponent, {
       data: {
         note: note
       },
       panelClass: 'editLabelDialogContainer',
       width: '600px'
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result != null) {
+        for(var note =0; note < this.displayNotes.length; note++) {
+          if(this.displayNotes[note].noteId == result.noteId) {
+            this.displayNotes[note] = result;
+          }
+        }
+
+        this.displayNotes = this.displayNotes.filter(note => !note.isArchived )
+
+      }
+      
+    });
+
+  }
+
+  UpdateNote($event) {
+    for(var note = 0; note < this.displayNotes.length; note++) {
+      if(this.displayNotes[note].noteId == $event.noteId) {
+        this.displayNotes[note] = $event;
+      }
+    }
   }
 
 

@@ -39,16 +39,26 @@
         {{ note.description }}
       </div>
     </div>
-    <div class="collaboratorList" fxLayout="row" fxLayoutGap="5px"
-      *ngIf="(note.collaborators == null || note.collaborators.length <= 0) ? false : true">
-      <div class="collaborator" *ngFor="let collaborator of note.collaborators">
-        <div class="collaboratorButton" fxLayoutAlign="center center">
-          <button mat-fab class="collaboratorUserIcon" [title]="collaborator.emailId" fxLayoutAlign="center center"
-            color="warn">{{ collaborator.firstName[0]+collaborator.lastName[0] }}</button>
+    <div fxLayout="row wrap">
+      <div fxLayoutAlign="center center" *ngIf="(note.labels == null || note.labels.length <= 0) ? false : true" >
+        <mat-chip-list aria-label="Note Label">
+          <mat-chip fxLayout="row" *ngFor="let label of note.labels" fxLayoutAlign="center center">
+            {{ label.name }}
+            <i class="material-icons-outlined labelcancel" (click)="removeLabelForNote(label.labelId, note.noteId)" >cancel</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="collaboratorList" fxLayout="row wrap" fxLayoutGap="5px"
+        *ngIf="(note.collaborators == null || note.collaborators.length <= 0) ? false : true">
+        <div class="collaborator" *ngFor="let collaborator of note.collaborators">
+          <div class="collaboratorButton" fxLayoutAlign="center center">
+            <button mat-fab class="collaboratorUserIcon" [title]="collaborator.emailId" fxLayoutAlign="center center"
+              color="warn">{{ collaborator.firstName[0]+collaborator.lastName[0] }}</button>
+          </div>
         </div>
       </div>
     </div>
-    <app-noteicon class="hideIcon" [accessFrom]="displayFromIcon" (updateCollaboratorToDisplayNote)="updateCollabToNote($event)" (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
+    <app-noteicon class="hideIcon" [accessFrom]="displayFromIcon" (UpdateNoteInDisplayNote)="UpdateNote($event)" (updateCollaboratorToDisplayNote)="updateCollabToNote($event)" (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
       [grandParentIcon]="parentIcon"></app-noteicon>
   </div>
 </div>

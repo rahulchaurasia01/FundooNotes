@@ -16,6 +16,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   imports: [
@@ -34,7 +36,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatToolbarModule,
     MatListModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule,
+    MatChipsModule
   ], 
   exports: [
     MatFormFieldModule,
@@ -51,7 +55,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatToolbarModule,
     MatListModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule,
+    MatChipsModule
   ],
   declarations: []
 })

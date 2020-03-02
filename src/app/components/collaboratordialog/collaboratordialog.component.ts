@@ -33,11 +33,10 @@ export class CollaboratordialogComponent implements OnInit {
     this.userName = localStorage.getItem("fundooUserName");
     this.userEmail = localStorage.getItem("fundooUserEmail");
 
-    if (this.data.accessFrom == "Display Note")
+    if (this.data.accessFrom == "Display Note" || this.data.accessFrom == "Edit Note")
       this.tempCollaboratorUserListed = this.data.note.collaborators;
-    else if (this.data.accessFrom == "Create Note") {
+    else if (this.data.accessFrom == "Create Note") 
       this.tempCollaboratorUserListed = this.data.note;
-    }
 
   }
 
@@ -96,7 +95,7 @@ export class CollaboratordialogComponent implements OnInit {
 
   saveCollaboratorButtonClick() {
 
-    if (this.data.accessFrom == "Display Note") {
+    if (this.data.accessFrom == "Display Note" || this.data.accessFrom == "Edit Note") {
       var collaboratored = [];
 
       for (var user = 0; user < this.tempCollaboratorUserListed.length; user++) {

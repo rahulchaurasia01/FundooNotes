@@ -53,9 +53,11 @@ export class LoginComponent implements OnInit {
         localStorage.removeItem("fundooUserEmail");
         localStorage.removeItem("fundooToken");
         localStorage.removeItem("fundooUserName");
+        localStorage.removeItem("fundooUserProfilePic");
         localStorage.setItem("fundooToken", data.token);
         localStorage.setItem("fundooUserEmail", data.data.emailId);
         localStorage.setItem("fundooUserName", data.data.firstName+" "+data.data.lastName);
+        localStorage.setItem("fundooUserProfilePic", data.data.profilePic);
         this._router.navigate(['dashboard']);
       },
       (error => {

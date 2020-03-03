@@ -35,5 +35,9 @@ export class UserService {
     return this.httpService.post("User/Users", userInitial, true);
   }
 
+  AddProfilePic(file: FormData) {
+    return this.httpService.putImage("User/ProfilePic", file, true);
+  }
+
 
 }

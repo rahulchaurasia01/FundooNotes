@@ -16,7 +16,6 @@ export class NotesService {
   constructor(private http: HttpServiceService) { }
 
   createNote(noteData: Createnote) {
-    console.log(noteData);
     return this.http.post("Notes", noteData, true);
   }
 
@@ -44,6 +43,10 @@ export class NotesService {
     return this.http.delete("Notes/"+noteId, true);
   }
 
+  uploadImageToCloudinary(file: FormData) {
+    return this.http.putImage("Notes/UploadImage", file, true);
+  }
+
   restoreTheNote(noteId: number) {
     return this.http.put("Notes/Restore/"+noteId, null, true);
   }
@@ -60,7 +63,7 @@ export class NotesService {
     return this.http.put("Notes/"+ noteId + "/Pin", pinNote, true);
   }
 
-  uploadNoteImage(noteId: number, file) {
+  uploadNoteImage(noteId: number, file: FormData) {
     return this.http.putImage("Notes/" + noteId + "/Image", file, true);
   }
 

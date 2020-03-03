@@ -4,6 +4,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LabelsService } from '../../services/label/labels.service';
+import { UserService } from '../../services/user/user.service';
 import { LabeldataService } from '../../services/dataservice/labeldata.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditlabelComponent } from '../editlabel/editlabel.component';
@@ -24,18 +25,27 @@ export class DashboardComponent implements OnInit {
   fundooUserName: string;
   chckError: string;
   labelBackground: string;
+  profileImage: string;
   showSearch: boolean;
   showKeepIcon: boolean = false;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog,
-    private labelData: LabeldataService) {
+    private labelData: LabeldataService, private user: UserService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
+
+    if(localStorage.getItem("fundooUserProfilePic") == "null") {
+      this.profileImage = '';
+    }
+    else {
+      this.profileImage = localStorage.getItem("fundooUserProfilePic");
+    }
+
     this.GetAllLabels();
 
     this.showSearch = false;
@@ -66,7 +76,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(EditlabelComponent, { panelClass: 'editLabelDialogContainer' });
+    this.dialog.open(EditlabelComponent, { panelClass: 'editLabelDialogContainer' });
 
   }
 
@@ -123,8 +133,34 @@ export class DashboardComponent implements OnInit {
       })
   }
 
-  onFileInput(event) : void {
-    console.log(event.target.files[0]);
+  onFileInput(imageFiles: File) : void {
+    
+    let file: File = <File>imageFiles[0];
+
+    let filed = new FormData();
+    filed.append("", file);
+
+    this.user.AddProfilePic(filed).
+      subscribe(data => {
+        if(data.status)
+          this.profileImage = data.data.profilePic;
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
   }
 
   doLogout(): void {
@@ -132,6 +168,7 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem("fundooTitle");
     localStorage.removeItem("fundooUserEmail");
     localStorage.removeItem("fundooUserName");
+    localStorage.removeItem("fundooUserProfilePic");
     this._router.navigate(['login']);
   }
 

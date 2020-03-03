@@ -42,14 +42,25 @@
     </div>
 
     <div class="accountDetail" fxLayoutAlign="center center">
-      <button class="iconButton" mat-fab color="warn" [matMenuTriggerFor]="menu" aria-label="User icon">
+      <button class="iconButton" *ngIf="(profileImage == '') ? true : false" mat-fab color="warn" [matMenuTriggerFor]="menu" aria-label="User icon">
         {{ fundooUserName[0] }}
+      </button>
+      <button class="iconButton" *ngIf="(profileImage != '') ? true : false" mat-fab
+        [matMenuTriggerFor]="menu"
+        [ngStyle]="{'background': 'url('+profileImage+')'}"
+        aria-label="User icon">
       </button>
       <mat-menu #menu="matMenu" xPosition="after" yPosition="below">
         <div class="userImageDiv" fxLayout="column" fxLayoutAlign="center center" >
           <div class="userImage" fxLayoutAlign="center center">
-            <button mat-fab color="warn" style="font-size: 24px;" (click)="fileInput.click()" aria-label="user Profile"> {{ fundooUserName[0] }} </button>
-            <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+            <button mat-fab color="warn" *ngIf="(profileImage == '') ? true : false"
+               style="font-size: 24px;" (click)="file.click()"
+              aria-label="user Profile"> {{ fundooUserName[0] }} </button>
+             <button class="iconButton" *ngIf="(profileImage != '') ? true : false" mat-fab
+              [ngStyle]="{'background': 'url('+profileImage+')'}" (click)="file.click()"
+              aria-label="User icon">
+              </button>
+            <input #file type="file" accept="image/*" (change)="onFileInput(file.files)" style="display:none;" />
           </div>
           <div class="userName">
             {{ fundooUserName }}

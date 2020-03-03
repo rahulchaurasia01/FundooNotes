@@ -48,10 +48,35 @@
         <i class="material-icons-outlined">more_vert</i>
       </button>
       <mat-menu #moreMenu="matMenu" xPosition="after" yPosition="below">
+        <div *ngIf="!labelClicked">
         <button mat-menu-item (click)="sendToTrash(grandParentNote.noteId)" >Delete note</button>
-        <button mat-menu-item *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false">Add label</button>
+        <button mat-menu-item *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false"
+            (click)="labelClickedByUser()"   >Add label</button>
         <button mat-menu-item *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <=0) ? false : true">Change labels</button>
-        <button mat-menu-item>Make a copy</button>
+      </div>
+      <div class="labelContainer" *ngIf="labelClicked">
+        <div class="labelHeader">
+          Label Note
+        </div>
+        <div class="searchLabelDiv" fxLayout="row">
+          <input class="searchLabelField" type="text" [(ngModel)]="labelName" (input)="newLabels($event.target.value)" placeholder="Enter label name">
+          <i class="material-icons-outlined searchLabelIcon">search</i>
+        </div>
+        <div class="listOfLabel" *ngIf="(labels == null || labels.length <= 0) ? false : true">
+          <div class="label" *ngFor="let label of labels">
+            <i class="material-icons-outlined searchLabelIcon">check_box_outline_blank</i>
+            <div class="labelName">
+              {{ label.name }}
+            </div>
+          </div>
+        </div>
+        <div class="createLabelDiv" (click)="createNewLabel()"  *ngIf="hideCreateLabelDiv">
+          <i class="material-icons-outlined searchLabelIcon">add</i>
+          <div class="labelName">
+            Create "<span class="createLabelName">{{ labelName }}</span>"
+          </div>
+        </div>
+      </div>
       </mat-menu>
     </div>
   </div>

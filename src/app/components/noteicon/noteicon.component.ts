@@ -4,8 +4,11 @@ import { NotesService } from '../../services/note/notes.service';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LabelsService } from '../../services/label/labels.service';
 import { CollaboratordialogComponent } from '../collaboratordialog/collaboratordialog.component';
+import { LabeldataService } from '../../services/dataservice/labeldata.service';
 import { Color } from 'src/app/Model/color';
+import { Label } from 'src/app/Model/label';
 
 @Component({
   selector: 'app-noteicon',
@@ -19,13 +22,17 @@ export class NoteiconComponent implements OnInit {
   @Input() accessFrom: string
 
   @Output() sendParentRefresh = new EventEmitter<number>();
+
   @Output() UpdateCollaboratorToCreateNote = new EventEmitter<any>();
   @Output() updateCollaboratorToDisplayNote = new EventEmitter<any>();
+
   @Output() UpdateColorInCreateNote = new EventEmitter<string>();
+  @Output() UpdateImageInCreateNote = new EventEmitter<string>();
 
   @Output() UpdateNoteInDisplayNote = new EventEmitter<any>();
   @Output() UpdateNoteInEditNote = new EventEmitter<any>();
 
+  @Output() UpdateArchiveInCreateNote = new EventEmitter<any>();
   @Output() UpdateArchiveInEditNote = new EventEmitter<any>();
 
   chckError: string;
@@ -34,6 +41,10 @@ export class NoteiconComponent implements OnInit {
   deleteButtonText: string;
   Image: File;
   userSelectColor: string;
+  labelClicked: boolean;
+  hideCreateLabelDiv: boolean = false;
+  labelName: string;
+  labels=[];
 
   isArchive: boolean;
 
@@ -88,16 +99,87 @@ export class NoteiconComponent implements OnInit {
     }
   ];
 
-  constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
+  constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog,
+    private labelData: LabeldataService, private label: LabelsService) { }
 
   ngOnInit() {
+    
     this.isArchive = false;
+    this.labelClicked = false;
+
+    this.labelData.currentLabelData.
+      subscribe(data => {
+        this.labels = data;
+      })
 
     if (this.accessFrom == "Display Note")
       this.userSelectColor = this.grandParentNote.color;
     else if (this.accessFrom == "Create Note") {
       this.userSelectColor = "#fff";
     }
+  }
+
+
+  labelClickedByUser() {
+    this.labelClicked = true;
+  }
+
+  newLabels(labelName: string) {
+    
+    this.labelData.currentLabelData.
+      subscribe(data => {
+        this.labels = data;
+      })
+
+    if(this.labelName != '') {
+      this.labels = this.labels.filter(label => labelName == label.name);
+      if(this.labels == null || this.labels.length <= 0 )
+        this.hideCreateLabelDiv = true;
+      else
+        this.hideCreateLabelDiv = false;
+    }
+    else
+      this.hideCreateLabelDiv = false;
+
+  }
+
+
+  createNewLabel() {
+    
+    this.labelData.currentLabelData.
+      subscribe(data => {
+        this.labels = data;
+      })
+
+    var label: Label = {
+      Name: this.labelName
+    };
+
+    this.label.createLabel(label).
+      subscribe(data => {
+        if(data.status) {
+          this.labels.push(data.data);
+          this.labelData.labelReceive(this.labels);
+          this.labelName = '';
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+      error => {
+        if (error.error.message)
+          this.chckError = error.error.message;
+        else
+          this.chckError = "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
+
   }
 
   sendMessageToParent(noteId: number) {
@@ -166,7 +248,7 @@ export class NoteiconComponent implements OnInit {
         else if (this.accessFrom == "Display Note") {
           this.updateCollaboratorToDisplayNote.emit(result);
         }
-        else if(this.accessFrom == "Edit Note") {
+        else if (this.accessFrom == "Edit Note") {
           this.UpdateNoteInEditNote.emit(result);
         }
       }
@@ -196,7 +278,7 @@ export class NoteiconComponent implements OnInit {
                 duration: 5000,
               });
             }
-            else if(this.accessFrom == "Edit Note") {
+            else if (this.accessFrom == "Edit Note") {
               this.UpdateArchiveInEditNote.emit(data.data);
             }
           }
@@ -223,6 +305,7 @@ export class NoteiconComponent implements OnInit {
     }
     else if (this.accessFrom == "Create Note") {
       this.isArchive = flag;
+      this.UpdateArchiveInCreateNote.emit(flag);
     }
   }
 
@@ -324,12 +407,10 @@ export class NoteiconComponent implements OnInit {
             });
           }
           else {
-            if(this.accessFrom == "Display Note")
+            if (this.accessFrom == "Display Note")
               this.UpdateNoteInDisplayNote.emit(data.data);
-            else if(this.accessFrom == "Edit Note") {
+            else if (this.accessFrom == "Edit Note")
               this.UpdateNoteInEditNote.emit(data.data);
-            }
-              
           }
         },
           error => {
@@ -343,7 +424,28 @@ export class NoteiconComponent implements OnInit {
             });
           })
     }
+    else if (this.accessFrom == "Create Note") {
+      this.note.uploadImageToCloudinary(filed).
+        subscribe(data => {
+          if (data.status)
+            this.UpdateImageInCreateNote.emit(data.imagePath);
+          else {
+            this._snackBar.open(data.message, "Close", {
+              duration: 5000,
+            });
+          }
+        },
+          error => {
+            if (error.error.message)
+              this.chckError = error.error.message;
+            else
+              this.chckError = "Connection to the Server Failed";
 
+            this._snackBar.open(this.chckError, "Close", {
+              duration: 3000,
+            });
+          })
+    }
   }
 
 }

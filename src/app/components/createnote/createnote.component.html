@@ -1,28 +1,30 @@
 <div [style.background]="color" class="createNoteContainer">
-  <div fxLayout="column" *ngIf="collaboratorClicked">
-    <div class="titleAndPinRow" style="width: inherit;" fxLayoutAlign="center center">
-      <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
-        <textarea class="createTitle" [style.background]="color" cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1"
-          placeholder="Title"></textarea>
-      </div>
-      <div class="pinUnpinNote" *ngIf="!showTakeANoteAndAction" fxLayoutAlign="center center">
-        <svg xmlns="http://www.w3.org/2000/svg" (click)="userPinnedTheNote(true)" *ngIf="!isPinned" class="pinUnpin"
-          width="24" height="24" viewBox="0 0 24 24">
-          <path fill="none" d="M0 0h24v24H0z" />
-          <path fill="#000"
-            d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z" />
-        </svg>
+  <div class="whenImageAdded" fxLayout="column" *ngIf="collaboratorClicked">
+    <div class="pinUnpinNote" *ngIf="!showTakeANoteAndAction" fxLayoutAlign="center center">
+      <svg xmlns="http://www.w3.org/2000/svg" (click)="userPinnedTheNote(true)" *ngIf="!isPinned" class="pinUnpin"
+        width="24" height="24" viewBox="0 0 24 24">
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path fill="#000"
+          d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z" />
+      </svg>
 
-        <svg xmlns="http://www.w3.org/2000/svg" (click)="userPinnedTheNote(false)" *ngIf="isPinned" class="pinUnpin"
-          width="24" height="24" viewBox="0 0 24 24">
-          <path fill="none" d="M0 0h24v24H0z" />
-          <path fill="#000" d="M17 4a2 2 0 0 0-2-2H9c-1.1 0-2 .9-2 2v7l-2 3v2h6v5l1 1 1-1v-5h6v-2l-2-3V4z" />
-        </svg>
-      </div>
+      <svg xmlns="http://www.w3.org/2000/svg" (click)="userPinnedTheNote(false)" *ngIf="isPinned" class="pinUnpin"
+        width="24" height="24" viewBox="0 0 24 24">
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path fill="#000" d="M17 4a2 2 0 0 0-2-2H9c-1.1 0-2 .9-2 2v7l-2 3v2h6v5l1 1 1-1v-5h6v-2l-2-3V4z" />
+      </svg>
+    </div>
+    <div class="notesImageDiv" *ngIf="(image == '' || image == null) ? false : true">
+      <img class="notesImage" [src]="image" alt="note Image">
+    </div>
+    <div class="createTitleDiv" fxLayout="row" [fxHide]="showTakeANoteAndAction" fxFlex>
+      <textarea class="createTitle" [style.background]="color" cdkTextareaAutosize [(ngModel)]="createNoteTitle"
+        cdkAutosizeMinRows="1" placeholder="Title"></textarea>
     </div>
     <div class="takeANoteDiv" fxLayout="row" fxLayoutAlign="center center">
-      <textarea class="createDescription" [style.background]="color" (click)="NoteClick()" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
-        cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
+      <textarea class="createDescription" [style.background]="color" (click)="NoteClick()"
+        [(ngModel)]="createNoteDesciption" cdkTextareaAutosize cdkAutosizeMinRows="1"
+        placeholder="Take a note..."></textarea>
       <div class="noteWithImages" *ngIf="hideNoteWithImagesDiv" fxLayout="row" fxLayoutAlign="center center">
         <button mat-icon-button>
           <i class="material-icons-outlined">assignment_turned_in</i>
@@ -33,10 +35,11 @@
       </div>
     </div>
     <div class="collaboratorListDiv" fxLayout="row" fxLayoutGap="5px"
-    *ngIf="(collaboratorUserList == null || collaboratorUserList.length <= 0) ? false : true">
+      *ngIf="(collaboratorUserList == null || collaboratorUserList.length <= 0) ? false : true">
       <div class="collaborator" *ngFor="let userCollaborator of collaboratorUserList">
         <div class="collaboratorButton" fxLayoutAlign="center center">
-          <button mat-fab class="createNoteCollab" [title]="userCollaborator.emailId" (click)="collaboratorClickedByUser()" fxLayoutAlign="center center"
+          <button mat-fab class="createNoteCollab" [title]="userCollaborator.emailId"
+            (click)="collaboratorClickedByUser()" fxLayoutAlign="center center"
             color="warn">{{ userCollaborator.firstName[0]+userCollaborator.lastName[0] }}</button>
         </div>
       </div>
@@ -44,8 +47,12 @@
   </div>
   <div class="NoteActionContainer" *ngIf="collaboratorClicked" fxLayout="row" [fxHide]="showTakeANoteAndAction"
     fxLayoutAlign="space-between center">
-    <app-noteicon [accessFrom]="noteIconAccessFrom" (UpdateColorInCreateNote)="updateColor($event)" (UpdateCollaboratorToCreateNote)="updateCollabToCreateNote($event)"
-     (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="collaboratorUserList" [grandParentIcon]="parentIcon"></app-noteicon>
+    <app-noteicon [accessFrom]="noteIconAccessFrom" (UpdateColorInCreateNote)="updateColor($event)"
+      (UpdateCollaboratorToCreateNote)="updateCollabToCreateNote($event)"
+      (sendParentRefresh)="recieveDataFromIconChild($event)"
+      (UpdateArchiveInCreateNote)="updateArchiveInCreateNote($event)"
+      (UpdateImageInCreateNote)="updateImageInCreateNote($event)" [grandParentNote]="collaboratorUserList"
+      [grandParentIcon]="parentIcon"></app-noteicon>
     <div class="closeButton">
       <button mat-button type="button" (click)="closeButtonClick()">Close</button>
     </div>

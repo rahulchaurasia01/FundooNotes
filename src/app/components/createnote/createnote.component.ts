@@ -3,9 +3,7 @@ import { Createnote } from 'src/app/Model/createnote';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotesService } from '../../services/note/notes.service';
 import { UserService } from '../../services/user/user.service';
-import { Alluser } from 'src/app/Model/alluser';
 import { Collaborator } from 'src/app/Model/collaborator';
-import { Listofcollaborator } from 'src/app/Model/listofcollaborator';
 
 @Component({
   selector: 'app-createnote',
@@ -19,13 +17,13 @@ export class CreatenoteComponent implements OnInit {
   hideNoteWithImagesDiv: boolean;
   createNoteTitle: string;
   createNoteDesciption: string;
-  isPinned: boolean = false;
-  isArchive: boolean = false;
   color: string;
+  image: string;
+  isPinned: boolean = false;
+  isArchive: boolean;
   collaboratorClicked: boolean = true;
   noteIconAccessFrom: string;
   collaboratorUserList=[];
-
 
   @Output()
   noteCreated = new EventEmitter<any>();
@@ -37,8 +35,10 @@ export class CreatenoteComponent implements OnInit {
   ngOnInit() {
     this.showTakeANoteAndAction = true;
     this.hideNoteWithImagesDiv = true;
+    this.isArchive = false;
     this.noteIconAccessFrom = "Create Note";
     this.color = "#fff";
+    this.image = '';
   }
 
   sendMessageToParent(note: any) {
@@ -58,12 +58,16 @@ export class CreatenoteComponent implements OnInit {
     this.color = $event;
   }
 
+  updateImageInCreateNote($event) {
+    this.image = $event;
+  }
+
   userPinnedTheNote(flag: boolean) {
     this.isPinned = flag;
   }
 
-  userArchiveTheNote(flag: boolean) {
-    this.isArchive = flag;
+  updateArchiveInCreateNote($event) {
+    this.isArchive = $event;
   }
 
   closeButtonClick() {
@@ -82,21 +86,17 @@ export class CreatenoteComponent implements OnInit {
           collaborator[user] = users;
         }
   
-        var collaborators: Listofcollaborator = {
-          Collaborators: collaborator
-        }
-
       var createNote: Createnote = {
         Title: this.createNoteTitle,
         Description: this.createNoteDesciption,
         Color: this.color,
-        Image: '',
+        Image: this.image,
         IsPin: this.isPinned,
         IsArchived: this.isArchive,
         IsDeleted: false,
         Reminder: '',
         Label: null,
-        Collaborators: collaborators
+        Collaborators: collaborator
       };
 
       this.note.createNote(createNote).
@@ -119,6 +119,7 @@ export class CreatenoteComponent implements OnInit {
     }
     this.createNoteDesciption = '';
     this.createNoteTitle = '';
+    this.image = '';
     this.collaboratorUserList = [];
     this.isPinned = false;
     this.isArchive = false;

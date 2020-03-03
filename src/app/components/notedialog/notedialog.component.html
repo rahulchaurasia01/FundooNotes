@@ -15,7 +15,7 @@
       </svg>
     </div>
     <div class="notesImageDiv" *ngIf="(note.image == '' || note.image == null) ? false : true">
-      <img class="notesImage" autofocus [src]="note.image" alt="note Image">
+      <img class="notesImage" [src]="note.image" alt="note Image">
     </div>
     <div class="createTitleDiv" fxLayout="row" fxLayoutAlign="center center" fxFlex>
       <textarea class="titleField" [style.background]="note.color" tabindex="-1" cdkTextareaAutosize [(ngModel)]="createNoteTitle"

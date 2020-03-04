@@ -142,8 +142,10 @@ export class DashboardComponent implements OnInit {
 
     this.user.AddProfilePic(filed).
       subscribe(data => {
-        if(data.status)
+        if(data.status) {
           this.profileImage = data.data.profilePic;
+          localStorage.setItem("fundooUserProfilePic", this.profileImage);
+        }
         else {
           this._snackBar.open(data.message, "Close", {
             duration: 3000,

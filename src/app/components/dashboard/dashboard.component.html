@@ -45,9 +45,9 @@
       <button class="iconButton" *ngIf="(profileImage == '') ? true : false" mat-fab color="warn" [matMenuTriggerFor]="menu" aria-label="User icon">
         {{ fundooUserName[0] }}
       </button>
-      <button class="iconButton" *ngIf="(profileImage != '') ? true : false" mat-fab
+      <button class="iconButton ProfilePic" *ngIf="(profileImage != '') ? true : false" mat-fab
         [matMenuTriggerFor]="menu"
-        [ngStyle]="{'background': 'url('+profileImage+')'}"
+        [ngStyle]="{'background': 'url('+profileImage+')', 'background-size': 'cover'}"
         aria-label="User icon">
       </button>
       <mat-menu #menu="matMenu" xPosition="after" yPosition="below">
@@ -57,7 +57,7 @@
                style="font-size: 24px;" (click)="file.click()"
               aria-label="user Profile"> {{ fundooUserName[0] }} </button>
              <button class="iconButton" *ngIf="(profileImage != '') ? true : false" mat-fab
-              [ngStyle]="{'background': 'url('+profileImage+')'}" (click)="file.click()"
+              [ngStyle]="{'background': 'url('+profileImage+')', 'background-size': 'cover'}" (click)="file.click()"
               aria-label="User icon">
               </button>
             <input #file type="file" accept="image/*" (change)="onFileInput(file.files)" style="display:none;" />
@@ -94,10 +94,12 @@
         </a>
         <mat-divider></mat-divider>
         <h3 mat-subheader>LABELS</h3>
-        <a mat-list-item (click)="onLabelClick(label.labelId, label.name)" routerLinkActive="active" *ngFor="let label of labels">
+        <div class="LabelList">
+        <a  mat-list-item (click)="onLabelClick(label.labelId, label.name)" routerLinkActive="active" *ngFor="let label of labels">
           <i class="material-icons-outlined" matListIcons>label</i>
           <span class="sideBarComponentAlignment">{{label.name}}</span>
         </a>
+      </div>
         <a mat-list-item aria-label="Edit label" (click)="openDialog()">
           <i class="material-icons-outlined" matListIcons>edit</i>
           <span class="sideBarComponentAlignment">Edit Label</span>

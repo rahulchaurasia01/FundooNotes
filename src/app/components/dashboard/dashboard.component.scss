@@ -156,6 +156,16 @@
     width: 40px;
     height: 40px;
     font-size: 20px;
+    background-size: cover;
+}
+
+.ProfilePic {
+    background-size: cover;
+}
+
+.LabelList {
+    max-height: 280px;
+    overflow-y: auto;
 }
 
 span.mat-button-wrapper {

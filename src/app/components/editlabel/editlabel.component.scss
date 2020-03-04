@@ -52,6 +52,11 @@
     display: inline-block;
 }
 
+.displayLabelDiv { 
+    max-height: 280px;
+    overflow-y: auto;
+}
+
 .deleteButton {
     display: none;
 }

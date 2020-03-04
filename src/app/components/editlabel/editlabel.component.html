@@ -15,6 +15,7 @@
         <i class="material-icons-outlined">done</i>
       </button>
     </div>
+    <div class="displayLabelDiv">
     <div class="labelName" *ngFor="let label of labels" >
       <button mat-icon-button class="labelButton">
         <i class="material-icons-outlined">label</i>
@@ -30,7 +31,7 @@
         <i class="material-icons-outlined">done</i>
       </button>
     </div>
-    
+    </div>    
   </div>
   <div class="editLabelFooter">
     <button mat-button (click)="doneAddingLabel()">Done</button>

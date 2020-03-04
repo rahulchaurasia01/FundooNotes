@@ -75,5 +75,9 @@ export class NotesService {
     return this.http.put("Notes/" + noteId + "/Color", color, true);
   }
 
+  AddLabelToNote(noteId: number, label) {
+    return this.http.put("Notes/Label/"+noteId, label, true);
+  }
+
 
 }

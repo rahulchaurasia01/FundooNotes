@@ -7,6 +7,8 @@ import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { Pinnote } from 'src/app/Model/pinnote';
 import { NotedialogComponent } from '../notedialog/notedialog.component';
 import { Updatenote } from 'src/app/Model/updatenote';
+import { Notelabel } from 'src/app/Model/notelabel';
+import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 
 @Component({
   selector: 'app-displaynote',
@@ -58,14 +60,20 @@ export class DisplaynoteComponent implements OnInit {
       }
     }
 
-    var updateNotes: Updatenote = {
-      Title: updateNoteData.title,
-      Description: updateNoteData.description,
-      Reminder: updateNoteData.reminder,
-      Label: updateNoteData.labels,
+    var labels=[];
+
+    for(var labeled=0; labeled < updateNoteData.labels.length; labeled++) {
+      var labls: Notelabel = {
+        LabelId: updateNoteData.labels[labeled].labelId
+      };
+      labels.push(labls);
+    }
+
+    var listLabel: Listofnotelabel = {
+      Label: labels
     };
 
-    this.note.updateNote(noteId, updateNotes).
+    this.note.AddLabelToNote(noteId, listLabel).
       subscribe(data => {
         if(!data.status) {
           this._snackBar.open("Unable to remove the label", "Close", {
@@ -113,6 +121,7 @@ export class DisplaynoteComponent implements OnInit {
   }
 
   UpdateNote($event) {
+    console.log($event);
     for(var note = 0; note < this.displayNotes.length; note++) {
       if(this.displayNotes[note].noteId == $event.noteId) {
         this.displayNotes[note] = $event;

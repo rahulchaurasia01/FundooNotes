@@ -21,16 +21,20 @@ export class LabelComponent implements OnInit {
 
   ngOnInit() {
 
-    this.labelId = this.routeParam.snapshot.params['id'];
+    this.routeParam.paramMap.subscribe(routerParmeter => {
+      this.labelNotes = [];
+      this.labelId = parseInt(routerParmeter.get("id"));
+      this.GetNotesByLabelId(this.labelId);
+    })
+
     this.labelIcon = "label";
     this.emptyLabelText = "No notes with this label yet";
-    this.GetNotesByLabelId();
-
+    
   }
 
 
-  GetNotesByLabelId() {
-    this.label.GetNotesByLabelId(this.labelId).
+  GetNotesByLabelId(labelId) {
+    this.label.GetNotesByLabelId(labelId).
       subscribe(data => {
         if(data.status) 
           this.labelNotes = data.data;

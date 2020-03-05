@@ -26,6 +26,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from './module/material/app.material.module';
 import { AppRoutingModule } from './routing/app.routing.module';
 import { AuthGuard } from './services/authguard/auth.guard';
+import { NgxMasonryModule } from 'ngx-masonry';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -58,7 +59,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     FlexLayoutModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxMasonryModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],

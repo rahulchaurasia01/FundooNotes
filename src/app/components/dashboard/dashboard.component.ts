@@ -92,14 +92,10 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem("fundooTitle", this.title);
   }
 
-  onLabelClick(labelId: number, labelName: string) {
+  onLabelClick(labelName: string) {
     this.showKeepIcon = true;
     this.title= labelName;
     localStorage.setItem("fundooTitle", this.title);
-    this.labelBackground = "active";
-    this._router.navigateByUrl('/dashboard', { skipLocationChange: true }).then(() => {
-      this._router.navigate(['dashboard/label/', labelId]);
-    }); 
   }
 
   archiveClick() {

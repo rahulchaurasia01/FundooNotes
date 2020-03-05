@@ -95,7 +95,7 @@
         <mat-divider></mat-divider>
         <h3 mat-subheader>LABELS</h3>
         <div class="LabelList">
-        <a  mat-list-item (click)="onLabelClick(label.labelId, label.name)" routerLinkActive="active" *ngFor="let label of labels">
+        <a  mat-list-item [routerLink]="['label', label.labelId]" (click)="onLabelClick(label.name)" routerLinkActive="active" *ngFor="let label of labels">
           <i class="material-icons-outlined" matListIcons>label</i>
           <span class="sideBarComponentAlignment">{{label.name}}</span>
         </a>

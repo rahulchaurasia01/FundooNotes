@@ -118,3 +118,48 @@
 .createLabelDiv:hover {
     background-color: rgba(95, 99, 104, 0.039);
 }
+
+.reminderMenu {
+    width: 280px;
+}
+
+.reminderDiv {
+    font-size: 14px;
+    padding: 15px;
+}
+
+.tonightReminder {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border: 0;
+    cursor: pointer;
+    color: #3c4043;
+    font-size: 13px;
+}
+
+.tonightReminderTime {
+    color: rgba(60, 64, 67, 0.541);
+    margin-left: 10px;
+    text-align: right;
+}
+
+.reminderWatchIcon {
+    width: 15px;
+    height: 15px;
+    font-size: 15px;
+}
+
+.pickTimeDiv {
+    margin-left: 10px;
+}
+
+::ng-deep {
+    .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+        background-color: gray;
+    }
+
+    .mat-checkbox-inner-container {
+        width: 16px !important ; 
+        height: 16px !important ;
+    }
+}

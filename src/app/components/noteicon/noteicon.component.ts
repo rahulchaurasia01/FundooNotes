@@ -9,6 +9,8 @@ import { CollaboratordialogComponent } from '../collaboratordialog/collaboratord
 import { LabeldataService } from '../../services/dataservice/labeldata.service';
 import { Color } from 'src/app/Model/color';
 import { Label } from 'src/app/Model/label';
+import { Notelabel } from 'src/app/Model/notelabel';
+import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 
 @Component({
   selector: 'app-noteicon',
@@ -20,6 +22,7 @@ export class NoteiconComponent implements OnInit {
   @Input() grandParentIcon: string;
   @Input() grandParentNote: any;
   @Input() accessFrom: string
+  @Input() labelDataFromCreateNote: any;
 
   @Output() sendParentRefresh = new EventEmitter<number>();
 
@@ -35,6 +38,8 @@ export class NoteiconComponent implements OnInit {
   @Output() UpdateArchiveInCreateNote = new EventEmitter<any>();
   @Output() UpdateArchiveInEditNote = new EventEmitter<any>();
 
+  @Output() UpdateLabelsInCreateNote = new EventEmitter<any>();
+
   chckError: string;
   infoMsg: string;
   deleteText: string;
@@ -44,7 +49,8 @@ export class NoteiconComponent implements OnInit {
   labelClicked: boolean;
   hideCreateLabelDiv: boolean = false;
   labelName: string;
-  labels=[];
+  labels = [];
+  labelsForCreateNote =[];
 
   isArchive: boolean;
 
@@ -103,7 +109,7 @@ export class NoteiconComponent implements OnInit {
     private labelData: LabeldataService, private label: LabelsService) { }
 
   ngOnInit() {
-    
+
     this.isArchive = false;
     this.labelClicked = false;
 
@@ -116,24 +122,116 @@ export class NoteiconComponent implements OnInit {
       this.userSelectColor = this.grandParentNote.color;
     else if (this.accessFrom == "Create Note") {
       this.userSelectColor = "#fff";
+
     }
   }
 
+  labelMenuClosed() {
+    this.labelClicked = false;
+  }
+
+  checkLabelPresent(labelId: number): boolean {
+
+    if (this.accessFrom == "Display Note" || this.accessFrom == "Edit Note") {
+
+      for (var label = 0; label < this.grandParentNote.labels.length; label++) {
+        if (this.grandParentNote.labels[label].labelId == labelId) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+    else if(this.accessFrom == "Create Note") {
+
+      if (this.labelsForCreateNote.length > 0) {
+        for (var label = 0; label < this.labelDataFromCreateNote.length; label++) {
+          if (this.labelsForCreateNote[label].labelId == labelId)
+            return true;
+        }
+        return false;
+      }
+    }
+    return false;
+  }
+
+  userSelectedLabel(label, checked) {
+
+    if (this.accessFrom == "Display Note" || this.accessFrom == "Edit Note") {
+
+      if (checked.checked)
+        this.grandParentNote.labels.push(label);
+      else
+        this.grandParentNote.labels = this.grandParentNote.labels.
+          filter(labeled => labeled.labelId !== label.labelId);
+
+      var labels = [];
+
+      for (var labeled = 0; labeled < this.grandParentNote.labels.length; labeled++) {
+        var labls: Notelabel = {
+          LabelId: this.grandParentNote.labels[labeled].labelId
+        };
+        labels.push(labls);
+      }
+
+      var listLabel: Listofnotelabel = {
+        Label: labels
+      };
+
+      this.note.AddLabelToNote(this.grandParentNote.noteId, listLabel).
+        subscribe(data => {
+          if (!data.status) {
+            this._snackBar.open(data.message, "Close", {
+              duration: 3000,
+            });
+          }
+          else {
+            if (this.accessFrom == "Display Note") {
+              this.UpdateNoteInDisplayNote.emit(this.grandParentNote);
+            }
+          }
+        },
+          error => {
+            if (error.error.message)
+              this.chckError = error.error.message;
+            else
+              this.chckError = "Connection to the Server Failed";
+
+            this._snackBar.open(this.chckError, "Close", {
+              duration: 3000,
+            });
+          })
+    }
+    else if(this.accessFrom == "Create Note") {
+
+      if(checked.checked) {
+        this.labelsForCreateNote.push(label);
+        this.UpdateLabelsInCreateNote.emit(this.labelsForCreateNote);
+      }
+      else {
+        this.labelsForCreateNote = this.labelsForCreateNote.
+            filter(labeled => labeled.labelId !== label.labelId);
+        
+        this.UpdateLabelsInCreateNote.emit(this.labelsForCreateNote);
+      }
+
+    }
+  }
 
   labelClickedByUser() {
     this.labelClicked = true;
   }
 
   newLabels(labelName: string) {
-    
+
     this.labelData.currentLabelData.
       subscribe(data => {
         this.labels = data;
       })
 
-    if(this.labelName != '') {
+    if (this.labelName != '') {
       this.labels = this.labels.filter(label => labelName == label.name);
-      if(this.labels == null || this.labels.length <= 0 )
+      if (this.labels == null || this.labels.length <= 0)
         this.hideCreateLabelDiv = true;
       else
         this.hideCreateLabelDiv = false;
@@ -145,7 +243,7 @@ export class NoteiconComponent implements OnInit {
 
 
   createNewLabel() {
-    
+
     this.labelData.currentLabelData.
       subscribe(data => {
         this.labels = data;
@@ -157,7 +255,7 @@ export class NoteiconComponent implements OnInit {
 
     this.label.createLabel(label).
       subscribe(data => {
-        if(data.status) {
+        if (data.status) {
           this.labels.push(data.data);
           this.labelData.labelReceive(this.labels);
           this.labelName = '';
@@ -168,16 +266,16 @@ export class NoteiconComponent implements OnInit {
           });
         }
       },
-      error => {
-        if (error.error.message)
-          this.chckError = error.error.message;
-        else
-          this.chckError = "Connection to the Server Failed";
+        error => {
+          if (error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      })
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
 
 
   }

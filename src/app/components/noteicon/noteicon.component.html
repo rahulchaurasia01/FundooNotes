@@ -1,9 +1,54 @@
 <div class="noteActionDiv">
   <div class="noteActionToobar" *ngIf="(grandParentIcon != 'delete') ? true : false">
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button tabindex="-1" matTooltip="Remind Me" >
+      <button mat-icon-button tabindex="-1" title="Remind Me" [matMenuTriggerFor]="reminderMenu">
         <i class="material-icons-outlined">notification_important</i>
       </button>
+      <mat-menu #reminderMenu="matMenu" xPosition="after" yPosition="below">
+        <div class="reminderMenu" (click)="$event.stopPropagation()">
+          <div class="reminderDiv">
+            Reminder:
+          </div>
+          <div class="tonightReminder">
+            <div fxLayout="row">
+              <div fxFlex="auto">
+                Later today
+              </div>
+              <div class="tonightReminderTime" fxFlex="auto">
+                8:00 PM
+              </div>
+            </div>
+          </div>
+          <div class="tonightReminder">
+            <div fxLayout="row">
+              <div fxFlex="auto">
+                Tomorrow
+              </div>
+              <div class="tonightReminderTime" fxFlex="auto">
+                8:00 AM
+              </div>
+            </div>
+          </div>
+          <div class="tonightReminder">
+            <div fxLayout="row">
+              <div fxFlex="auto">
+                Next week
+              </div>
+              <div class="tonightReminderTime" fxFlex="auto">
+                Mon, 8:00 AM
+              </div>
+            </div>
+          </div>
+          <div class="tonightReminder">
+            <div fxLayout="row">
+              <i class="material-icons-outlined reminderWatchIcon">watch_later</i>
+              <div class="pickTimeDiv">
+              Pick date & time
+            </div>
+            </div>
+          </div>
+        </div>
+      </mat-menu>
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
       <button mat-icon-button tabindex="-1" (click)="collaboratorClickedByUser()" title="Collaborator">
@@ -16,30 +61,32 @@
       </button>
       <mat-menu #colorMenu="matMenu" xPosition="after" yPosition="below">
         <div class="colorDiv" fxLayout="row wrap">
-          <div class="singleColor" *ngFor="let color of colors" >
-            <button class="colorButton" fxLayoutAlign="center center"
-             [style.border-color]="color.code" (click)="userWantColorOnNote(grandParentNote.noteId, color.code)"
-             [style.background-color]="color.code" [title]="color.name" >
+          <div class="singleColor" *ngFor="let color of colors">
+            <button class="colorButton" fxLayoutAlign="center center" [style.border-color]="color.code"
+              (click)="userWantColorOnNote(grandParentNote.noteId, color.code)" [style.background-color]="color.code"
+              [title]="color.name">
               <i *ngIf="(color.code == userSelectColor) ? true : false" class="material-icons-outlined">done</i>
             </button>
           </div>
         </div>
       </mat-menu>
-
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
       <button mat-icon-button (click)="file.click()" tabindex="-1" aria-label="user Profile" title="Image">
         <i class="material-icons-outlined">image</i>
       </button>
-      <input #file type="file" accept="image/*" (change)="onFileInput(file.files, grandParentNote.noteId)" style="display:none;" />
+      <input #file type="file" accept="image/*" (change)="onFileInput(file.files, grandParentNote.noteId)"
+        style="display:none;" />
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Archive" tabindex="-1" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, true)"
-       *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? !isArchive : !grandParentNote.isArchived">
+      <button mat-icon-button title="Archive" tabindex="-1"
+        (click)="archiveUnarchiveTheNote(grandParentNote.noteId, true)"
+        *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? !isArchive : !grandParentNote.isArchived">
         <i class="material-icons-outlined">archive</i>
       </button>
-      <button mat-icon-button title="Unarchive" tabindex="-1" (click)="archiveUnarchiveTheNote(grandParentNote.noteId, false)"
-       *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? isArchive : grandParentNote.isArchived">
+      <button mat-icon-button title="Unarchive" tabindex="-1"
+        (click)="archiveUnarchiveTheNote(grandParentNote.noteId, false)"
+        *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? isArchive : grandParentNote.isArchived">
         <i class="material-icons-outlined">unarchive</i>
       </button>
     </div>
@@ -47,36 +94,39 @@
       <button mat-icon-button tabindex="-1" [matMenuTriggerFor]="moreMenu">
         <i class="material-icons-outlined">more_vert</i>
       </button>
-      <mat-menu #moreMenu="matMenu" xPosition="after" yPosition="below">
+      <mat-menu #moreMenu="matMenu" xPosition="after" (closed)="labelMenuClosed()" yPosition="below">
         <div *ngIf="!labelClicked">
-        <button mat-menu-item (click)="sendToTrash(grandParentNote.noteId)" >Delete note</button>
-        <button mat-menu-item *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false"
-            (click)="labelClickedByUser()"   >Add label</button>
-        <button mat-menu-item *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <=0) ? false : true">Change labels</button>
-      </div>
-      <div class="labelContainer" *ngIf="labelClicked">
-        <div class="labelHeader">
-          Label Note
+          <button mat-menu-item *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? false : true"
+            (click)="sendToTrash(grandParentNote.noteId)">Delete note</button>
+          <button mat-menu-item
+            *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false"
+            (click)="$event.stopPropagation()" (click)="labelClickedByUser()">Add label</button>
+          <button mat-menu-item (click)="labelClickedByUser()" (click)="$event.stopPropagation()"
+            *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <=0) ? false : true">Change
+            labels</button>
         </div>
-        <div class="searchLabelDiv" fxLayout="row">
-          <input class="searchLabelField" type="text" [(ngModel)]="labelName" (input)="newLabels($event.target.value)" placeholder="Enter label name">
-          <i class="material-icons-outlined searchLabelIcon">search</i>
-        </div>
-        <div class="listOfLabel" *ngIf="(labels == null || labels.length <= 0) ? false : true">
-          <div class="label" *ngFor="let label of labels">
-            <i class="material-icons-outlined searchLabelIcon">check_box_outline_blank</i>
+        <div class="labelContainer" *ngIf="labelClicked">
+          <div class="labelHeader">
+            Label Note
+          </div>
+          <div class="searchLabelDiv" fxLayout="row">
+            <input class="searchLabelField" (click)="$event.stopPropagation()" type="text" [(ngModel)]="labelName"
+              (input)="newLabels($event.target.value)" placeholder="Enter label name">
+            <i class="material-icons-outlined searchLabelIcon">search</i>
+          </div>
+          <div class="listOfLabel" *ngIf="(labels == null || labels.length <= 0) ? false : true">
+            <div class="label" *ngFor="let label of labels">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="userSelectedLabel(label, $event)"
+                [checked]="checkLabelPresent(label.labelId)"> {{ label.name }} </mat-checkbox>
+            </div>
+          </div>
+          <div class="createLabelDiv" (click)="createNewLabel()" *ngIf="hideCreateLabelDiv">
+            <i class="material-icons-outlined searchLabelIcon">add</i>
             <div class="labelName">
-              {{ label.name }}
+              Create "<span class="createLabelName">{{ labelName }}</span>"
             </div>
           </div>
         </div>
-        <div class="createLabelDiv" (click)="createNewLabel()"  *ngIf="hideCreateLabelDiv">
-          <i class="material-icons-outlined searchLabelIcon">add</i>
-          <div class="labelName">
-            Create "<span class="createLabelName">{{ labelName }}</span>"
-          </div>
-        </div>
-      </div>
       </mat-menu>
     </div>
   </div>

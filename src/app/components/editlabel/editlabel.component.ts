@@ -5,7 +5,6 @@ import { LabeldataService } from '../../services/dataservice/labeldata.service';
 import { LabelsService } from '../../services/label/labels.service';
 import { Label } from 'src/app/Model/label';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-editlabel',

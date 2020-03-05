@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotesService } from '../../services/note/notes.service';
 import { UserService } from '../../services/user/user.service';
 import { Collaborator } from 'src/app/Model/collaborator';
+import { Notelabel } from 'src/app/Model/notelabel';
 
 @Component({
   selector: 'app-createnote',
@@ -21,6 +22,7 @@ export class CreatenoteComponent implements OnInit {
   image: string;
   isPinned: boolean = false;
   isArchive: boolean;
+  labels=[];
   collaboratorClicked: boolean = true;
   noteIconAccessFrom: string;
   collaboratorUserList=[];
@@ -58,8 +60,16 @@ export class CreatenoteComponent implements OnInit {
     this.color = $event;
   }
 
+  updateLabelInCreateNote($event) {
+    this.labels = $event;
+  }
+
   updateImageInCreateNote($event) {
     this.image = $event;
+  }
+
+  removeLabelForCreateNote(labeldId) {
+    this.labels = this.labels.filter(label => label.labelId !== labeldId);
   }
 
   userPinnedTheNote(flag: boolean) {
@@ -75,6 +85,7 @@ export class CreatenoteComponent implements OnInit {
     this.hideNoteWithImagesDiv = true;
 
     var collaborator=[];
+    var label=[];
 
     if ((this.createNoteDesciption != null && this.createNoteDesciption != '') ||
       (this.createNoteTitle != null && this.createNoteTitle != '')) {
@@ -85,7 +96,14 @@ export class CreatenoteComponent implements OnInit {
           }
           collaborator[user] = users;
         }
-  
+
+        for(var labeled=0; labeled < this.labels.length; labeled++) {
+          var lab: Notelabel ={
+            LabelId: this.labels[labeled].labelId
+          }
+          label[labeled] = lab;
+        }
+
       var createNote: Createnote = {
         Title: this.createNoteTitle,
         Description: this.createNoteDesciption,
@@ -95,7 +113,7 @@ export class CreatenoteComponent implements OnInit {
         IsArchived: this.isArchive,
         IsDeleted: false,
         Reminder: '',
-        Label: null,
+        Label: label,
         Collaborators: collaborator
       };
 
@@ -117,9 +135,11 @@ export class CreatenoteComponent implements OnInit {
           })
 
     }
+
     this.createNoteDesciption = '';
     this.createNoteTitle = '';
     this.image = '';
+    this.labels = [];
     this.collaboratorUserList = [];
     this.isPinned = false;
     this.isArchive = false;

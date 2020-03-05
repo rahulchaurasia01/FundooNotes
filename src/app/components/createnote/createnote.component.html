@@ -34,6 +34,16 @@
         </button>
       </div>
     </div>
+    <div fxLayout="row wrap">
+      <div fxLayoutAlign="center center" *ngIf="(labels == null || labels.length <= 0) ? false : true">
+        <mat-chip-list aria-label="Note Label">
+          <mat-chip fxLayout="row" *ngFor="let label of labels" fxLayoutAlign="center center">
+            {{ label.name }}
+            <i class="material-icons-outlined labelcancel"
+              (click)="removeLabelForCreateNote(label.labelId)">cancel</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
     <div class="collaboratorListDiv" fxLayout="row" fxLayoutGap="5px"
       *ngIf="(collaboratorUserList == null || collaboratorUserList.length <= 0) ? false : true">
       <div class="collaborator" *ngFor="let userCollaborator of collaboratorUserList">
@@ -44,13 +54,14 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
   <div class="NoteActionContainer" *ngIf="collaboratorClicked" fxLayout="row" [fxHide]="showTakeANoteAndAction"
     fxLayoutAlign="space-between center">
     <app-noteicon [accessFrom]="noteIconAccessFrom" (UpdateColorInCreateNote)="updateColor($event)"
       (UpdateCollaboratorToCreateNote)="updateCollabToCreateNote($event)"
-      (sendParentRefresh)="recieveDataFromIconChild($event)"
-      (UpdateArchiveInCreateNote)="updateArchiveInCreateNote($event)"
+      (sendParentRefresh)="recieveDataFromIconChild($event)" (UpdateLabelsInCreateNote) = "updateLabelInCreateNote($event)"
+      (UpdateArchiveInCreateNote)="updateArchiveInCreateNote($event)" [labelDataFromCreateNote]="labels"
       (UpdateImageInCreateNote)="updateImageInCreateNote($event)" [grandParentNote]="collaboratorUserList"
       [grandParentIcon]="parentIcon"></app-noteicon>
     <div class="closeButton">

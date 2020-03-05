@@ -11,9 +11,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class NotesComponent implements OnInit {
 
   icon: string;
-  notes=[];
+  pinNotes=[];
+  otherNotes=[];
   chckError: string;
   emptyNotesText: string;
+  showPinTitle: boolean = false;
+  pintitleText: string;
+  showOtherTitle: boolean = false;
+  otherTitleText: string;
+
 
   constructor(private note: NotesService, private _snackBar: MatSnackBar) { }
 
@@ -26,16 +32,33 @@ export class NotesComponent implements OnInit {
   }
 
   addNoteCreated($event) {
-    if(!$event.isArchived)
-      this.notes.push($event);
+    if(!$event.isArchived && $event.isPin) {
+      this.pinNotes = [$event, ...this.pinNotes];
+      this.showPinTitle = true;
+      this.pintitleText = "Pinned";
+      this.showOtherTitle = true;
+      this.otherTitleText = "Others"
+    }
+    else if(!$event.isArchived && !$event.isPin)
+      this.otherNotes = [$event, ...this.otherNotes];
   }
 
   GetAllNotes() {
     this.note.GetAllNotes().
       subscribe(data => {
-        if(data.status) 
-          this.notes = data.data;
-          console.log(this.notes);
+        if(data.status) {
+          this.pinNotes = data.data.filter(note => note.isPin);
+
+          if(this.pinNotes.length > 0) {
+            this.showPinTitle = true;
+            this.pintitleText = "Pinned";
+            this.showOtherTitle = true;
+            this.otherTitleText = "Others"
+          }
+
+          this.otherNotes = data.data.filter(note => !note.isPin);
+
+        }
       },
       error => {
         

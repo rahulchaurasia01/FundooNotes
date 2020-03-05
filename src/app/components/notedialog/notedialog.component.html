@@ -25,6 +25,16 @@
       <textarea class="descriptionField" [style.background]="note.color" tabindex="-1" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
         cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
     </div>
+    <div fxLayout="row wrap">
+      <div fxLayoutAlign="center center" *ngIf="(note.labels == null || note.labels.length <= 0) ? false : true">
+        <mat-chip-list aria-label="Note Label">
+          <mat-chip fxLayout="row" *ngFor="let label of note.labels" fxLayoutAlign="center center">
+            {{ label.name }}
+            <i class="material-icons-outlined labelcancel"
+              (click)="removeLabelForDisplayNote(label.labelId)">cancel</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
     <div class="labelAndCollaboratorList" fxLayout="row" fxLayout="center center" fxLayoutGap="5px">
       <div class="collaborator" *ngFor="let collaborator of note.collaborators">
         <div class="collaboratorButton" fxLayoutAlign="center center">
@@ -32,6 +42,7 @@
             color="warn">{{ collaborator.firstName[0]+collaborator.lastName[0] }}</button>
         </div>
       </div>
+    </div>
     </div>
   </div>
   <div class="NoteActionContainer" fxLayoutAlign="space-between center">

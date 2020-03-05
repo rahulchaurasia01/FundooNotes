@@ -5,6 +5,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Pinnote } from 'src/app/Model/pinnote';
 import { Updatenote } from 'src/app/Model/updatenote';
+import { Notelabel } from 'src/app/Model/notelabel';
+import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 
 @Component({
   selector: 'app-notedialog',
@@ -36,6 +38,43 @@ export class NotedialogComponent implements OnInit {
 
   updateNoteInEditNote($event) {
     this.note = $event;
+  }
+
+  removeLabelForDisplayNote(labelId: number) {
+    this.note.labels = this.note.labels.filter(label => label.labelId !== labelId);
+
+    var labels=[];
+
+    for(var labeled=0; labeled < this.note.labels.length; labeled++) {
+      var labls: Notelabel = {
+        LabelId: this.note.labels[labeled].labelId
+      };
+      labels.push(labls);
+    }
+
+    var listLabel: Listofnotelabel = {
+      Label: labels
+    };
+
+    this.notes.AddLabelToNote(this.note.noteId, listLabel).
+      subscribe(data => {
+        if(!data.status) {
+          this._snackBar.open("Unable to remove the label", "Close", {
+            duration: 5000,
+          });
+        }
+      }, 
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
   }
 
   updateArchive($event) {
@@ -84,8 +123,7 @@ export class NotedialogComponent implements OnInit {
       var updateNote: Updatenote = {
         Title: this.note.title,
         Description: this.note.description,
-        Reminder: this.note.Reminder,
-        Label: this.note.labels
+        Reminder: this.note.Reminder
       }
 
       this.notes.updateNote(this.note.noteId, updateNote).

@@ -17,6 +17,8 @@ import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 })
 export class DisplaynoteComponent implements OnInit {
 
+  @Input() displayTitle: boolean;
+  @Input() displayTitleText: string;
   @Input() displayNotes=[];
   @Input() parentIcon: string;
   @Input() emptyContentText: string;
@@ -27,10 +29,12 @@ export class DisplaynoteComponent implements OnInit {
   deleteButtonText: string;
   displayFromIcon: string;
 
+
   constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.displayFromIcon = "Display Note";
+
   }
 
   recieveDataFromIconChild($event: any) {

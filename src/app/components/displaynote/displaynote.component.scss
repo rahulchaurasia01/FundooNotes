@@ -24,17 +24,33 @@
     font-style: normal;
 }
 
+.noteTitles {
+    color: #5f6368;
+    letter-spacing: .07272727em;
+    font-size: .6875rem;
+    font-weight: 500;
+    line-height: 1rem;
+    text-transform: uppercase;
+    position: absolute;
+    margin: auto;
+}
+
 .displayNoteContainer {
 
     margin: auto;
     width: 772px;
-    flex-wrap: wrap;
+
+}
+
+.gutter-width {
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .displayNote {
     margin-top: 15px;
     margin-bottom: 15px;
-    width: 240px;
+    width: 33%;
     height: fit-content;
     border: 1px solid;
     border-color: #e0e0e0;
@@ -46,6 +62,7 @@
     transition-timing-function: ease-in;
 
     .titleDescription {
+        width: 100%;
         letter-spacing: .00625em;
         font-size: 1rem;
         font-weight: 500;
@@ -58,18 +75,17 @@
     }
 
     .pinUpinTheImage{
-        margin-left: 192px;
-        margin-top: 5px;
-        width: 42px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
         float: right;
-        position: absolute;
         opacity: 0.71;
         visibility: hidden;
     }
 
     .pinUnpin {
         cursor: pointer;
+        width: 24px;
+        height: 24px;
     }
     
     .NoteDescription {
@@ -192,13 +208,9 @@
     cursor: default;
 }
 
-.notesImageDiv {
-    display: inline-block;
-}
 
 .notesImage {
     width: 100%;
-    height: inherit;
 }
 
 
@@ -206,6 +218,10 @@
 
     .displayNoteContainer {
         width: 525px;
+    }
+
+    .displayNote {
+        width: 50%;
     }
 
 }

@@ -4,12 +4,12 @@
       <button mat-icon-button tabindex="-1" title="Remind Me" [matMenuTriggerFor]="reminderMenu">
         <i class="material-icons-outlined">notification_important</i>
       </button>
-      <mat-menu #reminderMenu="matMenu" xPosition="after" yPosition="below">
-        <div class="reminderMenu" (click)="$event.stopPropagation()">
+      <mat-menu #reminderMenu="matMenu" (closed)="backToReminder()" xPosition="after" yPosition="below">
+        <div class="reminderMenu" *ngIf="!dateTimeClicked" (click)="$event.stopPropagation()">
           <div class="reminderDiv">
             Reminder:
           </div>
-          <div class="tonightReminder">
+          <div class="tonightReminder" (click)="setTonightReminder()" >
             <div fxLayout="row">
               <div fxFlex="auto">
                 Later today
@@ -19,7 +19,7 @@
               </div>
             </div>
           </div>
-          <div class="tonightReminder">
+          <div class="tomorrowReminder">
             <div fxLayout="row">
               <div fxFlex="auto">
                 Tomorrow
@@ -29,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="tonightReminder">
+          <div class="nextWeekReminder">
             <div fxLayout="row">
               <div fxFlex="auto">
                 Next week
@@ -39,13 +39,32 @@
               </div>
             </div>
           </div>
-          <div class="tonightReminder">
+          <div class="tonightReminder" (click)="$event.stopPropagation()" (click)="showDateTimePicker()" >
             <div fxLayout="row">
               <i class="material-icons-outlined reminderWatchIcon">watch_later</i>
               <div class="pickTimeDiv">
               Pick date & time
             </div>
             </div>
+          </div>
+        </div>
+        <div class="pickYourTimeDiv" (click)="$event.stopPropagation()" *ngIf="dateTimeClicked">
+          <div class="pickYourTimeHeader" fxLayout="center center">
+            <i class="material-icons-outlined pickTimeBackIcon" (click)="$event.stopPropagation()" (click)="backToReminder()" >arrow_back</i>
+            <span class="titleheader">Pick date & time</span>
+          </div>
+          <div class="selectYourTimeDiv">
+            <div style="margin-top: 15px; 
+            border-bottom: 1px solid rgba(0,0,0,0.2);" >
+              <input class="datePickerField" [matDatepicker]="datePicker" placeholder="Add a date">
+              <mat-datepicker-toggle matSuffix [for]="datePicker">
+                <i class="material-icons-outlined" matDatepickerToggleIcon>arrow_drop_down</i>
+              </mat-datepicker-toggle>
+              <mat-datepicker #datePicker></mat-datepicker>
+            </div>
+          </div>
+          <div class="saveDateTime">
+            <button mat-button>Save</button>
           </div>
         </div>
       </mat-menu>

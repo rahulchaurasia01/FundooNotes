@@ -119,22 +119,26 @@
     background-color: rgba(95, 99, 104, 0.039);
 }
 
-.reminderMenu {
+.reminderMenu, .pickYourTimeDiv {
     width: 280px;
 }
 
-.reminderDiv {
+.reminderDiv, .pickYourTimeHeader {
     font-size: 14px;
     padding: 15px;
 }
 
-.tonightReminder {
+.tonightReminder, .tomorrowReminder, .nextWeekReminder {
     padding: 10px 15px;
     margin: 5px 0;
     border: 0;
     cursor: pointer;
     color: #3c4043;
     font-size: 13px;
+}
+
+.tonightReminder:active, .tomorrowReminder:active, .nextWeekReminder:active {
+    background-color: rgba(0,0,0,0.16);
 }
 
 .tonightReminderTime {
@@ -151,6 +155,39 @@
 
 .pickTimeDiv {
     margin-left: 10px;
+}
+
+.pickTimeBackIcon {
+    opacity: .54;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.titleheader {
+    padding-top: 5px;
+    margin-left: 10px;
+}
+
+.pickYourTimeHeader {
+    border-bottom: 1px solid #dadce0;
+}
+
+.selectYourTimeDiv {
+    padding: 0 15px 15px;
+    width: 250px;
+}
+
+.datePickerField {
+    border: none;
+    outline: none;
+    width: 210px;
+}
+
+.saveDateTime {
+    padding: 5px 5px 10px;
+    text-align: right;
+
 }
 
 ::ng-deep {

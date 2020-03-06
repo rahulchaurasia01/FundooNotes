@@ -48,6 +48,7 @@ export class NoteiconComponent implements OnInit {
   userSelectColor: string;
   labelClicked: boolean;
   hideCreateLabelDiv: boolean = false;
+  dateTimeClicked: boolean;
   labelName: string;
   labels = [];
   labelsForCreateNote =[];
@@ -112,6 +113,7 @@ export class NoteiconComponent implements OnInit {
 
     this.isArchive = false;
     this.labelClicked = false;
+    this.dateTimeClicked = false;
 
     this.labelData.currentLabelData.
       subscribe(data => {
@@ -128,6 +130,20 @@ export class NoteiconComponent implements OnInit {
 
   labelMenuClosed() {
     this.labelClicked = false;
+  }
+
+
+  setTonightReminder() {
+    var date = new Date();
+    console.log(date.getHours());
+  }
+
+  showDateTimePicker() {
+    this.dateTimeClicked = true;
+  }
+
+  backToReminder() {
+    this.dateTimeClicked = false;
   }
 
   checkLabelPresent(labelId: number): boolean {

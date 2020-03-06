@@ -19,6 +19,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -40,7 +42,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatTooltipModule,
     MatChipsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ], 
   exports: [
     MatFormFieldModule,
@@ -60,7 +64,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatTooltipModule,
     MatChipsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: []
 })

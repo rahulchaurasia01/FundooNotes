@@ -1,7 +1,7 @@
 <app-createnote (noteCreated)="addNoteCreated($event)" ></app-createnote>
 <app-displaynote *ngIf="(pinNotes.length > 0) ? true : false" [displayTitle]="showPinTitle"
     [displayTitleText]="pintitleText" [displayNotes]="pinNotes" [parentIcon]="icon"
-    [emptyContentText]="emptyNotesText"></app-displaynote>
+    [emptyContentText]="emptyNotesText" (updateUnPinNoteInNotes)="updateUnPin($event)" ></app-displaynote>
 <app-displaynote *ngIf="(otherNotes.length > 0) ? true : false" [displayTitle]="showOtherTitle"
     [displayTitleText]="otherTitleText" [displayNotes]="otherNotes" [parentIcon]="icon"
-    [emptyContentText]="emptyNotesText"></app-displaynote>
+    [emptyContentText]="emptyNotesText" (updatePinNoteInNotes)="updatePin($event)" ></app-displaynote>

@@ -43,6 +43,39 @@ export class NotesComponent implements OnInit {
       this.otherNotes = [$event, ...this.otherNotes];
   }
 
+  updateUnPin($event) {
+    this.pinNotes.forEach(note => {
+      if(note.noteId == $event.noteId) {
+        note = $event;
+        this.otherNotes = [note, ...this.otherNotes];
+      }
+    })
+    this.pinNotes = this.pinNotes.filter(note => note.noteId !== $event.noteId);
+    if(this.pinNotes.length == 0) {
+      this.showPinTitle = false;
+      this.pintitleText = "";
+      this.showOtherTitle = false;
+      this.otherTitleText = "";
+    }
+  }
+
+
+  updatePin($event) {
+    this.otherNotes.forEach(note => {
+      if(note.noteId == $event.noteId) {
+        note = $event;
+        this.pinNotes = [note, ...this.pinNotes];
+      }
+    })
+    if(this.pinNotes.length > 0) {
+      this.showPinTitle = true;
+      this.pintitleText = "Pinned";
+      this.showOtherTitle = true;
+      this.otherTitleText = "Others";
+    }
+    this.otherNotes = this.otherNotes.filter(note => note.noteId !== $event.noteId);
+  }
+
   GetAllNotes() {
     this.note.GetAllNotes().
       subscribe(data => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { NotesService } from '../../services/note/notes.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,18 +23,64 @@ export class DisplaynoteComponent implements OnInit {
   @Input() parentIcon: string;
   @Input() emptyContentText: string;
 
+  @Output() updatePinNoteInNotes = new EventEmitter<any>();
+  @Output() updateUnPinNoteInNotes = new EventEmitter<any>();
+
   chckError: string;
   infoMsg: string;
   deleteText: string;
   deleteButtonText: string;
   displayFromIcon: string;
+  selectedNoteBorder: string;
+  mouseNote: number;
+  flag: boolean;
+  userSelectedNote=[];
 
 
   constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.displayFromIcon = "Display Note";
+    this.mouseNote = -1;
+    this.selectedNoteBorder = "2px solid black";
+  }
 
+  mouseNotOnNote() {
+    this.mouseNote = -1;
+  }
+
+  mouseOnNote(noteId: number) {
+    this.mouseNote = noteId;    
+  }
+
+  UserSelectedThisNote(note: any) {
+
+    this.flag = false;
+
+    if(this.userSelectedNote.length == 0)
+      this.userSelectedNote.push(note);
+    else {
+      for(var noted = 0; noted < this.userSelectedNote.length; noted++) {
+        if(this.userSelectedNote[noted].noteId == note.noteId) {
+          this.flag = true;
+          break;
+        }
+      }
+
+      if(!this.flag)
+        this.userSelectedNote.push(note);
+
+    }
+  }
+
+  checkSelectedNote(noteId:number): boolean {
+
+    for(var note = 0; note < this.userSelectedNote.length; note++) {
+      if(this.userSelectedNote[note].noteId == noteId)
+        return true;
+    }
+
+    return false;
   }
 
   recieveDataFromIconChild($event: any) {
@@ -48,7 +94,6 @@ export class DisplaynoteComponent implements OnInit {
       }
     }
   }
-
 
   removeLabelForNote(labelId: number, noteId: number) {
 
@@ -98,7 +143,6 @@ export class DisplaynoteComponent implements OnInit {
 
   }
 
-
   editNoteDialog(note: any) {
     const dialogRef =  this.dialog.open(NotedialogComponent, {
       data: {
@@ -125,14 +169,12 @@ export class DisplaynoteComponent implements OnInit {
   }
 
   UpdateNote($event) {
-    console.log($event);
     for(var note = 0; note < this.displayNotes.length; note++) {
       if(this.displayNotes[note].noteId == $event.noteId) {
         this.displayNotes[note] = $event;
       }
     }
   }
-
 
   pinTheNote(noteId: number, flag: boolean) {
 
@@ -155,6 +197,10 @@ export class DisplaynoteComponent implements OnInit {
           this.displayNotes.forEach(element => {
             if(element.noteId == noteId) {
               element.isPin = flag
+              if(flag) 
+                this.updatePinNoteInNotes.emit(element);
+              else
+                this.updateUnPinNoteInNotes.emit(element);
               if(this.parentIcon == "archive") {
                 element.isArchived = data.data.isArchived;
                 this.displayNotes = this.displayNotes.filter(note => note.noteId !== noteId);

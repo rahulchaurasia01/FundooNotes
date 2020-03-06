@@ -14,53 +14,62 @@
   <div class="noteTitles" *ngIf="displayTitle">
     {{ displayTitleText }}
   </div>
-  <br/>
+  <br />
   <ngx-masonry fxLayout="row" fxLayoutAlign="center start" fxLayout.xs="column">
-    <div ngxMasonryItem class="displayNote" [style.background]="note.color" *ngFor="let note of displayNotes">
-      <img class="notesImage" *ngIf="(note.image == null || note.image == '') ? false : true"
-      [src]="note.image" alt="note Image">
-
-      <div fxLayout="row">
-        <div (click)="editNoteDialog(note)" class="titleDescription"
-          *ngIf="(note.title == '' || note.title == null) ? false : true">
-          {{ note.title }}
-        </div>
-        <div class="pinUpinTheImage" fxLayoutAlign="center center" *ngIf="(parentIcon == 'delete') ? false : true">
-          <img class="pinUnpin" *ngIf="!note.isPin" (click)="pinTheNote(note.noteId, true)"
-            src="../../../assets/unpin.svg">
-
-          <img class="pinUnpin" *ngIf="note.isPin" (click)="pinTheNote(note.noteId, false)"
-            src="../../../assets/pin.svg">
-        </div>
+    <div ngxMasonryItem class="Notes" (mouseover)="mouseOnNote(note.noteId)" (mouseout)="mouseNotOnNote()"  [style.background]="note.color" *ngFor="let note of displayNotes">
+      <div class="selectNote" [ngStyle]="{'visibility': (note.noteId == mouseNote || checkSelectedNote(note.noteId)) ? 'visible' : 'hidden'}" >
+        <img class="selectNoteImg" (click)="UserSelectedThisNote(note)"  src="../../../assets/Select note.svg" alt="select Note">
       </div>
-      <div (click)="editNoteDialog(note)" class="NoteDescription"
-        *ngIf="(note.description == '' || note.description == null) ? false : true ">
-        {{ note.description }}
-      </div>
-      <div fxLayout="row wrap">
-        <div fxLayoutAlign="center center" *ngIf="(note.labels == null || note.labels.length <= 0) ? false : true">
-          <mat-chip-list aria-label="Note Label">
-            <mat-chip fxLayout="row" *ngFor="let label of note.labels" fxLayoutAlign="center center">
-              {{ label.name }}
-              <i class="material-icons-outlined labelcancel"
-                (click)="removeLabelForNote(label.labelId, note.noteId)">cancel</i>
-            </mat-chip>
-          </mat-chip-list>
+      <div class="displayNote" [style.border]="(checkSelectedNote(note.noteId)) ? selectedNoteBorder : none">
+        <img class="notesImage" *ngIf="(note.image == null || note.image == '') ? false : true" [src]="note.image"
+          alt="note Image">
+
+        <div fxLayout="row">
+          <div (click)="editNoteDialog(note)" class="titleDescription"
+            *ngIf="(note.title == '' || note.title == null) ? false : true">
+            {{ note.title }}
+          </div>
+          <div class="pinUpinTheImage" [ngStyle]="{'visibility': (note.noteId == mouseNote) ? 'visible' : 'hidden'}" fxLayoutAlign="center center" *ngIf="(parentIcon == 'delete') ? false : true">
+            <img class="pinUnpin" *ngIf="!note.isPin" (click)="pinTheNote(note.noteId, true)"
+              src="../../../assets/unpin.svg">
+
+            <img class="pinUnpin" *ngIf="note.isPin" (click)="pinTheNote(note.noteId, false)"
+              src="../../../assets/pin.svg">
+          </div>
         </div>
-        <div class="collaboratorList" fxLayout="row wrap" fxLayoutGap="5px"
-          *ngIf="(note.collaborators == null || note.collaborators.length <= 0) ? false : true">
-          <div class="collaborator" *ngFor="let collaborator of note.collaborators">
-            <div class="collaboratorButton" fxLayoutAlign="center center">
-              <button mat-fab class="collaboratorUserIcon" [title]="collaborator.emailId" fxLayoutAlign="center center"
-                color="warn">{{ collaborator.firstName[0]+collaborator.lastName[0] }}</button>
+        <div (click)="editNoteDialog(note)" class="NoteDescription"
+          *ngIf="(note.description == '' || note.description == null) ? false : true ">
+          {{ note.description }}
+        </div>
+        <div fxLayout="row wrap">
+          <div fxLayoutAlign="center center" *ngIf="(note.labels == null || note.labels.length <= 0) ? false : true">
+            <mat-chip-list aria-label="Note Label">
+              <mat-chip fxLayout="row" *ngFor="let label of note.labels" fxLayoutAlign="center center">
+                {{ label.name }}
+                <i class="material-icons-outlined labelcancel"
+                  (click)="removeLabelForNote(label.labelId, note.noteId)">cancel</i>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+          <div class="collaboratorList" fxLayout="row wrap" fxLayoutGap="5px"
+            *ngIf="(note.collaborators == null || note.collaborators.length <= 0) ? false : true">
+            <div class="collaborator" *ngFor="let collaborator of note.collaborators">
+              <div class="collaboratorButton" fxLayoutAlign="center center">
+                <button mat-fab class="collaboratorUserIcon" [title]="collaborator.emailId"
+                  fxLayoutAlign="center center"
+                  color="warn">{{ collaborator.firstName[0]+collaborator.lastName[0] }}</button>
+              </div>
             </div>
           </div>
         </div>
+        <div [ngStyle]="{'visibility': (note.noteId == mouseNote) ? 'visible' : 'hidden'}">
+        <app-noteicon [accessFrom]="displayFromIcon" (UpdateNoteInDisplayNote)="UpdateNote($event)"
+          (updateCollaboratorToDisplayNote)="updateCollabToNote($event)"
+          (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
+          [grandParentIcon]="parentIcon">
+        </app-noteicon>
+        </div>
       </div>
-      <app-noteicon class="hideIcon" [accessFrom]="displayFromIcon" (UpdateNoteInDisplayNote)="UpdateNote($event)"
-        (updateCollaboratorToDisplayNote)="updateCollabToNote($event)"
-        (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note" [grandParentIcon]="parentIcon">
-      </app-noteicon>
     </div>
   </ngx-masonry>
 </div>

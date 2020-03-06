@@ -79,5 +79,9 @@ export class NotesService {
     return this.http.put("Notes/Label/"+noteId, label, true);
   }
 
+  RemoveImage(noteId: number) {
+    return this.http.put("Notes/" + noteId + "/RemoveImage", null, true);
+  }
+
 
 }

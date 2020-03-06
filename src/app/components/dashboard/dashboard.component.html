@@ -30,8 +30,11 @@
         </button>
       </div>
       <div class="viewListDiv" fxLayoutAlign="center center">
-        <button mat-icon-button>
-          <i class="material-icons-outlined">view_list</i>
+        <button mat-icon-button *ngIf="!showGridView" (click)="ShowListView()" title="List View">
+          <img class="listView" src="../../../assets/List View.svg" alt="List View" >
+        </button>
+        <button mat-icon-button *ngIf="showGridView" (click)="ShowGridView()" title="Grid View">
+          <img class="gridView" src="../../../assets/Grid View.svg" alt="Grid View" >
         </button>
       </div>
       <div class="settingDiv" fxHide.xs fxLayoutAlign="center center">

@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
   profileImage: string;
   showSearch: boolean;
   showKeepIcon: boolean = false;
+  showGridView: boolean;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog,
@@ -50,6 +51,7 @@ export class DashboardComponent implements OnInit {
 
     this.showSearch = false;
     this.showKeepIcon = false;
+    this.showGridView = false;
 
     this.labelData.currentLabelData.
       subscribe(data => {
@@ -69,6 +71,14 @@ export class DashboardComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  ShowListView() {
+    this.showGridView = true;
+  }
+
+  ShowGridView() {
+    this.showGridView = false;
   }
 
   showSearchField() {

@@ -163,6 +163,10 @@
     background-size: cover;
 }
 
+.listView, .gridView {
+    opacity: .54;
+}
+
 .LabelList {
     max-height: 280px;
     overflow-y: auto;

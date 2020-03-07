@@ -203,6 +203,22 @@ span.mat-button-wrapper {
     line-height: 19px;
 }
 
+.countUserSelected {
+    color: #3c4043;
+    font-size: 1.375rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.75rem;
+    margin-left: 12px;
+    margin-right: auto;
+}
+
+.selectedNoteActionDiv {
+    margin-right: 12px;
+    opacity: 1;
+    display: flex;
+}
+
 @media only screen and (max-width: 780px) {
 
     .searchInputField, .closeButton {

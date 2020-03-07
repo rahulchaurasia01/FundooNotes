@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LabelsService } from '../../services/label/labels.service';
 import { UserService } from '../../services/user/user.service';
-import { LabeldataService } from '../../services/dataservice/labeldata.service';
+import { LabeldataService } from '../../services/dataservice/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditlabelComponent } from '../editlabel/editlabel.component';
 
@@ -29,10 +29,11 @@ export class DashboardComponent implements OnInit {
   showSearch: boolean;
   showKeepIcon: boolean = false;
   showGridView: boolean;
+  UserSelectedNote = [];
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog,
-    private labelData: LabeldataService, private user: UserService) {
+    private dataServices: LabeldataService, private user: UserService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -53,9 +54,15 @@ export class DashboardComponent implements OnInit {
     this.showKeepIcon = false;
     this.showGridView = false;
 
-    this.labelData.currentLabelData.
+    this.dataServices.currentLabelData.
       subscribe(data => {
         this.labels = data;
+      })
+
+    this.dataServices.currentUserSelectedNoteData.
+      subscribe(data => {
+        this.UserSelectedNote = data;
+        console.log(this.UserSelectedNote);
       })
 
     this.fundooUserEmail = localStorage.getItem("fundooUserEmail");
@@ -73,6 +80,11 @@ export class DashboardComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
+  deselectAllNote() {
+    this.UserSelectedNote = [];
+    this.dataServices.userHasSelectNote(this.UserSelectedNote);
+  }
+
   ShowListView() {
     this.showGridView = true;
   }
@@ -87,7 +99,6 @@ export class DashboardComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(EditlabelComponent, { panelClass: 'editLabelDialogContainer' });
-
   }
 
   notesClick() {
@@ -124,7 +135,7 @@ export class DashboardComponent implements OnInit {
     this.label.GetAllLabels().
       subscribe(data => {
         this.labels = data.data;
-        this.labelData.labelReceive(this.labels);
+        this.dataServices.labelReceive(this.labels);
       },
       error => {
 

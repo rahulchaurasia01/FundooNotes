@@ -1,2 +1,11 @@
 <app-createnote></app-createnote>
-<app-displaynote [displayNotes]="labelNotes" [parentIcon]="labelIcon" [emptyContentText]="emptyLabelText"></app-displaynote>
+
+<app-displaynote *ngIf="(pinLabelsNotes.length > 0) ? true : false" [displayTitle]="showPinTitle"
+    [displayTitleText]="pintitleText" [displayNotes]="pinLabelsNotes" [parentIcon]="labelIcon"
+    [emptyContentText]="emptyLabelText" (updateUnPinNoteInNotes)="updateUnPin($event)" 
+    (updateArchiveInPinNotes)="updateArchiveInPinNote($event)"></app-displaynote>
+
+<app-displaynote *ngIf="(otherLabelsNotes.length > 0) ? true : false" [displayTitle]="showOtherTitle"
+    [displayTitleText]="otherTitleText" [displayNotes]="otherLabelsNotes" [parentIcon]="labelIcon"
+    [emptyContentText]="emptyLabelText" (updatePinNoteInNotes)="updatePin($event)"
+    (updateArchiveInOtherNotes)="updateArchiveInOtherNote($event)" ></app-displaynote>

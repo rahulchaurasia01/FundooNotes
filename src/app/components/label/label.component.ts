@@ -13,16 +13,22 @@ export class LabelComponent implements OnInit {
 
   labelId: number;
   chckError: string;
-  labelNotes=[];
   labelIcon: string;
   emptyLabelText: string;
+  pinLabelsNotes=[];
+  otherLabelsNotes=[];
+  showPinTitle: boolean = false;
+  pintitleText: string;
+  showOtherTitle: boolean = false;
+  otherTitleText: string;
 
   constructor(private routeParam: ActivatedRoute, private label: LabelsService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
     this.routeParam.paramMap.subscribe(routerParmeter => {
-      this.labelNotes = [];
+      this.pinLabelsNotes = [];
+      this.otherLabelsNotes = [];
       this.labelId = parseInt(routerParmeter.get("id"));
       this.GetNotesByLabelId(this.labelId);
     })
@@ -32,12 +38,69 @@ export class LabelComponent implements OnInit {
     
   }
 
+  updateUnPin($event) {
+    this.pinLabelsNotes.forEach(note => {
+      if(note.noteId == $event.noteId) {
+        note = $event;
+        this.otherLabelsNotes = [note, ...this.otherLabelsNotes];
+      }
+    })
+    this.pinLabelsNotes = this.pinLabelsNotes.filter(note => note.noteId !== $event.noteId);
+    if(this.pinLabelsNotes.length == 0) {
+      this.showPinTitle = false;
+      this.pintitleText = "";
+      this.showOtherTitle = false;
+      this.otherTitleText = "";
+    }
+  }
+
+  updatePin($event) {
+    this.otherLabelsNotes.forEach(note => {
+      if(note.noteId == $event.noteId) {
+        note = $event;
+        this.pinLabelsNotes = [note, ...this.pinLabelsNotes];
+      }
+    })
+    if(this.pinLabelsNotes.length > 0) {
+      this.showPinTitle = true;
+      this.pintitleText = "Pinned";
+      this.showOtherTitle = true;
+      this.otherTitleText = "Others";
+    }
+    this.otherLabelsNotes = this.otherLabelsNotes.filter(note => note.noteId !== $event.noteId);
+  }
+
+  updateArchiveInPinNote($event) {
+
+    this.pinLabelsNotes = this.pinLabelsNotes.filter(note => note.noteId !== $event.noteId)
+
+    if (this.pinLabelsNotes.length == 0) {
+      this.showOtherTitle = false;
+      this.otherTitleText = "";
+    }
+
+  }
+
+  updateArchiveInOtherNote($event) {
+    this.otherLabelsNotes = this.otherLabelsNotes.filter(note => note.noteId !== $event.noteId);
+  }
+
 
   GetNotesByLabelId(labelId) {
     this.label.GetNotesByLabelId(labelId).
       subscribe(data => {
         if(data.status) 
-          this.labelNotes = data.data;
+          this.pinLabelsNotes = data.data.filter(note => note.isPin);
+
+          if(this.pinLabelsNotes.length > 0) {
+            this.showPinTitle = true;
+            this.pintitleText = "Pinned";
+            this.showOtherTitle = true;
+            this.otherTitleText = "Others"
+          }
+
+          this.otherLabelsNotes = data.data.filter(note => !note.isPin);
+
       },
       error => {
 

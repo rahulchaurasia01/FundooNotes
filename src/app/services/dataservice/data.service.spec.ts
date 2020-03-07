@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { LabeldataService } from './labeldata.service';
+import { LabeldataService } from './data.service';
 
 describe('LabeldataService', () => {
   beforeEach(() => {

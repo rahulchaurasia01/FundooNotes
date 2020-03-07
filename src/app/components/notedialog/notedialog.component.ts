@@ -122,8 +122,7 @@ export class NotedialogComponent implements OnInit {
 
       var updateNote: Updatenote = {
         Title: this.note.title,
-        Description: this.note.description,
-        Reminder: this.note.Reminder
+        Description: this.note.description
       }
 
       this.notes.updateNote(this.note.noteId, updateNote).

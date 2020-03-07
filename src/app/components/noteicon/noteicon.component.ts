@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LabelsService } from '../../services/label/labels.service';
 import { CollaboratordialogComponent } from '../collaboratordialog/collaboratordialog.component';
-import { LabeldataService } from '../../services/dataservice/labeldata.service';
+import { LabeldataService } from '../../services/dataservice/data.service';
 import { Color } from 'src/app/Model/color';
 import { Label } from 'src/app/Model/label';
 import { Notelabel } from 'src/app/Model/notelabel';
@@ -39,6 +39,8 @@ export class NoteiconComponent implements OnInit {
   @Output() UpdateArchiveInEditNote = new EventEmitter<any>();
 
   @Output() UpdateLabelsInCreateNote = new EventEmitter<any>();
+  @Output() updatePinNoteInNotes = new EventEmitter<any>();
+  @Output() updateOtherNoteInNotes = new EventEmitter<any>();
 
   chckError: string;
   infoMsg: string;
@@ -131,7 +133,6 @@ export class NoteiconComponent implements OnInit {
   labelMenuClosed() {
     this.labelClicked = false;
   }
-
 
   setTonightReminder() {
     var date = new Date();
@@ -257,7 +258,6 @@ export class NoteiconComponent implements OnInit {
 
   }
 
-
   createNewLabel() {
 
     this.labelData.currentLabelData.
@@ -296,8 +296,8 @@ export class NoteiconComponent implements OnInit {
 
   }
 
-  sendMessageToParent(noteId: number) {
-    this.sendParentRefresh.emit(noteId);
+  sendMessageToParent(note: any) {
+    this.sendParentRefresh.emit(note);
   }
 
   userWantColorOnNote(noteId: number, color: string) {
@@ -339,7 +339,6 @@ export class NoteiconComponent implements OnInit {
       this.UpdateColorInCreateNote.emit(color);
     }
   }
-
 
   collaboratorClickedByUser() {
 
@@ -383,7 +382,10 @@ export class NoteiconComponent implements OnInit {
         subscribe(data => {
           if (data.status) {
             if (this.accessFrom == "Display Note") {
-              this.sendMessageToParent(noteId);
+              if(this.grandParentNote.isPin)
+                this.updatePinNoteInNotes.emit(data.data);
+              else if(!this.grandParentNote.isPin)
+                this.updateOtherNoteInNotes.emit(data.data);
               if (flag)
                 this.infoMsg = "Note archived";
               else

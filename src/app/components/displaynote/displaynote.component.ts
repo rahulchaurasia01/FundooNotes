@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';
 import { Pinnote } from 'src/app/Model/pinnote';
 import { NotedialogComponent } from '../notedialog/notedialog.component';
-import { Updatenote } from 'src/app/Model/updatenote';
+import { LabeldataService } from '../../services/dataservice/data.service';
 import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 
@@ -26,6 +26,12 @@ export class DisplaynoteComponent implements OnInit {
   @Output() updatePinNoteInNotes = new EventEmitter<any>();
   @Output() updateUnPinNoteInNotes = new EventEmitter<any>();
 
+  @Output() updateArchiveInPinNotes = new EventEmitter<any>();
+  @Output() updateArchiveInOtherNotes = new EventEmitter<any>();
+
+  @Output() sendPinSelectedNoteToNotes = new EventEmitter<any>();
+  @Output() sendUnPinSelectedNoteToNotes = new EventEmitter<any>();
+
   chckError: string;
   infoMsg: string;
   deleteText: string;
@@ -34,15 +40,25 @@ export class DisplaynoteComponent implements OnInit {
   selectedNoteBorder: string;
   mouseNote: number;
   flag: boolean;
-  userSelectedNote=[];
+  userPinSelectedNote=[];
+  userUnPinSelectedNote=[];
 
 
-  constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog) { }
+  constructor(private note: NotesService, private _snackBar: MatSnackBar, private dialog: MatDialog,
+    private dataService: LabeldataService) { }
 
   ngOnInit() {
     this.displayFromIcon = "Display Note";
     this.mouseNote = -1;
     this.selectedNoteBorder = "2px solid black";
+
+    this.dataService.currentUserSelectedNoteData.subscribe(data => {
+      if(data.length == 0) {
+        this.userPinSelectedNote = [];
+        this.userUnPinSelectedNote = [];
+      }
+    })
+
   }
 
   mouseNotOnNote() {
@@ -57,34 +73,89 @@ export class DisplaynoteComponent implements OnInit {
 
     this.flag = false;
 
-    if(this.userSelectedNote.length == 0)
-      this.userSelectedNote.push(note);
+    if (note.isPin) {
+
+      if (this.userPinSelectedNote.length == 0) {
+        this.userPinSelectedNote.push(note);
+        this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
+      }
+      else {
+        for (var noted = 0; noted < this.userPinSelectedNote.length; noted++) {
+          if (this.userPinSelectedNote[noted].noteId == note.noteId) {
+            this.userPinSelectedNote = this.userPinSelectedNote.filter(noted => noted.noteId !== note.noteId);
+            this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
+            this.flag = true;
+            break;
+          }
+        }
+
+        if (!this.flag) {
+          this.userPinSelectedNote.push(note);
+          this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
+        }
+
+      }
+    }
     else {
-      for(var noted = 0; noted < this.userSelectedNote.length; noted++) {
-        if(this.userSelectedNote[noted].noteId == note.noteId) {
-          this.flag = true;
-          break;
+      if (this.userUnPinSelectedNote.length == 0) {
+        this.userUnPinSelectedNote.push(note);
+        this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
+      }
+      else {
+        for (var noted = 0; noted < this.userUnPinSelectedNote.length; noted++) {
+          if (this.userUnPinSelectedNote[noted].noteId == note.noteId) {
+            this.userUnPinSelectedNote = this.userUnPinSelectedNote.filter(noted => noted.noteId !== note.noteId);
+            this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
+            this.flag = true;
+            break;
+          }
+        }
+
+        if (!this.flag) {
+          this.userUnPinSelectedNote.push(note);
+          this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
         }
       }
-
-      if(!this.flag)
-        this.userSelectedNote.push(note);
-
     }
   }
 
-  checkSelectedNote(noteId:number): boolean {
+  checkSelectedNote(note: any): boolean {
 
-    for(var note = 0; note < this.userSelectedNote.length; note++) {
-      if(this.userSelectedNote[note].noteId == noteId)
-        return true;
+    if (note.isPin) {
+
+      for (var noted = 0; noted < this.userPinSelectedNote.length; noted++) {
+        if (this.userPinSelectedNote[noted].noteId == note.noteId)
+          return true;
+      }
+
+      return false;
     }
+    else {
+      for (var noted = 0; noted < this.userUnPinSelectedNote.length; noted++) {
+        if (this.userUnPinSelectedNote[noted].noteId == note.noteId)
+          return true;
+      }
 
-    return false;
+      return false;
+    }
   }
 
   recieveDataFromIconChild($event: any) {
-    this.displayNotes = this.displayNotes.filter(note => note.noteId !== $event);
+    this.displayNotes = this.displayNotes.filter(note => note.noteId !== $event.noteId);
+  }
+
+  sendDatatoPinNotes($event: any) {
+
+    this.displayNotes = this.displayNotes.filter(note => note.noteId !== $event.noteId);
+    this.updateArchiveInPinNotes.emit($event);
+
+  }
+
+  sendDataToOtherNotes($event: any) {
+
+    this.displayNotes = this.displayNotes.filter(note => note.noteId !== $event.noteId);
+    this.updateArchiveInOtherNotes.emit($event);
+
   }
 
   updateCollabToNote($event : any) {

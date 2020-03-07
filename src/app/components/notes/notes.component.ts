@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { NotesService } from '../../services/note/notes.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LabeldataService } from '../../services/dataservice/data.service';
 
 @Component({
   selector: 'app-notes',
@@ -11,17 +12,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class NotesComponent implements OnInit {
 
   icon: string;
-  pinNotes=[];
-  otherNotes=[];
+  pinNotes = [];
+  otherNotes = [];
   chckError: string;
   emptyNotesText: string;
   showPinTitle: boolean = false;
   pintitleText: string;
   showOtherTitle: boolean = false;
   otherTitleText: string;
+  userPinSelectedNote = [];
+  userUnPinSelectedNote = [];
+  userSelectedNote = [];
 
 
-  constructor(private note: NotesService, private _snackBar: MatSnackBar) { }
+  constructor(private note: NotesService, private _snackBar: MatSnackBar, 
+    private dataService: LabeldataService) { }
 
   ngOnInit() {
 
@@ -32,26 +37,74 @@ export class NotesComponent implements OnInit {
   }
 
   addNoteCreated($event) {
-    if(!$event.isArchived && $event.isPin) {
+    if (!$event.isArchived && $event.isPin) {
       this.pinNotes = [$event, ...this.pinNotes];
       this.showPinTitle = true;
       this.pintitleText = "Pinned";
       this.showOtherTitle = true;
       this.otherTitleText = "Others"
     }
-    else if(!$event.isArchived && !$event.isPin)
+    else if (!$event.isArchived && !$event.isPin)
       this.otherNotes = [$event, ...this.otherNotes];
+
+  }
+
+  updateArchiveInPinNote($event) {
+
+    this.pinNotes = this.pinNotes.filter(note => note.noteId !== $event.noteId)
+
+    if (this.pinNotes.length == 0) {
+      this.showOtherTitle = false;
+      this.otherTitleText = "";
+    }
+
+  }
+
+  updateArchiveInOtherNote($event) {
+    this.otherNotes = this.otherNotes.filter(note => note.noteId !== $event.noteId);
+  }
+
+  addPinSelectedNote($event) {
+    this.userPinSelectedNote = $event;
+
+    if(this.userUnPinSelectedNote.length == 0) {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userPinSelectedNote];
+    }
+    else {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userPinSelectedNote, ...this.userUnPinSelectedNote];
+    }
+  
+    this.dataService.userHasSelectNote(this.userSelectedNote);
+
+  }
+
+  addUnPinSelectedNote($event) {
+    this.userUnPinSelectedNote = $event;
+
+    if(this.userPinSelectedNote.length == 0) {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userUnPinSelectedNote];
+    }
+    else {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userUnPinSelectedNote, ...this.userPinSelectedNote];
+    }
+
+    this.dataService.userHasSelectNote(this.userSelectedNote);
+
   }
 
   updateUnPin($event) {
     this.pinNotes.forEach(note => {
-      if(note.noteId == $event.noteId) {
+      if (note.noteId == $event.noteId) {
         note = $event;
         this.otherNotes = [note, ...this.otherNotes];
       }
     })
     this.pinNotes = this.pinNotes.filter(note => note.noteId !== $event.noteId);
-    if(this.pinNotes.length == 0) {
+    if (this.pinNotes.length == 0) {
       this.showPinTitle = false;
       this.pintitleText = "";
       this.showOtherTitle = false;
@@ -62,12 +115,12 @@ export class NotesComponent implements OnInit {
 
   updatePin($event) {
     this.otherNotes.forEach(note => {
-      if(note.noteId == $event.noteId) {
+      if (note.noteId == $event.noteId) {
         note = $event;
         this.pinNotes = [note, ...this.pinNotes];
       }
     })
-    if(this.pinNotes.length > 0) {
+    if (this.pinNotes.length > 0) {
       this.showPinTitle = true;
       this.pintitleText = "Pinned";
       this.showOtherTitle = true;
@@ -79,10 +132,10 @@ export class NotesComponent implements OnInit {
   GetAllNotes() {
     this.note.GetAllNotes().
       subscribe(data => {
-        if(data.status) {
+        if (data.status) {
           this.pinNotes = data.data.filter(note => note.isPin);
 
-          if(this.pinNotes.length > 0) {
+          if (this.pinNotes.length > 0) {
             this.showPinTitle = true;
             this.pintitleText = "Pinned";
             this.showOtherTitle = true;
@@ -93,18 +146,18 @@ export class NotesComponent implements OnInit {
 
         }
       },
-      error => {
-        
-        if(error.error.message)
+        error => {
+
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
 
-      })
+        })
   }
 
 }

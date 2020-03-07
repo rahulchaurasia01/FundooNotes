@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LabeldataService } from '../../services/dataservice/labeldata.service';
+import { LabeldataService } from '../../services/dataservice/data.service';
 import { LabelsService } from '../../services/label/labels.service';
 import { Label } from 'src/app/Model/label';
 import { DeletedialogComponent } from '../deletedialog/deletedialog.component';

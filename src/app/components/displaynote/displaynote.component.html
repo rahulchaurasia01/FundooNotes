@@ -17,10 +17,10 @@
   <br />
   <ngx-masonry fxLayout="row" fxLayoutAlign="center start" fxLayout.xs="column">
     <div ngxMasonryItem class="Notes" (mouseover)="mouseOnNote(note.noteId)" (mouseout)="mouseNotOnNote()"  [style.background]="note.color" *ngFor="let note of displayNotes">
-      <div class="selectNote" [ngStyle]="{'visibility': (note.noteId == mouseNote || checkSelectedNote(note.noteId)) ? 'visible' : 'hidden'}" >
+      <div class="selectNote" [ngStyle]="{'visibility': (note.noteId == mouseNote || checkSelectedNote(note)) ? 'visible' : 'hidden'}" >
         <img class="selectNoteImg" (click)="UserSelectedThisNote(note)"  src="../../../assets/Select note.svg" alt="select Note">
       </div>
-      <div class="displayNote" [style.border]="(checkSelectedNote(note.noteId)) ? selectedNoteBorder : none">
+      <div class="displayNote" [style.border]="(checkSelectedNote(note)) ? selectedNoteBorder : none">
         <img class="notesImage" *ngIf="(note.image == null || note.image == '') ? false : true" [src]="note.image"
           alt="note Image">
 
@@ -66,7 +66,8 @@
         <app-noteicon [accessFrom]="displayFromIcon" (UpdateNoteInDisplayNote)="UpdateNote($event)"
           (updateCollaboratorToDisplayNote)="updateCollabToNote($event)"
           (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
-          [grandParentIcon]="parentIcon">
+          [grandParentIcon]="parentIcon" (updatePinNoteInNotes)="sendDatatoPinNotes($event)"
+          (updateOtherNoteInNotes)="sendDataToOtherNotes($event)">
         </app-noteicon>
         </div>
       </div>

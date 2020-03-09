@@ -10,26 +10,40 @@
 </div>
 
 
-<div class="displayNoteContainer" *ngIf="(displayNotes.length <= 0) ? false : true">
+<div class="displayNoteContainer" [ngStyle]="{'width': (showListView) ? '632px' : '772px'}"
+  *ngIf="(displayNotes.length <= 0) ? false : true">
   <div class="noteTitles" *ngIf="displayTitle">
     {{ displayTitleText }}
   </div>
   <br />
   <ngx-masonry fxLayout="row" fxLayoutAlign="center start" fxLayout.xs="column">
-    <div ngxMasonryItem class="Notes" (mouseover)="mouseOnNote(note.noteId)" (mouseout)="mouseNotOnNote()"  [style.background]="note.color" *ngFor="let note of displayNotes">
-      <div class="selectNote" [ngStyle]="{'visibility': (note.noteId == mouseNote || checkSelectedNote(note)) ? 'visible' : 'hidden'}" >
-        <img class="selectNoteImg" (click)="UserSelectedThisNote(note)"  src="../../../assets/Select note.svg" alt="select Note">
+    <div ngxMasonryItem class="Notes" [ngStyle]="{'width': (showListView) ? '100%' : '31%'}"
+      (mouseover)="mouseOnNote(note.noteId)" (mouseout)="mouseNotOnNote()" [style.background]="note.color"
+      *ngFor="let note of displayNotes">
+      <div class="selectNote"
+        [ngStyle]="{'visibility': (note.noteId == mouseNote || checkSelectedNote(note)) ? 'visible' : 'hidden'}">
+        <img class="selectNoteImg" (click)="UserSelectedThisNote(note)" src="../../../assets/Select note.svg"
+          alt="select Note">
       </div>
       <div class="displayNote" [style.border]="(checkSelectedNote(note)) ? selectedNoteBorder : none">
-        <img class="notesImage" *ngIf="(note.image == null || note.image == '') ? false : true" [src]="note.image"
-          alt="note Image">
+        <div >
 
+            <img class="notesImage" *ngIf="(note.image == null || note.image == '') ? false : true" [src]="note.image"
+              alt="note Image" />
+
+              <button class="deleteImage" *ngIf="(note.image == null || note.image == '' ? false : true) " mat-icon-button
+              tabindex="-1">
+              <i class="material-icons-outlined">delete</i>
+            </button>
+
+        </div>
         <div fxLayout="row">
           <div (click)="editNoteDialog(note)" class="titleDescription"
             *ngIf="(note.title == '' || note.title == null) ? false : true">
             {{ note.title }}
           </div>
-          <div class="pinUpinTheImage" [ngStyle]="{'visibility': (note.noteId == mouseNote) ? 'visible' : 'hidden'}" fxLayoutAlign="center center" *ngIf="(parentIcon == 'delete') ? false : true">
+          <div class="pinUpinTheImage" [ngStyle]="{'visibility': (note.noteId == mouseNote) ? 'visible' : 'hidden'}"
+            fxLayoutAlign="center center" *ngIf="(parentIcon == 'delete') ? false : true">
             <img class="pinUnpin" *ngIf="!note.isPin" (click)="pinTheNote(note.noteId, true)"
               src="../../../assets/unpin.svg">
 
@@ -42,6 +56,15 @@
           {{ note.description }}
         </div>
         <div fxLayout="row wrap">
+          <div fxLayoutAlign="center center" *ngIf="(note.reminder == null || note.reminder == '') ? false : true">
+            <mat-chip-list aria-label="Note Reminder">
+              <mat-chip fxLayout="row" fxLayoutAlign="center center">
+                {{ note.reminder }}
+                <i class="material-icons-outlined labelcancel"
+                  (click)="removeLabelForNote(label.labelId, note.noteId)">cancel</i>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
           <div fxLayoutAlign="center center" *ngIf="(note.labels == null || note.labels.length <= 0) ? false : true">
             <mat-chip-list aria-label="Note Label">
               <mat-chip fxLayout="row" *ngFor="let label of note.labels" fxLayoutAlign="center center">
@@ -63,12 +86,12 @@
           </div>
         </div>
         <div [ngStyle]="{'visibility': (note.noteId == mouseNote) ? 'visible' : 'hidden'}">
-        <app-noteicon [accessFrom]="displayFromIcon" (UpdateNoteInDisplayNote)="UpdateNote($event)"
-          (updateCollaboratorToDisplayNote)="updateCollabToNote($event)"
-          (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
-          [grandParentIcon]="parentIcon" (updatePinNoteInNotes)="sendDatatoPinNotes($event)"
-          (updateOtherNoteInNotes)="sendDataToOtherNotes($event)">
-        </app-noteicon>
+          <app-noteicon [accessFrom]="displayFromIcon" (UpdateNoteInDisplayNote)="UpdateNote($event)"
+            (updateCollaboratorToDisplayNote)="updateCollabToNote($event)"
+            (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
+            [grandParentIcon]="parentIcon" (updatePinNoteInNotes)="sendDatatoPinNotes($event)"
+            (updateOtherNoteInNotes)="sendDataToOtherNotes($event)">
+          </app-noteicon>
         </div>
       </div>
     </div>

@@ -36,15 +36,7 @@
 }
 
 .displayNoteContainer {
-
     margin: auto;
-    width: 772px;
-
-}
-
-.gutter-width {
-    margin-right: 10px;
-    margin-bottom: 10px;
 }
 
 .Notes {
@@ -159,6 +151,10 @@
         display: inline-block;
         outline: none;
     }
+}
+
+.deleteImage {
+    position: absolute;
 }
 
 ::ng-deep {

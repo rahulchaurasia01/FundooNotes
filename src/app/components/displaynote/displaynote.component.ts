@@ -9,6 +9,7 @@ import { NotedialogComponent } from '../notedialog/notedialog.component';
 import { LabeldataService } from '../../services/dataservice/data.service';
 import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
+import { Listofpinnote } from 'src/app/Model/listofpinnote';
 
 @Component({
   selector: 'app-displaynote',
@@ -40,6 +41,7 @@ export class DisplaynoteComponent implements OnInit {
   selectedNoteBorder: string;
   mouseNote: number;
   flag: boolean;
+  showListView: boolean = false;
   userPinSelectedNote=[];
   userUnPinSelectedNote=[];
 
@@ -52,10 +54,47 @@ export class DisplaynoteComponent implements OnInit {
     this.mouseNote = -1;
     this.selectedNoteBorder = "2px solid black";
 
+    this.dataService.currentDisplayView.subscribe(data => {
+      this.showListView = data;
+    })
+
     this.dataService.currentUserSelectedNoteData.subscribe(data => {
-      if(data.length == 0) {
+      if((data.Type == "ActionNotPerformed") && (data.data.length == 0)) {
         this.userPinSelectedNote = [];
         this.userUnPinSelectedNote = [];
+      }
+      else {
+        if ((data.Type == "ActionPerformed")) {
+
+          if (data.data[0].isPin) {
+            for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
+              for (var note = 0; note < this.displayNotes.length; note++) {
+                if (data.data[dataNote].noteId == this.displayNotes[note].noteId) {
+                  this.displayNotes[note] = data.data[dataNote]
+                  this.updatePinNoteInNotes.emit(this.displayNotes[note]);
+                }
+              }
+            }
+
+          }
+          else {
+            for(var dataNote =0; dataNote < data.data.length; dataNote++ ) {
+              for(var note = 0; note < this.displayNotes.length; note++) {
+                if(data.data[dataNote].noteId == this.displayNotes[note].noteId) {
+                  this.displayNotes[note] = data.data[dataNote]
+                  this.updateUnPinNoteInNotes.emit(this.displayNotes[note]);
+                }
+              }
+            }
+            
+          }
+          this.userPinSelectedNote = [];
+          this.userUnPinSelectedNote = [];
+          this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
+          this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
+          this.dataService.userHasSelectNote("ActionNotPerformed", []);
+          
+        } 
       }
     })
 
@@ -249,11 +288,20 @@ export class DisplaynoteComponent implements OnInit {
 
   pinTheNote(noteId: number, flag: boolean) {
 
+    var pinNoted =[];
+
     var pinNote: Pinnote = {
+      NoteId: noteId,
       IsPin: flag
     }
 
-    this.note.pinTheNote(noteId, pinNote).
+    pinNoted.push(pinNote);
+
+    var pinNotes: Listofpinnote = {
+      PinnedNotes: pinNoted
+    }
+
+    this.note.pinTheNote(pinNotes).
       subscribe(data => {
         if(!data.status) {
           if(flag) 
@@ -273,7 +321,7 @@ export class DisplaynoteComponent implements OnInit {
               else
                 this.updateUnPinNoteInNotes.emit(element);
               if(this.parentIcon == "archive") {
-                element.isArchived = data.data.isArchived;
+                element.isArchived = data.data[0].isArchived;
                 this.displayNotes = this.displayNotes.filter(note => note.noteId !== noteId);
               }
             }

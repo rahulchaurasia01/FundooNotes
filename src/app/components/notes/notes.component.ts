@@ -76,7 +76,7 @@ export class NotesComponent implements OnInit {
       this.userSelectedNote = [...this.userPinSelectedNote, ...this.userUnPinSelectedNote];
     }
   
-    this.dataService.userHasSelectNote(this.userSelectedNote);
+    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
 
   }
 
@@ -92,7 +92,7 @@ export class NotesComponent implements OnInit {
       this.userSelectedNote = [...this.userUnPinSelectedNote, ...this.userPinSelectedNote];
     }
 
-    this.dataService.userHasSelectNote(this.userSelectedNote);
+    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
 
   }
 

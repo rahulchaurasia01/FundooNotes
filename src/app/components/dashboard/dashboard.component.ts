@@ -5,9 +5,12 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LabelsService } from '../../services/label/labels.service';
 import { UserService } from '../../services/user/user.service';
+import { NotesService } from '../../services/note/notes.service';
 import { LabeldataService } from '../../services/dataservice/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditlabelComponent } from '../editlabel/editlabel.component';
+import { Pinnote } from 'src/app/Model/pinnote';
+import { Listofpinnote } from 'src/app/Model/listofpinnote';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,11 +32,13 @@ export class DashboardComponent implements OnInit {
   showSearch: boolean;
   showKeepIcon: boolean = false;
   showGridView: boolean;
+  showPin: boolean;
+  showArchive: boolean;
   UserSelectedNote = [];
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog,
-    private dataServices: LabeldataService, private user: UserService) {
+    private dataServices: LabeldataService, private user: UserService, private note: NotesService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -61,8 +66,23 @@ export class DashboardComponent implements OnInit {
 
     this.dataServices.currentUserSelectedNoteData.
       subscribe(data => {
-        this.UserSelectedNote = data;
-        console.log(this.UserSelectedNote);
+        this.UserSelectedNote = data.data;
+
+         if(this.UserSelectedNote.filter(note => !note.isPin).length > 0) {
+           this.showPin = false;
+         }
+         else {
+           this.showPin = true;
+         }
+
+         if(this.UserSelectedNote.filter(note => !note.isArchived).length > 0) {
+          this.showArchive = false;
+         }
+         else {
+           this.showArchive = true;
+         }
+
+
       })
 
     this.fundooUserEmail = localStorage.getItem("fundooUserEmail");
@@ -82,15 +102,59 @@ export class DashboardComponent implements OnInit {
 
   deselectAllNote() {
     this.UserSelectedNote = [];
-    this.dataServices.userHasSelectNote(this.UserSelectedNote);
+    this.dataServices.userHasSelectNote("ActionNotPerformed", this.UserSelectedNote);
   }
 
-  ShowListView() {
-    this.showGridView = true;
+  pinUnPinAllTheSelectedNote(flag: boolean) {
+
+    var pinNoted = [];
+
+    for(var note = 0; note < this.UserSelectedNote.length; note++) {
+      var pinNote: Pinnote = {
+        NoteId: this.UserSelectedNote[note].noteId,
+        IsPin: flag
+      };
+      pinNoted.push(pinNote);
+    }
+
+    var pinNotes: Listofpinnote = {
+      PinnedNotes: pinNoted
+    };
+
+    this.note.pinTheNote(pinNotes).
+      subscribe(data => {
+        if(data.status) {
+          this.UserSelectedNote = [...data.data];
+          this.dataServices.userHasSelectNote("ActionPerformed", this.UserSelectedNote);
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
+
   }
 
-  ShowGridView() {
-    this.showGridView = false;
+
+  ShowListView(flag: boolean) {
+    this.showGridView = flag;
+    this.dataServices.UserChangedView(flag)
+  }
+
+  sendToTrash() {
+    
   }
 
   showSearchField() {
@@ -110,24 +174,28 @@ export class DashboardComponent implements OnInit {
   reminderClick() {
     this.showKeepIcon = true;
     this.title = "Reminder";
+    this.UserSelectedNote = [];
     localStorage.setItem("fundooTitle", this.title);
   }
 
   onLabelClick(labelName: string) {
     this.showKeepIcon = true;
     this.title= labelName;
+    this.UserSelectedNote = [];
     localStorage.setItem("fundooTitle", this.title);
   }
 
   archiveClick() {
     this.showKeepIcon = true;
     this.title = "Archive";
+    this.UserSelectedNote = [];
     localStorage.setItem("fundooTitle", this.title);
   }
 
   deleteClick() {
     this.showKeepIcon = true;
     this.title = "Trash";
+    this.UserSelectedNote = [];
     localStorage.setItem("fundooTitle", this.title);
   }
 

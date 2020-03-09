@@ -1,7 +1,7 @@
 <div class="dashboardContainer" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="headerToolbar" style="height: 65px;" fxLayout="row" fxLayoutAlign="space-between center">
     <div style="width: 100%;" *ngIf="(UserSelectedNote.length == 0) ? true : false">
-      <div fxLayout="row" fxLayout.xs="row" class="leftSideBoard" fxLayoutAlign="center center">
+      <div fxLayout="row" fxLayout.xs="row" class="leftSideBoard" >
         <button mat-icon-button (click)="snav.toggle()">
           <i class="material-icons-outlined">menu</i>
         </button>
@@ -31,10 +31,10 @@
           </button>
         </div>
         <div class="viewListDiv" fxLayoutAlign="center center">
-          <button mat-icon-button *ngIf="!showGridView" (click)="ShowListView()" title="List View">
+          <button mat-icon-button *ngIf="!showGridView" (click)="ShowListView(true)" title="List View">
             <img class="listView" src="../../../assets/List View.svg" alt="List View">
           </button>
-          <button mat-icon-button *ngIf="showGridView" (click)="ShowGridView()" title="Grid View">
+          <button mat-icon-button *ngIf="showGridView" (click)="ShowListView(false)" title="Grid View">
             <img class="gridView" src="../../../assets/Grid View.svg" alt="Grid View">
           </button>
         </div>
@@ -87,24 +87,31 @@
         </button>
         <span class="countUserSelected">{{ UserSelectedNote.length }} Selected</span>
         <div class="selectedNoteActionDiv">
-          <button mat-icon-button tabindex="-1" title="Pin Notes">
+          <button mat-icon-button tabindex="-1" (click)="pinUnPinAllTheSelectedNote(true)" *ngIf="!showPin"  title="Pin Notes">
             <img src="../../../assets/blue_pin.svg" alt="blue Pin">
           </button>
-          <button mat-icon-button tabindex="-1" title="Pin Notes">
-            <img src="../../../assets/blue_unpin.svg" alt="blue Pin">
+          <button mat-icon-button tabindex="-1" (click)="pinUnPinAllTheSelectedNote(false)" *ngIf="showPin" title="Unpin Notes">
+            <img src="../../../assets/blue_unpin.svg" alt="blue UnPin">
           </button>
           <button mat-icon-button tabindex="-1" title="Remind me">
-            <img src="../../../assets/blue_reminder.svg" alt="blue Pin">
+            <img src="../../../assets/blue_reminder.svg" alt="blue Remin Me">
           </button>
           <button mat-icon-button tabindex="-1" title="Change color">
-            <img src="../../../assets/blue_color.svg" alt="blue Pin">
+            <img src="../../../assets/blue_color.svg" alt="blue Change Color">
           </button>
-          <button mat-icon-button tabindex="-1" title="Archive">
-            <img src="../../../assets/blue_archive.svg" alt="blue Pin">
+          <button mat-icon-button tabindex="-1" *ngIf="!showArchive" title="Archive">
+            <img src="../../../assets/blue_archive.svg" alt="blue archive">
           </button>
-          <button mat-icon-button tabindex="-1" title="More">
-            <img src="../../../assets/blue_more.svg" alt="blue Pin">
+          <button mat-icon-button tabindex="-1" *ngIf="showArchive" title="Unarchive">
+            <img src="../../../assets/blue_unarchive.svg" alt="blue unarchive">
           </button>
+          <button mat-icon-button tabindex="-1" title="More" [matMenuTriggerFor]="blueMoreMenu" >
+            <img src="../../../assets/blue_more.svg" alt="blue more">
+          </button>
+          
+      <mat-menu #blueMoreMenu="matMenu"  yPosition="below">
+          <button mat-menu-item (click)="sendToTrash()">Delete note</button>
+      </mat-menu>
         </div>
       </div>
     </div>

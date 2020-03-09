@@ -7,6 +7,7 @@ import { Pinnote } from 'src/app/Model/pinnote';
 import { Updatenote } from 'src/app/Model/updatenote';
 import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
+import { Listofpinnote } from 'src/app/Model/listofpinnote';
 
 @Component({
   selector: 'app-notedialog',
@@ -84,12 +85,21 @@ export class NotedialogComponent implements OnInit {
 
   userPinnedTheNote(noteId: number, flag: boolean) {
 
+    var pinNoted = [];
 
     var pinTheNote: Pinnote = {
+      NoteId: noteId,
       IsPin: flag
     }
 
-    this.notes.pinTheNote(noteId, pinTheNote).
+    pinNoted.push(pinTheNote);
+
+    var pinNote: Listofpinnote = {
+      PinnedNotes: pinNoted
+    }
+
+
+    this.notes.pinTheNote(pinNote).
       subscribe(data => {
         if (data.status) {
           this.note.isPin = flag;

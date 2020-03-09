@@ -11,7 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ReminderComponent implements OnInit {
 
   chckError: string;
-  reminderNotes=[];
+  firedReminderNotes=[];
+  upcomingReminderNotes=[];
   reminderIcon: string;
   emptyReminderText: string;
 
@@ -30,7 +31,8 @@ export class ReminderComponent implements OnInit {
     this.notes.GetAllReminderNotes().
       subscribe(data => {
         if(data.status)
-          this.reminderNotes = data.data;
+          this.firedReminderNotes = data.data.filter(note => note.reminder < Date.toString());
+          console.log(this.firedReminderNotes);
       },
       error => {
 

@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { HttpServiceService } from '../httpservice/http-service.service';
 import { Archivenote } from '../../Model/archivenote';
-import { Pinnote } from '../../Model/pinnote';
 import { Createnote } from '../../Model/createnote';
 import { Listofcollaborator } from '../../Model/listofcollaborator';
 import { Color } from 'src/app/Model/color';
 import { Updatenote } from 'src/app/Model/updatenote';
+import { Listofpinnote } from 'src/app/Model/listofpinnote';
+import { Reminder } from 'src/app/Model/reminder';
 
 @Injectable({
   providedIn: 'root'
@@ -59,8 +60,8 @@ export class NotesService {
     return this.http.put("Notes/" + noteId + "/Archive", archiveNote, true);
   }
 
-  pinTheNote(noteId: number, pinNote: Pinnote) {
-    return this.http.put("Notes/"+ noteId + "/Pin", pinNote, true);
+  pinTheNote(pinNote: Listofpinnote) {
+    return this.http.put("Notes/Pin", pinNote, true);
   }
 
   uploadNoteImage(noteId: number, file: FormData) {
@@ -77,6 +78,10 @@ export class NotesService {
 
   AddLabelToNote(noteId: number, label) {
     return this.http.put("Notes/Label/"+noteId, label, true);
+  }
+
+  AddReminderToNote(noteId: number, reminder: Reminder) {
+    return this.http.put("Notes/"+noteId+"/Reminder", reminder, true);
   }
 
   RemoveImage(noteId: number) {

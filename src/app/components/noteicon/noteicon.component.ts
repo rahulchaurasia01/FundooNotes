@@ -11,6 +11,7 @@ import { Color } from 'src/app/Model/color';
 import { Label } from 'src/app/Model/label';
 import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
+import { Reminder } from 'src/app/Model/reminder';
 
 @Component({
   selector: 'app-noteicon',
@@ -134,9 +135,51 @@ export class NoteiconComponent implements OnInit {
     this.labelClicked = false;
   }
 
-  setTonightReminder() {
+  setTonightReminder(noteId: number) {
     var date = new Date();
-    console.log(date.getHours());
+    date.setHours(20,0,0,0);
+
+    var reminder:Reminder = {
+      Reminder: date
+    };
+
+    console.log(reminder);
+
+    this.AddReminderToNote(noteId, reminder);
+
+  }
+
+  setTomorrowReminder(noteId: number) {
+    var date = new Date();
+    
+    date.setHours(8,0,0,0);
+    console.log(date);
+  }
+
+  AddReminderToNote(noteId, reminder: Reminder) {
+
+    this.note.AddReminderToNote(noteId, reminder).
+      subscribe(data => {
+        if(!data.status) {
+          this._snackBar.open(data.message, "Close", {
+            duration: 5000,
+          });
+        }
+        else {
+          console.log(data);
+        }
+      },
+      error => {
+        if (error.error.message)
+          this.chckError = error.error.message;
+        else
+          this.chckError = "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
   }
 
   showDateTimePicker() {

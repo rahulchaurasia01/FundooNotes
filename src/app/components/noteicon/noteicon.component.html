@@ -9,7 +9,7 @@
           <div class="reminderDiv">
             Reminder:
           </div>
-          <div class="tonightReminder" (click)="setTonightReminder()" >
+          <div class="tonightReminder" (click)="setTonightReminder(grandParentNote.noteId)" >
             <div fxLayout="row">
               <div fxFlex="auto">
                 Later today
@@ -19,7 +19,7 @@
               </div>
             </div>
           </div>
-          <div class="tomorrowReminder">
+          <div class="tomorrowReminder" (click)="setTomorrowReminder(grandParentNote.noteId)" >
             <div fxLayout="row">
               <div fxFlex="auto">
                 Tomorrow

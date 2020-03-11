@@ -8,6 +8,7 @@ import { Color } from 'src/app/Model/color';
 import { Updatenote } from 'src/app/Model/updatenote';
 import { Listofpinnote } from 'src/app/Model/listofpinnote';
 import { Reminder } from 'src/app/Model/reminder';
+import { Listofdeletenote } from 'src/app/Model/listofdeletenote';
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +41,12 @@ export class NotesService {
     return this.http.delete("Notes/BulkDelete", true);
   }
 
-  deleteNote(noteId: number) {
-    return this.http.delete("Notes/"+noteId, true);
+  TrashNotes(deleteNote: Listofdeletenote) {
+    return this.http.put("Notes/TrashNotes", deleteNote, true);
+  }
+
+  DeleteNotePermanently(deleteNote: Listofdeletenote) {
+    return this.http.put("Notes/DeleteNotes", deleteNote, true);
   }
 
   uploadImageToCloudinary(file: FormData) {

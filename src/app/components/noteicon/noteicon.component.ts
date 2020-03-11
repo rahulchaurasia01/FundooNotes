@@ -9,9 +9,11 @@ import { CollaboratordialogComponent } from '../collaboratordialog/collaboratord
 import { LabeldataService } from '../../services/dataservice/data.service';
 import { Color } from 'src/app/Model/color';
 import { Label } from 'src/app/Model/label';
+import { Deletenote } from 'src/app/Model/deletenote';
 import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 import { Reminder } from 'src/app/Model/reminder';
+import { Listofdeletenote } from 'src/app/Model/listofdeletenote';
 
 @Component({
   selector: 'app-noteicon',
@@ -468,12 +470,27 @@ export class NoteiconComponent implements OnInit {
     }
   }
 
-  sendToTrash(noteId: number) {
+  sendToTrash() {
 
-    this.note.deleteNote(noteId).
+    var deleteNote =[];
+
+    var deleteNoteId: Deletenote = {
+      NoteId: this.grandParentNote.noteId
+    }
+
+    deleteNote.push(deleteNoteId);
+
+    var deleteNotes: Listofdeletenote = {
+      DeleteNotes: deleteNote
+    }
+
+    this.note.TrashNotes(deleteNotes).
       subscribe(data => {
         if (data.status) {
-          this.sendMessageToParent(noteId);
+          if(this.grandParentNote.isPin)
+            this.updatePinNoteInNotes.emit(this.grandParentNote);
+          else if(!this.grandParentNote.isPin)
+            this.updateOtherNoteInNotes.emit(this.grandParentNote);
           this._snackBar.open("Note trashed", "Close", {
             duration: 5000,
           });
@@ -496,12 +513,12 @@ export class NoteiconComponent implements OnInit {
         })
   }
 
-  restoreNote(noteId: number) {
+  restoreNote() {
 
-    this.note.restoreTheNote(noteId).
+    this.note.restoreTheNote(this.grandParentNote.noteId).
       subscribe(data => {
         if (data.status) {
-          this.sendMessageToParent(noteId);
+          this.sendMessageToParent(this.grandParentNote);
           this._snackBar.open("Note restored", "Close", {
             duration: 5000,
           });
@@ -519,19 +536,19 @@ export class NoteiconComponent implements OnInit {
         })
   }
 
-  singleDeleteNote(noteId: number) {
+  DeleteNotePermanently() {
     this.deleteText = "Delete note forever?";
     this.deleteButtonText = "Delete";
-    this.openSingleDeleteDialog(noteId);
+    this.openSingleDeleteDialog();
   }
 
-  openSingleDeleteDialog(noteId: number): void {
+  openSingleDeleteDialog(): void {
     const dialogRef = this.dialog.open(DeletedialogComponent, {
       data: {
         type: "Note",
         deleteText: this.deleteText,
         deleteButtonText: this.deleteButtonText,
-        noteId: noteId
+        noteId: this.grandParentNote.noteId
       },
 
       panelClass: 'editLabelDialogContainer',
@@ -540,7 +557,7 @@ export class NoteiconComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result == true) {
-        this.sendMessageToParent(noteId);
+        this.sendMessageToParent(this.grandParentNote);
       }
       else if (result == false) {
         this._snackBar.open("Unable to delete the Note", "Close", {

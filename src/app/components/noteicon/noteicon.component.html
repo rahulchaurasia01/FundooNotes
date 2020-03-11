@@ -116,7 +116,7 @@
       <mat-menu #moreMenu="matMenu" xPosition="after" (closed)="labelMenuClosed()" yPosition="below">
         <div *ngIf="!labelClicked">
           <button mat-menu-item *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? false : true"
-            (click)="sendToTrash(grandParentNote.noteId)">Delete note</button>
+            (click)="sendToTrash()">Delete note</button>
           <button mat-menu-item
             *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false"
             (click)="$event.stopPropagation()" (click)="labelClickedByUser()">Add label</button>
@@ -151,7 +151,7 @@
   </div>
   <div class="noteActionToobar" *ngIf="(grandParentIcon == 'delete') ? true : false">
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button title="Delete Forever" tabindex="-1" (click)="singleDeleteNote(grandParentNote.noteId)">
+      <button mat-icon-button title="Delete Forever" tabindex="-1" (click)="DeleteNotePermanently()">
         <i class="material-icons-outlined">delete_forever</i>
       </button>
     </div>

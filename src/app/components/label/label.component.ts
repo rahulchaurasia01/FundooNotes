@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { LabelsService } from '../../services/label/labels.service';
+import { LabeldataService } from '../../services/dataservice/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -21,8 +22,12 @@ export class LabelComponent implements OnInit {
   pintitleText: string;
   showOtherTitle: boolean = false;
   otherTitleText: string;
+  userPinSelectedNote = [];
+  userUnPinSelectedNote = [];
+  userSelectedNote = [];
 
-  constructor(private routeParam: ActivatedRoute, private label: LabelsService, private _snackBar: MatSnackBar) { }
+  constructor(private routeParam: ActivatedRoute, private label: LabelsService, private _snackBar: MatSnackBar,
+    private dataService: LabeldataService) { }
 
   ngOnInit() {
 
@@ -36,6 +41,38 @@ export class LabelComponent implements OnInit {
     this.labelIcon = "label";
     this.emptyLabelText = "No notes with this label yet";
     
+  }
+
+
+  addPinSelectedNote($event) {
+    this.userPinSelectedNote = $event;
+
+    if(this.userUnPinSelectedNote.length == 0) {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userPinSelectedNote];
+    }
+    else {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userPinSelectedNote, ...this.userUnPinSelectedNote];
+    }
+  
+    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
+
+  }
+
+  addUnPinSelectedNote($event) {
+    this.userUnPinSelectedNote = $event;
+
+    if(this.userPinSelectedNote.length == 0) {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userUnPinSelectedNote];
+    }
+    else {
+      this.userSelectedNote = [];
+      this.userSelectedNote = [...this.userUnPinSelectedNote, ...this.userPinSelectedNote];
+    }
+
+    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
   }
 
   updateUnPin($event) {

@@ -3,9 +3,11 @@
 <app-displaynote *ngIf="(pinLabelsNotes.length > 0) ? true : false" [displayTitle]="showPinTitle"
     [displayTitleText]="pintitleText" [displayNotes]="pinLabelsNotes" [parentIcon]="labelIcon"
     [emptyContentText]="emptyLabelText" (updateUnPinNoteInNotes)="updateUnPin($event)" 
-    (updateArchiveInPinNotes)="updateArchiveInPinNote($event)"></app-displaynote>
+    (updateArchiveInPinNotes)="updateArchiveInPinNote($event)"
+    (sendPinSelectedNoteToNotes)="addPinSelectedNote($event)" ></app-displaynote>
 
 <app-displaynote *ngIf="(otherLabelsNotes.length > 0) ? true : false" [displayTitle]="showOtherTitle"
     [displayTitleText]="otherTitleText" [displayNotes]="otherLabelsNotes" [parentIcon]="labelIcon"
     [emptyContentText]="emptyLabelText" (updatePinNoteInNotes)="updatePin($event)"
-    (updateArchiveInOtherNotes)="updateArchiveInOtherNote($event)" ></app-displaynote>
+    (updateArchiveInOtherNotes)="updateArchiveInOtherNote($event)"
+    (sendUnPinSelectedNoteToNotes)="addUnPinSelectedNote($event)" ></app-displaynote>

@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotesService } from '../../services/note/notes.service';
 import { LabelsService } from '../../services/label/labels.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Deletenote } from 'src/app/Model/deletenote';
+import { Listofdeletenote } from 'src/app/Model/listofdeletenote';
 
 @Component({
   selector: 'app-deletedialog',
@@ -24,7 +26,20 @@ export class DeletedialogComponent implements OnInit {
 
     if (this.data.type == "Note") {
       if (this.data.noteId) {
-        this.note.deleteNote(this.data.noteId).
+
+        var deleteNote = [];
+
+        var deleteNoteById: Deletenote = {
+          NoteId: this.data.noteId
+        };
+
+        deleteNote.push(deleteNoteById);
+
+        var deleteNotes: Listofdeletenote = {
+          DeleteNotes: deleteNote
+        };
+
+        this.note.DeleteNotePermanently(deleteNotes).
           subscribe(data => {
             if (data.status)
               this.dialogRef.close(data.status);

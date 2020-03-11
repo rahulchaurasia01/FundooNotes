@@ -36,6 +36,15 @@ export class NotesComponent implements OnInit {
 
   }
 
+
+  updateDeletePinNote($event) {
+    this.pinNotes = this.pinNotes.filter(note => note.noteId !== $event.noteId);
+  }
+
+  updateDeleteUnPinNote($event) {
+    this.otherNotes = this.otherNotes.filter(note => note.noteId !== $event.noteId);
+  }
+
   addNoteCreated($event) {
     if (!$event.isArchived && $event.isPin) {
       this.pinNotes = [$event, ...this.pinNotes];
@@ -76,7 +85,7 @@ export class NotesComponent implements OnInit {
       this.userSelectedNote = [...this.userPinSelectedNote, ...this.userUnPinSelectedNote];
     }
   
-    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
+    this.dataService.userHasSelectNote("NoteActionNotPerformed", this.userSelectedNote);
 
   }
 
@@ -92,7 +101,7 @@ export class NotesComponent implements OnInit {
       this.userSelectedNote = [...this.userUnPinSelectedNote, ...this.userPinSelectedNote];
     }
 
-    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
+    this.dataService.userHasSelectNote("NoteActionNotPerformed", this.userSelectedNote);
 
   }
 
@@ -111,7 +120,6 @@ export class NotesComponent implements OnInit {
       this.otherTitleText = "";
     }
   }
-
 
   updatePin($event) {
     this.otherNotes.forEach(note => {

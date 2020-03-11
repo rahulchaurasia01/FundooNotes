@@ -27,6 +27,9 @@ export class DisplaynoteComponent implements OnInit {
   @Output() updatePinNoteInNotes = new EventEmitter<any>();
   @Output() updateUnPinNoteInNotes = new EventEmitter<any>();
 
+  @Output() updateDeletePinNoteInNotes = new EventEmitter<any>();
+  @Output() updateDeleteUnPinNoteInNotes = new EventEmitter<any>();
+
   @Output() updateArchiveInPinNotes = new EventEmitter<any>();
   @Output() updateArchiveInOtherNotes = new EventEmitter<any>();
 
@@ -59,45 +62,101 @@ export class DisplaynoteComponent implements OnInit {
     })
 
     this.dataService.currentUserSelectedNoteData.subscribe(data => {
-      if((data.Type == "ActionNotPerformed") && (data.data.length == 0)) {
+      if ((data.Type == "ActionNotPerformed") && (data.data.length == 0)) {
         this.userPinSelectedNote = [];
         this.userUnPinSelectedNote = [];
       }
-      else {
-        if ((data.Type == "ActionPerformed")) {
+      else if (data.Type == "NotePinActionPerformed") {
 
-          if (data.data[0].isPin) {
-            for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
-              for (var note = 0; note < this.displayNotes.length; note++) {
-                if (data.data[dataNote].noteId == this.displayNotes[note].noteId) {
-                  this.displayNotes[note] = data.data[dataNote]
-                  this.updatePinNoteInNotes.emit(this.displayNotes[note]);
-                }
+        if (data.data[0].isPin) {
+          for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
+            for (var note = 0; note < this.displayNotes.length; note++) {
+              if (data.data[dataNote].noteId == this.displayNotes[note].noteId) {
+                this.displayNotes[note] = data.data[dataNote]
+                this.updatePinNoteInNotes.emit(this.displayNotes[note]);
               }
             }
-
           }
-          else {
-            for(var dataNote =0; dataNote < data.data.length; dataNote++ ) {
-              for(var note = 0; note < this.displayNotes.length; note++) {
-                if(data.data[dataNote].noteId == this.displayNotes[note].noteId) {
-                  this.displayNotes[note] = data.data[dataNote]
-                  this.updateUnPinNoteInNotes.emit(this.displayNotes[note]);
-                }
+
+        }
+        else {
+          for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
+            for (var note = 0; note < this.displayNotes.length; note++) {
+              if (data.data[dataNote].noteId == this.displayNotes[note].noteId) {
+                this.displayNotes[note] = data.data[dataNote]
+                this.updateUnPinNoteInNotes.emit(this.displayNotes[note]);
               }
             }
-            
           }
-          this.userPinSelectedNote = [];
-          this.userUnPinSelectedNote = [];
-          this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
-          this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
-          this.dataService.userHasSelectNote("ActionNotPerformed", []);
-          
-        } 
+
+        }
+        this.userPinSelectedNote = [];
+        this.userUnPinSelectedNote = [];
+        this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
+        this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
+        this.dataService.userHasSelectNote("ActionNotPerformed", []);
+
       }
+      else if(data.Type == "NoteDeleteActionPerformed") {
+
+        for(var selectedNote = 0; selectedNote < data.data.length; selectedNote++) {
+          if(data.data[selectedNote].isPin) 
+            this.updateDeletePinNoteInNotes.emit(data.data[selectedNote]);
+          else
+            this.updateDeleteUnPinNoteInNotes.emit(data.data[selectedNote]);
+        }
+
+        this.userPinSelectedNote = [];
+        this.userUnPinSelectedNote = [];
+        this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
+        this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
+        this.dataService.userHasSelectNote("NoteActionNotPerformed", []);
+
+      }
+      else if(data.Type == "ArchivePinActionPerformed" || data.Type == "ArchiveDeleteActionPerformed") {
+
+        for(var selectedPinNote = 0; selectedPinNote < data.data.length; selectedPinNote++) {
+          this.displayNotes = this.displayNotes.filter(note => note.noteId !== data.data[selectedPinNote].noteId);
+        }
+
+        this.userUnPinSelectedNote = [];
+        this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
+        this.dataService.userHasSelectNote("ActionNotPerformed", []);
+
+      }
+
     })
 
+  }
+
+
+  deleteImageClicked(note: any) {
+    this.note.RemoveImage(note.noteId).
+      subscribe(data => {
+        if(!data.status) {
+          this._snackBar.open(data.message, "Close", {
+            duration: 5000,
+          });
+        }
+        else {
+          for (var noted = 0; noted < this.displayNotes.length; noted++) {
+            if (this.displayNotes[noted].noteId == note.noteId)
+              this.displayNotes[noted] = data.data;
+          }
+
+        } 
+
+      },
+      error => {
+        if(error.error.message)
+          this.chckError = error.error.message;
+        else
+          this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
   }
 
   mouseNotOnNote() {
@@ -266,6 +325,12 @@ export class DisplaynoteComponent implements OnInit {
       if(result != null) {
         for(var note =0; note < this.displayNotes.length; note++) {
           if(this.displayNotes[note].noteId == result.noteId) {
+            if(result.isPin)
+              this.updatePinNoteInNotes.emit(this.displayNotes[note]);
+            else
+              this.updateUnPinNoteInNotes.emit(this.displayNotes[note]);
+            
+
             this.displayNotes[note] = result;
           }
         }

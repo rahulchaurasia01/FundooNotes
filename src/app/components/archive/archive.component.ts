@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { LabeldataService } from '../../services/dataservice/data.service';
 import { NotesService } from '../../services/note/notes.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -15,7 +16,10 @@ export class ArchiveComponent implements OnInit {
   emptyArchiveContent: string;
   chckError: string;
 
-  constructor(private notes: NotesService, private _snackBar: MatSnackBar) { }
+  userSelectedNote=[];
+
+  constructor(private notes: NotesService, private _snackBar: MatSnackBar,
+    private dataService: LabeldataService) { }
 
   ngOnInit() {
 
@@ -24,6 +28,13 @@ export class ArchiveComponent implements OnInit {
 
     this.GetAllArchiveNotes();
 
+  }
+
+
+  userArchiveSelectedNote($event) {
+    this.userSelectedNote = [];
+    this.userSelectedNote = [...$event];
+    this.dataService.userHasSelectNote("ArchiveActionNotPerformed", this.userSelectedNote); 
   }
 
 

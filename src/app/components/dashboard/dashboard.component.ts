@@ -11,6 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditlabelComponent } from '../editlabel/editlabel.component';
 import { Pinnote } from 'src/app/Model/pinnote';
 import { Listofpinnote } from 'src/app/Model/listofpinnote';
+import { Deletenote } from 'src/app/Model/deletenote';
+import { Listofdeletenote } from 'src/app/Model/listofdeletenote';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,6 +36,7 @@ export class DashboardComponent implements OnInit {
   showGridView: boolean;
   showPin: boolean;
   showArchive: boolean;
+  componentType: string;
   UserSelectedNote = [];
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
@@ -67,6 +70,7 @@ export class DashboardComponent implements OnInit {
     this.dataServices.currentUserSelectedNoteData.
       subscribe(data => {
         this.UserSelectedNote = data.data;
+        this.componentType = data.Type;
 
          if(this.UserSelectedNote.filter(note => !note.isPin).length > 0) {
            this.showPin = false;
@@ -125,7 +129,11 @@ export class DashboardComponent implements OnInit {
       subscribe(data => {
         if(data.status) {
           this.UserSelectedNote = [...data.data];
-          this.dataServices.userHasSelectNote("ActionPerformed", this.UserSelectedNote);
+          if(this.componentType == "NoteActionNotPerformed")
+            this.dataServices.userHasSelectNote("NotePinActionPerformed", this.UserSelectedNote);
+          else if(this.componentType == "ArchiveActionNotPerformed") {
+            this.dataServices.userHasSelectNote("ArchivePinActionPerformed", this.UserSelectedNote);
+          }
         }
         else {
           this._snackBar.open(data.message, "Close", {
@@ -147,7 +155,6 @@ export class DashboardComponent implements OnInit {
 
   }
 
-
   ShowListView(flag: boolean) {
     this.showGridView = flag;
     this.dataServices.UserChangedView(flag)
@@ -155,6 +162,46 @@ export class DashboardComponent implements OnInit {
 
   sendToTrash() {
     
+    var deleteNote = [];
+
+    for(var note =0; note < this.UserSelectedNote.length; note++) {
+      var deleteNoteById: Deletenote = {
+        NoteId: this.UserSelectedNote[note].noteId
+      };
+
+      deleteNote.push(deleteNoteById);
+    }
+
+    var deleteNotes: Listofdeletenote = {
+      DeleteNotes: deleteNote
+    };
+
+    this.note.TrashNotes(deleteNotes).
+      subscribe(data => {
+        if(data.status) {
+          if(this.componentType == "NoteActionNotPerformed")
+            this.dataServices.userHasSelectNote("NoteDeleteActionPerformed", this.UserSelectedNote);
+            else if(this.componentType == "ArchiveActionNotPerformed") {
+              this.dataServices.userHasSelectNote("ArchiveDeleteActionPerformed", this.UserSelectedNote);
+            }
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
   }
 
   showSearchField() {
@@ -168,6 +215,7 @@ export class DashboardComponent implements OnInit {
   notesClick() {
     this.showKeepIcon = false;
     this.title = "Fundoo";
+    this.UserSelectedNote = [];
     localStorage.setItem("fundooTitle", this.title);
   }
 

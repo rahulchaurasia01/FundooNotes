@@ -1,1 +1,2 @@
-<app-displaynote [displayNotes]="archiveNotes" [parentIcon]="archiveIcon" [emptyContentText]="emptyArchiveContent"></app-displaynote>
+<app-displaynote [displayNotes]="archiveNotes" [parentIcon]="archiveIcon"
+ [emptyContentText]="emptyArchiveContent" (sendUnPinSelectedNoteToNotes)="userArchiveSelectedNote($event)" ></app-displaynote>

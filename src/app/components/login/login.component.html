@@ -16,7 +16,7 @@
           </div>
         </mat-card-header>
         <mat-card-content class="matContent">
-          <form [formGroup]="loginInformation" (ngSubmit)="loginData(loginInformation.value)" onvalidate>
+          <form [formGroup]="loginInformation" (ngSubmit)="loginData(loginInformation.value)" novalidate>
             <div>
               <mat-form-field appearance="outline" hideRequiredMarker>
                 <mat-label>Email</mat-label>

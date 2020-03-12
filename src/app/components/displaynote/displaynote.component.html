@@ -30,7 +30,7 @@
 
           <button class="deleteImage" *ngIf="(note.image == null || note.image == '' ? false : true) "
             [ngStyle]="{'visibility': (note.noteId == mouseNote || checkSelectedNote(note)) ? 'visible' : 'hidden'}"
-            (click)="deleteImageClicked(note)"  mat-icon-button tabindex="-1">
+            (click)="deleteImageClicked(note)" title="Remove Image"  mat-icon-button tabindex="-1">
             <i class="material-icons-outlined">delete</i>
           </button>
 

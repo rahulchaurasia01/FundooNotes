@@ -110,7 +110,7 @@
       </button>
     </div>
     <div class="iconActionDiv" fxLayoutAlign="center center">
-      <button mat-icon-button tabindex="-1" [matMenuTriggerFor]="moreMenu">
+      <button mat-icon-button tabindex="-1" title="More" [matMenuTriggerFor]="moreMenu">
         <i class="material-icons-outlined">more_vert</i>
       </button>
       <mat-menu #moreMenu="matMenu" xPosition="after" (closed)="labelMenuClosed()" yPosition="below">

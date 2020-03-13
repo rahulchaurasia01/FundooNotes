@@ -7,7 +7,7 @@ export interface Createnote {
     IsPin: boolean;
     IsArchived: boolean;
     IsDeleted: boolean;
-    Reminder: string;
+    Reminder: Date;
     Label:any
     Collaborators: any;
 

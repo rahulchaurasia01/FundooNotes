@@ -5,6 +5,7 @@ import { NotesService } from '../../services/note/notes.service';
 import { UserService } from '../../services/user/user.service';
 import { Collaborator } from 'src/app/Model/collaborator';
 import { Notelabel } from 'src/app/Model/notelabel';
+import { Reminder } from 'src/app/Model/reminder';
 
 @Component({
   selector: 'app-createnote',
@@ -23,6 +24,7 @@ export class CreatenoteComponent implements OnInit {
   isPinned: boolean = false;
   isArchive: boolean;
   labels=[];
+  reminder: Date;
   collaboratorClicked: boolean = true;
   noteIconAccessFrom: string;
   collaboratorUserList=[];
@@ -41,6 +43,7 @@ export class CreatenoteComponent implements OnInit {
     this.noteIconAccessFrom = "Create Note";
     this.color = "#fff";
     this.image = '';
+    this.reminder = null;
   }
 
   sendMessageToParent(note: any) {
@@ -62,6 +65,14 @@ export class CreatenoteComponent implements OnInit {
 
   updateLabelInCreateNote($event) {
     this.labels = $event;
+  }
+
+  updateReminderInCreateNote($event) {
+    this.reminder = $event;
+  }
+
+  removeReminderFromCreateNote() {
+    this.reminder = null;
   }
 
   updateImageInCreateNote($event) {
@@ -112,7 +123,7 @@ export class CreatenoteComponent implements OnInit {
         IsPin: this.isPinned,
         IsArchived: this.isArchive,
         IsDeleted: false,
-        Reminder: '',
+        Reminder: this.reminder,
         Label: label,
         Collaborators: collaborator
       };
@@ -144,6 +155,7 @@ export class CreatenoteComponent implements OnInit {
     this.isPinned = false;
     this.isArchive = false;
     this.color = "#fff";
+    this.reminder = null;
   }
 
 }

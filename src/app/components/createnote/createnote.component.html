@@ -35,6 +35,15 @@
       </div>
     </div>
     <div fxLayout="row wrap">
+      <div fxLayoutAlign="center center" *ngIf="(reminder == null || reminder == '') ? false : true">
+        <mat-chip-list aria-label="Note Reminder">
+          <mat-chip fxLayout="row" fxLayoutAlign="center center">
+            {{ reminder | reminder }}
+            <i class="material-icons-outlined labelcancel"
+              (click)="removeReminderFromCreateNote()">cancel</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
       <div fxLayoutAlign="center center" *ngIf="(labels == null || labels.length <= 0) ? false : true">
         <mat-chip-list aria-label="Note Label">
           <mat-chip fxLayout="row" *ngFor="let label of labels" fxLayoutAlign="center center">
@@ -61,7 +70,8 @@
     <app-noteicon [accessFrom]="noteIconAccessFrom" (UpdateColorInCreateNote)="updateColor($event)"
       (UpdateCollaboratorToCreateNote)="updateCollabToCreateNote($event)"
       (sendParentRefresh)="recieveDataFromIconChild($event)" (UpdateLabelsInCreateNote) = "updateLabelInCreateNote($event)"
-      (UpdateArchiveInCreateNote)="updateArchiveInCreateNote($event)" [labelDataFromCreateNote]="labels"
+      (UpdateArchiveInCreateNote)="updateArchiveInCreateNote($event)"
+      (UpdateReminderInCreateNote)="updateReminderInCreateNote($event)" [labelDataFromCreateNote]="labels"
       (UpdateImageInCreateNote)="updateImageInCreateNote($event)" [grandParentNote]="collaboratorUserList"
       [grandParentIcon]="parentIcon"></app-noteicon>
     <div class="closeButton">

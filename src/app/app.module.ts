@@ -29,6 +29,7 @@ import { AuthGuard } from './services/authguard/auth.guard';
 import { NgxMasonryModule } from 'ngx-masonry';
 
 import { HttpClientModule } from '@angular/common/http';
+import { ReminderPipe } from './pipe/reminder.datepipe';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { HttpClientModule } from '@angular/common/http';
     DeletedialogComponent,
     NoteiconComponent,
     NotedialogComponent,
-    CollaboratordialogComponent
+    CollaboratordialogComponent,
+    ReminderPipe
   ],
   imports: [
     BrowserModule,

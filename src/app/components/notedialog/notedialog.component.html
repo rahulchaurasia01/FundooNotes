@@ -19,6 +19,15 @@
         cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
     </div>
     <div fxLayout="row wrap">
+      <div fxLayoutAlign="center center" *ngIf="(note.reminder == null || note.reminder == '') ? false : true">
+        <mat-chip-list aria-label="Note Reminder">
+          <mat-chip fxLayout="row" fxLayoutAlign="center center">
+            {{ note.reminder | reminder }}
+            <i class="material-icons-outlined labelcancel"
+              (click)="removeReminderFromNote()">cancel</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
       <div fxLayoutAlign="center center" *ngIf="(note.labels == null || note.labels.length <= 0) ? false : true">
         <mat-chip-list aria-label="Note Label">
           <mat-chip fxLayout="row" *ngFor="let label of note.labels" fxLayoutAlign="center center">

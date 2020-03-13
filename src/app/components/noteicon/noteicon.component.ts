@@ -29,19 +29,20 @@ export class NoteiconComponent implements OnInit {
 
   @Output() sendParentRefresh = new EventEmitter<number>();
 
-  @Output() UpdateCollaboratorToCreateNote = new EventEmitter<any>();
-  @Output() updateCollaboratorToDisplayNote = new EventEmitter<any>();
 
+  @Output() UpdateCollaboratorToCreateNote = new EventEmitter<any>();
   @Output() UpdateColorInCreateNote = new EventEmitter<string>();
   @Output() UpdateImageInCreateNote = new EventEmitter<string>();
+  @Output() UpdateArchiveInCreateNote = new EventEmitter<any>();
+  @Output() UpdateLabelsInCreateNote = new EventEmitter<any>();
+  @Output() UpdateReminderInCreateNote = new EventEmitter<Date>();
 
   @Output() UpdateNoteInDisplayNote = new EventEmitter<any>();
+  @Output() updateCollaboratorToDisplayNote = new EventEmitter<any>();
+  
   @Output() UpdateNoteInEditNote = new EventEmitter<any>();
-
-  @Output() UpdateArchiveInCreateNote = new EventEmitter<any>();
   @Output() UpdateArchiveInEditNote = new EventEmitter<any>();
 
-  @Output() UpdateLabelsInCreateNote = new EventEmitter<any>();
   @Output() updatePinNoteInNotes = new EventEmitter<any>();
   @Output() updateOtherNoteInNotes = new EventEmitter<any>();
 
@@ -56,6 +57,7 @@ export class NoteiconComponent implements OnInit {
   dateTimeClicked: boolean;
   labelName: string;
   labels = [];
+  ReminderforCreateNote: Date;
   labelsForCreateNote =[];
 
   isArchive: boolean;
@@ -118,7 +120,11 @@ export class NoteiconComponent implements OnInit {
 
     this.isArchive = false;
     this.labelClicked = false;
-    this.dateTimeClicked = false;
+
+    if(this.grandParentNote.reminder != null)
+      this.dateTimeClicked = true;
+    else
+      this.dateTimeClicked = false;
 
     this.labelData.currentLabelData.
       subscribe(data => {
@@ -145,17 +151,34 @@ export class NoteiconComponent implements OnInit {
       Reminder: date
     };
 
-    console.log(reminder);
-
-    this.AddReminderToNote(noteId, reminder);
+    if(this.accessFrom == "Display Note" || this.accessFrom == "Edit Note")
+      this.AddReminderToNote(noteId, reminder);
+    else if(this.accessFrom == "Create Note") {
+      this.ReminderforCreateNote = date;
+      this.UpdateReminderInCreateNote.emit(this.ReminderforCreateNote);
+    }
 
   }
 
   setTomorrowReminder(noteId: number) {
-    var date = new Date();
+    var todayDate = new Date();
     
-    date.setHours(8,0,0,0);
-    console.log(date);
+    var tomorrowDate = new Date(todayDate);
+
+    tomorrowDate.setDate(tomorrowDate.getDate()+1);
+    tomorrowDate.setHours(8,0,0,0);
+
+    var reminder:Reminder = {
+      Reminder: tomorrowDate
+    };
+
+    if(this.accessFrom == "Display Note" || this.accessFrom == "Edit Note")
+      this.AddReminderToNote(noteId, reminder);
+      else if(this.accessFrom == "Create Note") {
+        this.ReminderforCreateNote = tomorrowDate;
+        this.UpdateReminderInCreateNote.emit(this.ReminderforCreateNote);
+      }
+
   }
 
   AddReminderToNote(noteId, reminder: Reminder) {
@@ -168,7 +191,11 @@ export class NoteiconComponent implements OnInit {
           });
         }
         else {
-          console.log(data);
+          if(this.accessFrom == "Display Note")
+            this.UpdateNoteInDisplayNote.emit(data.data);
+          else if(this.accessFrom == "Edit Note")
+            this.UpdateNoteInEditNote.emit(data.data);
+
         }
       },
       error => {

@@ -60,9 +60,9 @@
           <div fxLayoutAlign="center center" *ngIf="(note.reminder == null || note.reminder == '') ? false : true">
             <mat-chip-list aria-label="Note Reminder">
               <mat-chip fxLayout="row" fxLayoutAlign="center center">
-                {{ note.reminder }}
+                {{ note.reminder | reminder }}
                 <i class="material-icons-outlined labelcancel"
-                  (click)="removeLabelForNote(label.labelId, note.noteId)">cancel</i>
+                  (click)="removeReminderFromNote(note.noteId)">cancel</i>
               </mat-chip>
             </mat-chip-list>
           </div>

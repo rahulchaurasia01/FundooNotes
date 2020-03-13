@@ -8,6 +8,7 @@ import { Updatenote } from 'src/app/Model/updatenote';
 import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 import { Listofpinnote } from 'src/app/Model/listofpinnote';
+import { Reminder } from 'src/app/Model/reminder';
 
 @Component({
   selector: 'app-notedialog',
@@ -39,6 +40,36 @@ export class NotedialogComponent implements OnInit {
 
   updateNoteInEditNote($event) {
     this.note = $event;
+  }
+
+  removeReminderFromNote() {
+    var reminder: Reminder = {
+      Reminder: null,
+    }
+
+    console.log(reminder);
+
+    this.notes.AddReminderToNote(this.note.noteId, reminder).
+      subscribe(data => {
+        if(data.status) {
+          this.note = data.data;
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
   }
 
   removeLabelForDisplayNote(labelId: number) {

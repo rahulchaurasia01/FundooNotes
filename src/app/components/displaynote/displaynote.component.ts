@@ -10,6 +10,7 @@ import { LabeldataService } from '../../services/dataservice/data.service';
 import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 import { Listofpinnote } from 'src/app/Model/listofpinnote';
+import { Reminder } from 'src/app/Model/reminder';
 
 @Component({
   selector: 'app-displaynote',
@@ -165,6 +166,41 @@ export class DisplaynoteComponent implements OnInit {
 
   mouseOnNote(noteId: number) {
     this.mouseNote = noteId;    
+  }
+
+  removeReminderFromNote(noteId: number) {
+
+    var reminder: Reminder = {
+      Reminder: null,
+    }
+
+    this.note.AddReminderToNote(noteId, reminder).
+      subscribe(data => {
+        if(data.status) {
+          for(var notes =0; notes < this.displayNotes.length; notes++ ) {
+            if(this.displayNotes[notes].noteId == noteId) {
+              this.displayNotes[notes].reminder = null; 
+              break;
+            }
+          }
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+      error => {
+        if(error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError= "Connection to the Server Failed";
+
+        this._snackBar.open(this.chckError, "Close", {
+          duration: 3000,
+        });
+      })
+
   }
 
   UserSelectedThisNote(note: any) {

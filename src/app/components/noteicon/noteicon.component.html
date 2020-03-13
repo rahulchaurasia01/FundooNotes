@@ -5,8 +5,8 @@
         <i class="material-icons-outlined">notification_important</i>
       </button>
       <mat-menu #reminderMenu="matMenu" (closed)="backToReminder()" xPosition="after" yPosition="below">
-        <div class="reminderMenu" *ngIf="!dateTimeClicked" (click)="$event.stopPropagation()">
-          <div class="reminderDiv">
+        <div class="reminderMenu" *ngIf="!dateTimeClicked">
+          <div class="reminderDiv" (click)="$event.stopPropagation()" >
             Reminder:
           </div>
           <div class="tonightReminder" (click)="setTonightReminder(grandParentNote.noteId)" >

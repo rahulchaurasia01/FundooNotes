@@ -74,32 +74,28 @@ export class NotesComponent implements OnInit {
   }
 
   addPinSelectedNote($event) {
+    
+    this.userSelectedNote = [];
     this.userPinSelectedNote = $event;
 
-    if(this.userUnPinSelectedNote.length == 0) {
-      this.userSelectedNote = [];
+    if(this.userUnPinSelectedNote.length == 0) 
       this.userSelectedNote = [...this.userPinSelectedNote];
-    }
-    else {
-      this.userSelectedNote = [];
+    else 
       this.userSelectedNote = [...this.userPinSelectedNote, ...this.userUnPinSelectedNote];
-    }
-  
+
     this.dataService.userHasSelectNote("NoteActionNotPerformed", this.userSelectedNote);
 
   }
 
   addUnPinSelectedNote($event) {
-    this.userUnPinSelectedNote = $event;
 
-    if(this.userPinSelectedNote.length == 0) {
-      this.userSelectedNote = [];
+    this.userUnPinSelectedNote = $event;
+    this.userSelectedNote = [];
+
+    if(this.userPinSelectedNote.length == 0) 
       this.userSelectedNote = [...this.userUnPinSelectedNote];
-    }
-    else {
-      this.userSelectedNote = [];
+    else 
       this.userSelectedNote = [...this.userUnPinSelectedNote, ...this.userPinSelectedNote];
-    }
 
     this.dataService.userHasSelectNote("NoteActionNotPerformed", this.userSelectedNote);
 

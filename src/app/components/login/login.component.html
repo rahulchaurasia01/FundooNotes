@@ -1,67 +1,67 @@
 <div class="loginContainer" fxLayout="row" fxLayoutAlign="center center">
-      <mat-card tabindex="-1">
-        <mat-card-header>
-          <div class="matHeaderDiv">
-            <span class="F_Class">F</span>
-            <span class="U_Class">u</span>
-            <span class="N_Class">n</span>
-            <span class="D_Class">d</span>
-            <span class="O_Class">o</span>
-            <span class="O2_Class">o</span>
-            <h1 id="headingText"><span>Sign in</span></h1>
-            <div class="headingSubText">
-              <span>Continue to Notes</span>
-            </div>
+  <mat-card tabindex="-1">
+    <mat-card-header>
+      <div class="matHeaderDiv">
+        <span class="F_Class">F</span>
+        <span class="U_Class">u</span>
+        <span class="N_Class">n</span>
+        <span class="D_Class">d</span>
+        <span class="O_Class">o</span>
+        <span class="O2_Class">o</span>
+        <h1 id="headingText"><span>Sign in</span></h1>
+        <div class="headingSubText">
+          <span>Continue to Notes</span>
+        </div>
 
-          </div>
-        </mat-card-header>
-        <mat-card-content class="matContent">
-          <form [formGroup]="loginInformation" (ngSubmit)="loginData(loginInformation.value)" novalidate>
-            <div>
-              <mat-form-field appearance="outline" hideRequiredMarker>
-                <mat-label>Email</mat-label>
-                <input matInput placeholder="Email-Id" formControlName="email" required>
-                <mat-hint></mat-hint>
-                <mat-error *ngIf="hasError('email', 'required')">
-                  <i class="material-icons-outlined ">error</i>
-                  Email-Id is Required
-                </mat-error>
-                <mat-error *ngIf="hasError('email', 'email')">
-                  <i class="material-icons-outlined">error</i>
-                  Email-Id is Invalid
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="passwordDiv">
-              <mat-form-field appearance="outline" hideRequiredMarker>
-                <mat-label>Password</mat-label>
-                <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password"
-                  required>
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                  [attr.aria-pressed]="hide">
-                  <i class="material-icons-outlined">{{hide ? 'visibility_off' : 'visibility'}}</i>
-                </button>
-                <mat-error *ngIf="hasError('password', 'required')">
-                  <i class="material-icons-outlined">error</i>
-                  Password is Required
-                </mat-error>
-                <mat-error *ngIf="hasError('password', 'minlength')">
-                  <i class="material-icons-outlined">error</i>
-                  Password Length should be greater than 5
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="signInDiv">
-              <button mat-flat-button color="primary" type="submit">Sign In</button>
-            </div>
-            <br>
-            <br>
-            <br>
-            <div fxLayoutAlign="space-between" fxLayout.xs="column" fxLayoutGap="20px">
-              <button mat-button type="button" (click)="onForgetPasswordClick()" >Forget Password?</button>
-              <button mat-flat-button type="button" (click)="onCreateAccountClick()">Create Account</button>
-            </div>
-          </form>
-        </mat-card-content>
-      </mat-card>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="matContent">
+      <form [formGroup]="loginInformation" (ngSubmit)="loginData(loginInformation.value)" novalidate>
+        <div>
+          <mat-form-field appearance="outline" hideRequiredMarker>
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email-Id" formControlName="email" required>
+            <mat-hint></mat-hint>
+            <mat-error *ngIf="hasError('email', 'required')">
+              <i class="material-icons-outlined ">error</i>
+              Email-Id is Required
+            </mat-error>
+            <mat-error *ngIf="hasError('email', 'email')">
+              <i class="material-icons-outlined">error</i>
+              Email-Id is Invalid
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="passwordDiv">
+          <mat-form-field appearance="outline" hideRequiredMarker>
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password"
+              required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+              <i class="material-icons-outlined">{{hide ? 'visibility_off' : 'visibility'}}</i>
+            </button>
+            <mat-error *ngIf="hasError('password', 'required')">
+              <i class="material-icons-outlined">error</i>
+              Password is Required
+            </mat-error>
+            <mat-error *ngIf="hasError('password', 'minlength')">
+              <i class="material-icons-outlined">error</i>
+              Password Length should be greater than 5
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="signInDiv">
+          <button mat-flat-button color="primary" type="submit">Sign In</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div fxLayoutAlign="space-between" fxLayout.xs="column" fxLayoutGap="20px">
+          <button mat-button type="button" (click)="onForgetPasswordClick()">Forget Password?</button>
+          <button mat-flat-button type="button" (click)="onCreateAccountClick()">Create Account</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

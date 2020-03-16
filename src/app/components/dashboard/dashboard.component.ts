@@ -13,6 +13,10 @@ import { Pinnote } from 'src/app/Model/pinnote';
 import { Listofpinnote } from 'src/app/Model/listofpinnote';
 import { Deletenote } from 'src/app/Model/deletenote';
 import { Listofdeletenote } from 'src/app/Model/listofdeletenote';
+import { Archivenote } from 'src/app/Model/archivenote';
+import { Listofarchivenote } from 'src/app/Model/listofarchivenote';
+import { Color } from 'src/app/Model/color';
+import { Listofcolornote } from 'src/app/Model/listofcolornote';
 
 @Component({
   selector: 'app-dashboard',
@@ -39,6 +43,57 @@ export class DashboardComponent implements OnInit {
   componentType: string;
   UserSelectedNote = [];
 
+  colors = [
+    {
+      code: "#fff",
+      name: "Default"
+    },
+    {
+      code: "#f28b82",
+      name: "Red"
+    },
+    {
+      code: "#fbbc04",
+      name: "Orange"
+    },
+    {
+      code: "#fff475",
+      name: "Yellow"
+    },
+    {
+      code: "#ccff90",
+      name: "Green"
+    },
+    {
+      code: "#a7ffeb",
+      name: "Teal"
+    },
+    {
+      code: "#cbf0f8",
+      name: "Blue"
+    },
+    {
+      code: "#aecbfa",
+      name: "Dark Blue"
+    },
+    {
+      code: "#d7aefb",
+      name: "Purple"
+    },
+    {
+      code: "#fdcfe8",
+      name: "Pink"
+    },
+    {
+      code: "#e6c9a8",
+      name: "Brown"
+    },
+    {
+      code: "#e8eaed",
+      name: "Gray"
+    }
+  ];
+
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog,
     private dataServices: LabeldataService, private user: UserService, private note: NotesService) {
@@ -49,7 +104,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    if(localStorage.getItem("fundooUserProfilePic") == "null") {
+    if (localStorage.getItem("fundooUserProfilePic") == "null") {
       this.profileImage = '';
     }
     else {
@@ -72,19 +127,19 @@ export class DashboardComponent implements OnInit {
         this.UserSelectedNote = data.data;
         this.componentType = data.Type;
 
-         if(this.UserSelectedNote.filter(note => !note.isPin).length > 0) {
-           this.showPin = false;
-         }
-         else {
-           this.showPin = true;
-         }
+        if (this.UserSelectedNote.filter(note => !note.isPin).length > 0) {
+          this.showPin = false;
+        }
+        else {
+          this.showPin = true;
+        }
 
-         if(this.UserSelectedNote.filter(note => !note.isArchived).length > 0) {
+        if (this.UserSelectedNote.filter(note => !note.isArchived).length > 0) {
           this.showArchive = false;
-         }
-         else {
-           this.showArchive = true;
-         }
+        }
+        else {
+          this.showArchive = true;
+        }
 
 
       })
@@ -92,9 +147,9 @@ export class DashboardComponent implements OnInit {
     this.fundooUserEmail = localStorage.getItem("fundooUserEmail");
     this.fundooUserName = localStorage.getItem("fundooUserName");
 
-    if(localStorage.getItem("fundooTitle")) {
+    if (localStorage.getItem("fundooTitle")) {
       this.title = localStorage.getItem("fundooTitle");
-      if(this.title != "Fundoo")
+      if (this.title != "Fundoo")
         this.showKeepIcon = true;
     }
 
@@ -113,7 +168,7 @@ export class DashboardComponent implements OnInit {
 
     var pinNoted = [];
 
-    for(var note = 0; note < this.UserSelectedNote.length; note++) {
+    for (var note = 0; note < this.UserSelectedNote.length; note++) {
       var pinNote: Pinnote = {
         NoteId: this.UserSelectedNote[note].noteId,
         IsPin: flag
@@ -127,11 +182,15 @@ export class DashboardComponent implements OnInit {
 
     this.note.pinTheNote(pinNotes).
       subscribe(data => {
-        if(data.status) {
+        if (data.status) {
           this.UserSelectedNote = [...data.data];
-          if(this.componentType == "NoteActionNotPerformed")
+          if (this.componentType == "NoteActionNotPerformed")
             this.dataServices.userHasSelectNote("NotePinActionPerformed", this.UserSelectedNote);
-          else if(this.componentType == "ArchiveActionNotPerformed") {
+          else if (this.componentType == "ReminderActionNotPerformed")
+            this.dataServices.userHasSelectNote("ReminderPinActionPerformed", this.UserSelectedNote);
+          else if (this.componentType == "LabelActionNotPerformed")
+            this.dataServices.userHasSelectNote("LabelPinActionPerformed", this.UserSelectedNote);
+          else if (this.componentType == "ArchiveActionNotPerformed") {
             this.dataServices.userHasSelectNote("ArchivePinActionPerformed", this.UserSelectedNote);
           }
         }
@@ -141,17 +200,101 @@ export class DashboardComponent implements OnInit {
           });
         }
       },
-      error => {
-        if(error.error.message)
+        error => {
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
+
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
+  }
+
+  colorTheSelectedNote(color: string) {
+
+    var colours = [];
+
+    for(var selectedNote = 0; selectedNote < this.UserSelectedNote.length; selectedNote++) {
+      var colorNote: Color = {
+        NoteId: this.UserSelectedNote[selectedNote].noteId,
+        Color: color
+      }
+
+      colours.push(colorNote);
+    }
+
+    var colors: Listofcolornote = {
+      ColorNotes: colours
+    };
+
+    this.note.updateColorToNote(colors).
+      subscribe(data => {
+        if(data.status) {
+          this.UserSelectedNote = [...data.data];
+          if (this.componentType == "NoteActionNotPerformed")
+            this.dataServices.userHasSelectNote("NoteColorActionPerformed", this.UserSelectedNote);
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+      error => {
+        if (error.error.message)
+          this.chckError = error.error.message;
+        else
+          this.chckError = "Connection to the Server Failed";
 
         this._snackBar.open(this.chckError, "Close", {
           duration: 3000,
         });
       })
 
+  }
+
+  archiveUnarchiveSelectedNote(flag: boolean) {
+
+    var archiveNote = [];
+
+    for (var selectedNote = 0; selectedNote < this.UserSelectedNote.length; selectedNote++) {
+      var archivedNote: Archivenote = {
+        NoteId: this.UserSelectedNote[selectedNote].noteId,
+        IsArchive: flag
+      };
+
+      archiveNote.push(archivedNote);
+    }
+
+    var archivesNotes: Listofarchivenote = {
+      ArchiveNotes: archiveNote
+    };
+
+    this.note.archiveTheNote(archivesNotes).
+      subscribe(data => {
+        if (data.status) {
+          this.UserSelectedNote = [...data.data];
+          if (this.componentType == "NoteActionNotPerformed")
+            this.dataServices.userHasSelectNote("NoteArchiveActionPerformed", this.UserSelectedNote);
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+        error => {
+          if (error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError = "Connection to the Server Failed";
+
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
 
   }
 
@@ -161,10 +304,10 @@ export class DashboardComponent implements OnInit {
   }
 
   sendToTrash() {
-    
+
     var deleteNote = [];
 
-    for(var note =0; note < this.UserSelectedNote.length; note++) {
+    for (var note = 0; note < this.UserSelectedNote.length; note++) {
       var deleteNoteById: Deletenote = {
         NoteId: this.UserSelectedNote[note].noteId
       };
@@ -178,12 +321,12 @@ export class DashboardComponent implements OnInit {
 
     this.note.TrashNotes(deleteNotes).
       subscribe(data => {
-        if(data.status) {
-          if(this.componentType == "NoteActionNotPerformed")
+        if (data.status) {
+          if (this.componentType == "NoteActionNotPerformed")
             this.dataServices.userHasSelectNote("NoteDeleteActionPerformed", this.UserSelectedNote);
-            else if(this.componentType == "ArchiveActionNotPerformed") {
-              this.dataServices.userHasSelectNote("ArchiveDeleteActionPerformed", this.UserSelectedNote);
-            }
+          else if (this.componentType == "ArchiveActionNotPerformed") {
+            this.dataServices.userHasSelectNote("ArchiveDeleteActionPerformed", this.UserSelectedNote);
+          }
         }
         else {
           this._snackBar.open(data.message, "Close", {
@@ -191,16 +334,16 @@ export class DashboardComponent implements OnInit {
           });
         }
       },
-      error => {
-        if(error.error.message)
+        error => {
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      })
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
 
   }
 
@@ -228,7 +371,7 @@ export class DashboardComponent implements OnInit {
 
   onLabelClick(labelName: string) {
     this.showKeepIcon = true;
-    this.title= labelName;
+    this.title = labelName;
     this.UserSelectedNote = [];
     localStorage.setItem("fundooTitle", this.title);
   }
@@ -247,27 +390,27 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem("fundooTitle", this.title);
   }
 
-  GetAllLabels() : any {
+  GetAllLabels(): any {
     this.label.GetAllLabels().
       subscribe(data => {
         this.labels = data.data;
         this.dataServices.labelReceive(this.labels);
       },
-      error => {
+        error => {
 
-        if(error.error.message)
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      })
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
   }
 
-  onFileInput(imageFiles: File) : void {
-    
+  onFileInput(imageFiles: File): void {
+
     let file: File = <File>imageFiles[0];
 
     let filed = new FormData();
@@ -275,7 +418,7 @@ export class DashboardComponent implements OnInit {
 
     this.user.AddProfilePic(filed).
       subscribe(data => {
-        if(data.status) {
+        if (data.status) {
           this.profileImage = data.data.profilePic;
           localStorage.setItem("fundooUserProfilePic", this.profileImage);
         }
@@ -285,16 +428,16 @@ export class DashboardComponent implements OnInit {
           });
         }
       },
-      error => {
-        if(error.error.message)
+        error => {
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      })
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
 
   }
 

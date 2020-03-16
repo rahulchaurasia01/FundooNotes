@@ -96,13 +96,25 @@
           <button mat-icon-button tabindex="-1" title="Remind me">
             <img src="../../../assets/blue_reminder.svg" alt="blue Remin Me">
           </button>
-          <button mat-icon-button tabindex="-1" title="Change color">
+          <button mat-icon-button tabindex="-1" title="Change color" [matMenuTriggerFor]="colorMenu">
             <img src="../../../assets/blue_color.svg" alt="blue Change Color">
           </button>
-          <button mat-icon-button tabindex="-1" *ngIf="!showArchive" title="Archive">
+          <mat-menu #colorMenu="matMenu" xPosition="after" yPosition="below">
+            <div class="colorDiv" fxLayout="row wrap">
+              <div class="singleColor" *ngFor="let color of colors">
+                <button class="colorButton" fxLayoutAlign="center center" [style.border-color]="color.code"
+                  (click)="colorTheSelectedNote(color.code)" [style.background-color]="color.code"
+                  [title]="color.name">
+                  <i *ngIf="(color.code == userSelectColor) ? true : false" class="material-icons-outlined">done</i>
+                </button>
+              </div>
+            </div>
+          </mat-menu>
+
+          <button mat-icon-button tabindex="-1" (click)="archiveUnarchiveSelectedNote(true)"  *ngIf="!showArchive" title="Archive">
             <img src="../../../assets/blue_archive.svg" alt="blue archive">
           </button>
-          <button mat-icon-button tabindex="-1" *ngIf="showArchive" title="Unarchive">
+          <button mat-icon-button tabindex="-1" (click)="archiveUnarchiveSelectedNote(false)"  *ngIf="showArchive" title="Unarchive">
             <img src="../../../assets/blue_unarchive.svg" alt="blue unarchive">
           </button>
           <button mat-icon-button tabindex="-1" title="More" [matMenuTriggerFor]="blueMoreMenu" >

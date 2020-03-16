@@ -19,7 +19,8 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it(`should have as title, 'FundooNotes' `, async(() => {
+    const app = fixture.debugElement.componentInstance;
+    expect(app.title).toEqual('FundooNotes');
+  }));
 });

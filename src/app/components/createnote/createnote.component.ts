@@ -25,7 +25,6 @@ export class CreatenoteComponent implements OnInit {
   isArchive: boolean;
   labels=[];
   reminder: Date;
-  collaboratorClicked: boolean = true;
   noteIconAccessFrom: string;
   collaboratorUserList=[];
 
@@ -48,6 +47,10 @@ export class CreatenoteComponent implements OnInit {
 
   sendMessageToParent(note: any) {
     this.noteCreated.emit(note);
+  }
+
+  collaboratorClickedByUser() {
+    
   }
 
   updateCollabToCreateNote($event: any) {

@@ -1,5 +1,5 @@
 <div [style.background]="color" class="createNoteContainer">
-  <div class="whenImageAdded" fxLayout="column" *ngIf="collaboratorClicked">
+  <div class="whenImageAdded" fxLayout="column">
     <div class="pinUnpinNote" *ngIf="!showTakeANoteAndAction" fxLayoutAlign="center center">
       <img class="pinUnpin" src="../../../assets/unpin.svg" title="Pin Note" (click)="userPinnedTheNote(true)"
        *ngIf="!isPinned">
@@ -33,7 +33,7 @@
         <mat-chip-list aria-label="Note Reminder">
           <mat-chip fxLayout="row" fxLayoutAlign="center center">
             {{ reminder | reminder }}
-            <i class="material-icons-outlined labelcancel"
+            <i class="material-icons-outlined labelcancel" title="Remove Reminder"
               (click)="removeReminderFromCreateNote()">cancel</i>
           </mat-chip>
         </mat-chip-list>
@@ -42,7 +42,7 @@
         <mat-chip-list aria-label="Note Label">
           <mat-chip fxLayout="row" *ngFor="let label of labels" fxLayoutAlign="center center">
             {{ label.name }}
-            <i class="material-icons-outlined labelcancel"
+            <i class="material-icons-outlined labelcancel" title="Remove Label"
               (click)="removeLabelForCreateNote(label.labelId)">cancel</i>
           </mat-chip>
         </mat-chip-list>
@@ -59,7 +59,7 @@
     </div>
     </div>
   </div>
-  <div class="NoteActionContainer" *ngIf="collaboratorClicked" fxLayout="row" [fxHide]="showTakeANoteAndAction"
+  <div class="NoteActionContainer"  fxLayout="row" [fxHide]="showTakeANoteAndAction"
     fxLayoutAlign="space-between center">
     <app-noteicon [accessFrom]="noteIconAccessFrom" (UpdateColorInCreateNote)="updateColor($event)"
       (UpdateCollaboratorToCreateNote)="updateCollabToCreateNote($event)"

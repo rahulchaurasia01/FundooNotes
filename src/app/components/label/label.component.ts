@@ -56,7 +56,7 @@ export class LabelComponent implements OnInit {
       this.userSelectedNote = [...this.userPinSelectedNote, ...this.userUnPinSelectedNote];
     }
   
-    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
+    this.dataService.userHasSelectNote("LabelActionNotPerformed", this.userSelectedNote);
 
   }
 
@@ -72,7 +72,7 @@ export class LabelComponent implements OnInit {
       this.userSelectedNote = [...this.userUnPinSelectedNote, ...this.userPinSelectedNote];
     }
 
-    this.dataService.userHasSelectNote("ActionNotPerformed", this.userSelectedNote);
+    this.dataService.userHasSelectNote("LabelActionNotPerformed", this.userSelectedNote);
   }
 
   updateUnPin($event) {

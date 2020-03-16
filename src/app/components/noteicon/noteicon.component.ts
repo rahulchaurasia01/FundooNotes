@@ -14,6 +14,8 @@ import { Notelabel } from 'src/app/Model/notelabel';
 import { Listofnotelabel } from 'src/app/Model/listofnotelabel';
 import { Reminder } from 'src/app/Model/reminder';
 import { Listofdeletenote } from 'src/app/Model/listofdeletenote';
+import { Listofarchivenote } from 'src/app/Model/listofarchivenote';
+import { Listofcolornote } from 'src/app/Model/listofcolornote';
 
 @Component({
   selector: 'app-noteicon',
@@ -59,6 +61,7 @@ export class NoteiconComponent implements OnInit {
   labels = [];
   ReminderforCreateNote: Date;
   labelsForCreateNote =[];
+  minDate: Date;
 
   isArchive: boolean;
 
@@ -118,6 +121,8 @@ export class NoteiconComponent implements OnInit {
 
   ngOnInit() {
 
+    this.minDate = new Date();
+
     this.isArchive = false;
     this.labelClicked = false;
 
@@ -174,10 +179,32 @@ export class NoteiconComponent implements OnInit {
 
     if(this.accessFrom == "Display Note" || this.accessFrom == "Edit Note")
       this.AddReminderToNote(noteId, reminder);
-      else if(this.accessFrom == "Create Note") {
-        this.ReminderforCreateNote = tomorrowDate;
-        this.UpdateReminderInCreateNote.emit(this.ReminderforCreateNote);
-      }
+    else if(this.accessFrom == "Create Note") {
+      this.ReminderforCreateNote = tomorrowDate;
+      this.UpdateReminderInCreateNote.emit(this.ReminderforCreateNote);
+     }
+
+  }
+
+  setNextWeekReminder(noteId: number) {
+
+    var d = new Date();
+    var nextMonday = d.getDate() + ((7 - d.getDay()) + 1);
+    
+    d.setDate(nextMonday);
+    d.setHours(8,0,0,0);
+
+    var reminder: Reminder = {
+      Reminder: d
+    };
+
+    if(this.accessFrom == "Display Note" || this.accessFrom == "Edit Note")
+      this.AddReminderToNote(noteId, reminder);
+    else if(this.accessFrom == "Create Note") {
+      this.ReminderforCreateNote = d;
+      this.UpdateReminderInCreateNote.emit(this.ReminderforCreateNote);
+    }
+
 
   }
 
@@ -378,17 +405,26 @@ export class NoteiconComponent implements OnInit {
 
     if (this.accessFrom == "Display Note" || this.accessFrom == "Edit Note") {
 
+      var colors = [];
+
       var colour: Color = {
+        NoteId: noteId,
         Color: color
       }
 
-      this.note.updateColorToNote(noteId, colour).
+      colors.push(colour);
+
+      var colored: Listofcolornote = {
+        ColorNotes: colors
+      };
+
+      this.note.updateColorToNote(colored).
         subscribe(data => {
           if (data.status) {
             if (this.accessFrom == "Display Note")
-              this.UpdateNoteInDisplayNote.emit(data.data);
+              this.UpdateNoteInDisplayNote.emit(data.data[0]);
             else if (this.accessFrom == "Edit Note")
-              this.UpdateNoteInEditNote.emit(data.data);
+              this.UpdateNoteInEditNote.emit(data.data[0]);
           }
           else {
             this._snackBar.open(data.message, "Close", {
@@ -446,18 +482,27 @@ export class NoteiconComponent implements OnInit {
 
     if (this.accessFrom == "Display Note" || this.accessFrom == "Edit Note") {
 
+      var archiveNotes =[];
+
       var archiveNote: Archivenote = {
+        NoteId: noteId,
         IsArchive: flag
       };
 
-      this.note.archiveTheNote(noteId, archiveNote).
+      archiveNotes.push(archiveNote);
+
+      var archive: Listofarchivenote = {
+        ArchiveNotes: archiveNotes
+      };
+
+      this.note.archiveTheNote(archive).
         subscribe(data => {
           if (data.status) {
             if (this.accessFrom == "Display Note") {
               if(this.grandParentNote.isPin)
-                this.updatePinNoteInNotes.emit(data.data);
+                this.updatePinNoteInNotes.emit(data.data[0]);
               else if(!this.grandParentNote.isPin)
-                this.updateOtherNoteInNotes.emit(data.data);
+                this.updateOtherNoteInNotes.emit(data.data[0]);
               if (flag)
                 this.infoMsg = "Note archived";
               else

@@ -1,2 +1,11 @@
 <app-createnote></app-createnote>
-<app-displaynote [displayNotes]="firedReminderNotes" [parentIcon]="reminderIcon" [emptyContentText]="emptyReminderText"></app-displaynote>
+
+<app-displaynote *ngIf="(firedReminderNotes.length > 0) ? true : false" [displayNotes]="firedReminderNotes"
+    [parentIcon]="reminderIcon" [displayTitle]="showFiredTitle" [displayTitleText]="firedtitleText"
+    [emptyContentText]="emptyReminderText" (updateFiredRemindToUpcomingInRemindNotes)="updateUpcomingReminder($event)" (sendPinSelectedNoteToNotes)="addFiredSelectedNote($event)">
+</app-displaynote>
+
+<app-displaynote *ngIf="(upcomingReminderNotes.length > 0) ? true : false" [displayNotes]="upcomingReminderNotes"
+    [parentIcon]="reminderIcon" [displayTitle]="showUpComingTitle" [displayTitleText]="upComingTitleText"
+    [emptyContentText]="emptyReminderText"  (sendUnPinSelectedNoteToNotes)="addUpComingSelectedNote($event)">
+</app-displaynote>

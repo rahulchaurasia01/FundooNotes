@@ -27,9 +27,10 @@ export class DisplaynoteComponent implements OnInit {
 
   @Output() updatePinNoteInNotes = new EventEmitter<any>();
   @Output() updateUnPinNoteInNotes = new EventEmitter<any>();
-
   @Output() updateDeletePinNoteInNotes = new EventEmitter<any>();
   @Output() updateDeleteUnPinNoteInNotes = new EventEmitter<any>();
+
+  @Output() updateFiredRemindToUpcomingInRemindNotes = new EventEmitter<any>();
 
   @Output() updateArchiveInPinNotes = new EventEmitter<any>();
   @Output() updateArchiveInOtherNotes = new EventEmitter<any>();
@@ -45,6 +46,7 @@ export class DisplaynoteComponent implements OnInit {
   selectedNoteBorder: string;
   mouseNote: number;
   flag: boolean;
+  componentCondition: string;
   showListView: boolean = false;
   userPinSelectedNote=[];
   userUnPinSelectedNote=[];
@@ -67,18 +69,17 @@ export class DisplaynoteComponent implements OnInit {
         this.userPinSelectedNote = [];
         this.userUnPinSelectedNote = [];
       }
-      else if (data.Type == "NotePinActionPerformed") {
+      else if (data.Type == "NotePinActionPerformed" || data.Type == "LabelPinActionPerformed" ) {
 
         if (data.data[0].isPin) {
           for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
             for (var note = 0; note < this.displayNotes.length; note++) {
               if (data.data[dataNote].noteId == this.displayNotes[note].noteId) {
-                this.displayNotes[note] = data.data[dataNote]
+                this.displayNotes[note] = data.data[dataNote];
                 this.updatePinNoteInNotes.emit(this.displayNotes[note]);
               }
             }
           }
-
         }
         else {
           for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
@@ -89,14 +90,30 @@ export class DisplaynoteComponent implements OnInit {
               }
             }
           }
-
         }
-        this.userPinSelectedNote = [];
-        this.userUnPinSelectedNote = [];
-        this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
-        this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
-        this.dataService.userHasSelectNote("ActionNotPerformed", []);
+        this.deselectAllSelectedNote();
+      }
+      else if(data.Type == "NoteColorActionPerformed") {
+        for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
+          for (var note = 0; note < this.displayNotes.length; note++) {
+            if (data.data[dataNote].noteId == this.displayNotes[note].noteId) {
+              this.displayNotes[note] = data.data[dataNote]
+            }
+          }
+        }
+        this.deselectAllSelectedNote();
+      }
+      else if(data.Type == "NoteArchiveActionPerformed") {
 
+        for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
+          for (var note = 0; note < this.displayNotes.length; note++) {
+            if (data.data[dataNote].noteId == this.displayNotes[note].noteId) {
+              this.displayNotes = this.displayNotes.filter(noted => noted.noteId !== data.data[dataNote].noteId );
+            }
+          }
+        }
+
+        this.deselectAllSelectedNote();
       }
       else if(data.Type == "NoteDeleteActionPerformed") {
 
@@ -107,12 +124,18 @@ export class DisplaynoteComponent implements OnInit {
             this.updateDeleteUnPinNoteInNotes.emit(data.data[selectedNote]);
         }
 
-        this.userPinSelectedNote = [];
-        this.userUnPinSelectedNote = [];
-        this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
-        this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
-        this.dataService.userHasSelectNote("NoteActionNotPerformed", []);
+        this.deselectAllSelectedNote();
+      }
+      else if(data.Type == "ReminderPinActionPerformed") {
 
+        for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
+          for (var note = 0; note < this.displayNotes.length; note++) {
+            if (data.data[dataNote].noteId == this.displayNotes[note].noteId) 
+              this.displayNotes[note] = data.data[dataNote]
+          }
+        }
+
+        this.deselectAllSelectedNote();
       }
       else if(data.Type == "ArchivePinActionPerformed" || data.Type == "ArchiveDeleteActionPerformed") {
 
@@ -120,16 +143,20 @@ export class DisplaynoteComponent implements OnInit {
           this.displayNotes = this.displayNotes.filter(note => note.noteId !== data.data[selectedPinNote].noteId);
         }
 
-        this.userUnPinSelectedNote = [];
-        this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
-        this.dataService.userHasSelectNote("ActionNotPerformed", []);
+        this.deselectAllSelectedNote();
 
       }
-
     })
 
   }
 
+  deselectAllSelectedNote() {
+    this.userPinSelectedNote = [];
+    this.userUnPinSelectedNote = [];
+    this.sendPinSelectedNoteToNotes.emit(this.userPinSelectedNote);
+    this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
+    this.dataService.userHasSelectNote("ActionNotPerformed", []);
+  }
 
   deleteImageClicked(note: any) {
     this.note.RemoveImage(note.noteId).
@@ -177,6 +204,9 @@ export class DisplaynoteComponent implements OnInit {
     this.note.AddReminderToNote(noteId, reminder).
       subscribe(data => {
         if(data.status) {
+          if(this.parentIcon == "notification_important") {
+            this.displayNotes = this.displayNotes.filter(reminderNote => reminderNote.noteId !== noteId);
+          }
           for(var notes =0; notes < this.displayNotes.length; notes++ ) {
             if(this.displayNotes[notes].noteId == noteId) {
               this.displayNotes[notes].reminder = null; 
@@ -207,7 +237,22 @@ export class DisplaynoteComponent implements OnInit {
 
     this.flag = false;
 
-    if (note.isPin) {
+    if(this.parentIcon != "notification_important") {
+      if(note.isPin)
+        this.componentCondition = "Note Pin";
+      else 
+        this.componentCondition = "Note Unpin";
+    }
+    else {
+      var noteDate = new Date(note.reminder);
+
+      if(noteDate < new Date())
+        this.componentCondition = "Reminder Fired";
+      else
+        this.componentCondition = "Reminder Upcoming";
+    }
+
+    if ((this.componentCondition == "Note Pin") || (this.componentCondition == "Reminder Fired")) {
 
       if (this.userPinSelectedNote.length == 0) {
         this.userPinSelectedNote.push(note);
@@ -230,7 +275,7 @@ export class DisplaynoteComponent implements OnInit {
 
       }
     }
-    else {
+    else if ((this.componentCondition == "Note Unpin") || this.componentCondition == "Reminder Upcoming") {
       if (this.userUnPinSelectedNote.length == 0) {
         this.userUnPinSelectedNote.push(note);
         this.sendUnPinSelectedNoteToNotes.emit(this.userUnPinSelectedNote);
@@ -251,11 +296,27 @@ export class DisplaynoteComponent implements OnInit {
         }
       }
     }
+    
   }
 
   checkSelectedNote(note: any): boolean {
 
-    if (note.isPin) {
+    if(this.parentIcon != "notification_important") {
+      if(note.isPin)
+        this.componentCondition = "Note Pin";
+      else 
+        this.componentCondition = "Note Unpin";
+    }
+    else {
+      var noteDate = new Date(note.reminder);
+
+      if(noteDate < new Date())
+        this.componentCondition = "Reminder Fired";
+      else
+        this.componentCondition = "Reminder Upcoming";
+    }
+
+    if ((this.componentCondition == "Note Pin") || (this.componentCondition == "Reminder Fired")) {
 
       for (var noted = 0; noted < this.userPinSelectedNote.length; noted++) {
         if (this.userPinSelectedNote[noted].noteId == note.noteId)
@@ -264,7 +325,7 @@ export class DisplaynoteComponent implements OnInit {
 
       return false;
     }
-    else {
+    else if ((this.componentCondition == "Note Unpin") || (this.componentCondition == "Reminder Upcoming")) {
       for (var noted = 0; noted < this.userUnPinSelectedNote.length; noted++) {
         if (this.userUnPinSelectedNote[noted].noteId == note.noteId)
           return true;
@@ -380,9 +441,16 @@ export class DisplaynoteComponent implements OnInit {
   }
 
   UpdateNote($event) {
-    for(var note = 0; note < this.displayNotes.length; note++) {
-      if(this.displayNotes[note].noteId == $event.noteId) {
-        this.displayNotes[note] = $event;
+
+    if(this.parentIcon == "notification_important") {
+      this.updateFiredRemindToUpcomingInRemindNotes.emit($event);
+      console.log($event);
+    }
+    else{
+      for(var note = 0; note < this.displayNotes.length; note++) {
+        if(this.displayNotes[note].noteId == $event.noteId) {
+          this.displayNotes[note] = $event;
+        }
       }
     }
   }

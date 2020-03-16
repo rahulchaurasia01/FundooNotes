@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import { HttpServiceService } from '../httpservice/http-service.service';
-import { Archivenote } from '../../Model/archivenote';
 import { Createnote } from '../../Model/createnote';
 import { Listofcollaborator } from '../../Model/listofcollaborator';
-import { Color } from 'src/app/Model/color';
 import { Updatenote } from 'src/app/Model/updatenote';
 import { Listofpinnote } from 'src/app/Model/listofpinnote';
 import { Reminder } from 'src/app/Model/reminder';
 import { Listofdeletenote } from 'src/app/Model/listofdeletenote';
+import { Listofarchivenote } from 'src/app/Model/listofarchivenote';
+import { Listofcolornote } from 'src/app/Model/listofcolornote';
 
 @Injectable({
   providedIn: 'root'
@@ -61,8 +61,8 @@ export class NotesService {
     return this.http.put("Notes/" + noteId, updateTheNote, true);
   }
 
-  archiveTheNote(noteId: number, archiveNote: Archivenote) {
-    return this.http.put("Notes/" + noteId + "/Archive", archiveNote, true);
+  archiveTheNote(archiveNote: Listofarchivenote) {
+    return this.http.put("Notes/Archive", archiveNote, true);
   }
 
   pinTheNote(pinNote: Listofpinnote) {
@@ -77,8 +77,8 @@ export class NotesService {
     return this.http.put("Notes/" + noteId + "/Collaborator", collab, true);
   }
 
-  updateColorToNote(noteId: number, color: Color) {
-    return this.http.put("Notes/" + noteId + "/Color", color, true);
+  updateColorToNote(color: Listofcolornote) {
+    return this.http.put("Notes/Color", color, true);
   }
 
   AddLabelToNote(noteId: number, label) {

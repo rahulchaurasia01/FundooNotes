@@ -30,6 +30,13 @@ import { NgxMasonryModule } from 'ngx-masonry';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ReminderPipe } from './pipe/reminder.datepipe';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { NotificationService } from './services/notification/notification.service';
+import { AsyncPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -62,9 +69,13 @@ import { ReminderPipe } from './pipe/reminder.datepipe';
     FlexLayoutModule,
     FormsModule,
     HttpClientModule,
-    NgxMasonryModule
+    NgxMasonryModule,
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFireMessagingModule,
+    AngularFireModule.initializeApp(environment.firebase)
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, NotificationService, AsyncPipe],
   bootstrap: [AppComponent],
   entryComponents: [EditlabelComponent, DeletedialogComponent, NotedialogComponent, CollaboratordialogComponent]
 })

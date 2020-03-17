@@ -17,6 +17,7 @@ import { Archivenote } from 'src/app/Model/archivenote';
 import { Listofarchivenote } from 'src/app/Model/listofarchivenote';
 import { Color } from 'src/app/Model/color';
 import { Listofcolornote } from 'src/app/Model/listofcolornote';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,6 +42,7 @@ export class DashboardComponent implements OnInit {
   showPin: boolean;
   showArchive: boolean;
   componentType: string;
+  notificationMessage: any;
   UserSelectedNote = [];
 
   colors = [
@@ -96,13 +98,18 @@ export class DashboardComponent implements OnInit {
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,
     private label: LabelsService, private _snackBar: MatSnackBar, private dialog: MatDialog,
-    private dataServices: LabeldataService, private user: UserService, private note: NotesService) {
+    private dataServices: LabeldataService, private user: UserService, private note: NotesService,
+    private notification: NotificationService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
+
+    this.notification.requestPermission();
+    this.notification.receiveMessage();
+    this.notificationMessage = this.notification.currentMessage;
 
     if (localStorage.getItem("fundooUserProfilePic") == "null") {
       this.profileImage = '';

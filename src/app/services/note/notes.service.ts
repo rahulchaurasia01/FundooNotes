@@ -82,7 +82,7 @@ export class NotesService {
   }
 
   AddLabelToNote(noteId: number, label) {
-    return this.http.put("Notes/Label/"+noteId, label, true);
+    return this.http.put("Notes/"+noteId +"/Label", label, true);
   }
 
   AddReminderToNote(noteId: number, reminder: Reminder) {

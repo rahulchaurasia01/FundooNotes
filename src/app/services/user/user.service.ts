@@ -5,8 +5,8 @@ import { Login } from '../../Model/login';
 import { Signup } from '../../Model/signup';
 import { Forgetpassword } from '../../Model/forgetpassword';
 import { Resetpassword } from '../../Model/resetpassword';
-import { HttpHeaders } from '@angular/common/http';
 import { Alluser } from 'src/app/Model/alluser';
+import { Notification } from 'src/app/Model/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +39,8 @@ export class UserService {
     return this.httpService.putImage("User/ProfilePic", file, true);
   }
 
+  notification(token: Notification) {
+    return this.httpService.post("User/Notification", token, true);
+  }
 
 }

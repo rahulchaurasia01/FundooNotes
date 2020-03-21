@@ -454,6 +454,7 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem("fundooUserEmail");
     localStorage.removeItem("fundooUserName");
     localStorage.removeItem("fundooUserProfilePic");
+    localStorage.removeItem("fundooNotification");
     this._router.navigate(['login']);
   }
 

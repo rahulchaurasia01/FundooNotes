@@ -22,8 +22,8 @@ export class ResetpasswordComponent implements OnInit {
   token: string;
   chckError: string;
 
-  constructor(private http: HttpClient, private _route: ActivatedRoute, private _router: Router, 
-      private user: UserService, private _snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient, private _route: ActivatedRoute, private _router: Router,
+    private user: UserService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
@@ -40,13 +40,12 @@ export class ResetpasswordComponent implements OnInit {
   }
 
   resetPassword(resetPasswordData) {
-    if(resetPasswordData.newPassword != resetPasswordData.confirmPassword)
-    {
-        this._snackBar.open("Password Do Not Matches !!", "Close", {
-          duration: 3000,
-        });
+    if (resetPasswordData.newPassword != resetPasswordData.confirmPassword) {
+      this._snackBar.open("Password Do Not Matches !!", "Close", {
+        duration: 3000,
+      });
     }
-    else if(this.resetPasswordInformation.valid)
+    else if (this.resetPasswordInformation.valid)
       this.sendDataToServer(resetPasswordData);
   }
 
@@ -57,22 +56,29 @@ export class ResetpasswordComponent implements OnInit {
 
     this.user.resetPassword(resetPassword).
       subscribe(data => {
-        this._snackBar.open(data.message, "Close", {
-          duration: 3000,
-        });
-        this._router.navigate(['login']);
-      }, 
-      (error => {
+        if (data.status) {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+          this._router.navigate(['login']);
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+      },
+        (error => {
 
-        if(error.error.message)
-          this.chckError = error.error.message;
-        else
-          this.chckError= "Connection to the Server Failed";
+          if (error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(error.error.message, "Close", {
-          duration: 3000,
-        });
-      }))
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        }))
 
   }
 

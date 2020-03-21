@@ -22,10 +22,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
 
-    if(localStorage.getItem("fundooToken"))
+    if (localStorage.getItem("fundooToken"))
       this._router.navigate(['dashboard']);
 
-    this.loginInformation = new FormGroup( {
+    this.loginInformation = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(5)])
     })
@@ -36,12 +36,12 @@ export class LoginComponent implements OnInit {
     return this.loginInformation.controls[controlName].hasError(errorName);
   }
 
-  loginData(userLoginData) : void {
-    if(this.loginInformation.valid)
+  loginData(userLoginData): void {
+    if (this.loginInformation.valid)
       this.sendDataToServer(userLoginData);
   }
 
-  
+
   private sendDataToServer(userLoginData) {
     var login: Login = {
       EmailId: userLoginData.email,
@@ -50,31 +50,38 @@ export class LoginComponent implements OnInit {
 
     this.user.login(login)
       .subscribe(data => {
-        localStorage.removeItem("fundooUserEmail");
-        localStorage.removeItem("fundooToken");
-        localStorage.removeItem("fundooUserName");
-        localStorage.removeItem("fundooUserProfilePic");
-        localStorage.setItem("fundooToken", data.token);
-        localStorage.setItem("fundooUserEmail", data.data.emailId);
-        localStorage.setItem("fundooUserName", data.data.firstName+" "+data.data.lastName);
-        localStorage.setItem("fundooUserProfilePic", data.data.profilePic);
-        this._router.navigate(['dashboard']);
+        if (data.status) {
+          localStorage.removeItem("fundooUserEmail");
+          localStorage.removeItem("fundooToken");
+          localStorage.removeItem("fundooUserName");
+          localStorage.removeItem("fundooUserProfilePic");
+          localStorage.setItem("fundooToken", data.token);
+          localStorage.setItem("fundooUserEmail", data.data.emailId);
+          localStorage.setItem("fundooUserName", data.data.firstName + " " + data.data.lastName);
+          localStorage.setItem("fundooUserProfilePic", data.data.profilePic);
+          this._router.navigate(['dashboard']);
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
       },
-      (error => {
+        (error => {
 
-        if(error.error.message)
-          this.chckError = error.error.message;
-        else
-          this.chckError= "Connection to the Server Failed";
+          if (error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      }))
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        }))
 
   }
 
-  onCreateAccountClick() : void {
+  onCreateAccountClick(): void {
     this._router.navigate(['/signup']);
   }
 

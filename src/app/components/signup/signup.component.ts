@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
 
-    if(localStorage.getItem("fundooToken"))
+    if (localStorage.getItem("fundooToken"))
       this._router.navigate(['dashboard']);
 
     this.signUpInformation = new FormGroup({
@@ -56,8 +56,7 @@ export class SignupComponent implements OnInit {
       return;
     }
 
-    if(newAccountCreationData.password != newAccountCreationData.conformPassword)
-    {
+    if (newAccountCreationData.password != newAccountCreationData.conformPassword) {
       this._snackBar.open("Password Does Not Matches !!", "Close", {
         duration: 3000,
       });
@@ -79,18 +78,24 @@ export class SignupComponent implements OnInit {
 
     this.user.register(signup)
       .subscribe(data => {
-        this._snackBar.open(data.message, "Close", {
-          duration: 3000,
-        });
-        this._router.navigate(['login']);
-        console.log(data);
+        if (data.status) {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+          this._router.navigate(['login']);
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
       },
         (error => {
 
-          if(error.error.message)
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
 
 
           this._snackBar.open(this.chckError, "Close", {

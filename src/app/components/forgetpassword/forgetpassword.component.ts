@@ -20,10 +20,10 @@ export class ForgetpasswordComponent implements OnInit {
 
   ngOnInit() {
 
-    if(localStorage.getItem("fundooToken"))
+    if (localStorage.getItem("fundooToken"))
       this._router.navigate(['dashboard']);
 
-    this.forgetPasswordInformation = new FormGroup( {
+    this.forgetPasswordInformation = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email])
     })
 
@@ -34,7 +34,7 @@ export class ForgetpasswordComponent implements OnInit {
   }
 
   forgetPassword(forgetPasswordData) {
-    if(this.forgetPasswordInformation.valid)
+    if (this.forgetPasswordInformation.valid)
       this.sendDataToServer(forgetPasswordData);
   }
 
@@ -45,22 +45,29 @@ export class ForgetpasswordComponent implements OnInit {
 
     this.user.forgetPassword(forgetPassword)
       .subscribe(data => {
-        this.forgetPasswordInformation.reset();
-        this._snackBar.open(data.message, "Close", {
-          duration: 3000,
-        });
+        if (data.status) {
+          this.forgetPasswordInformation.reset();
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
+        else {
+          this._snackBar.open(data.message, "Close", {
+            duration: 3000,
+          });
+        }
       },
-      (error => {
+        (error => {
 
-        if(error.error.message)
-          this.chckError = error.error.message;
-        else
-          this.chckError= "Connection to the Server Failed";
+          if (error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      }))
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        }))
 
   }
 

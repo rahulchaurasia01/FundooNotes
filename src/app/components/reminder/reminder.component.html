@@ -1,11 +1,15 @@
 <app-createnote></app-createnote>
 
 <app-displaynote *ngIf="(firedReminderNotes.length > 0) ? true : false" [displayNotes]="firedReminderNotes"
-    [parentIcon]="reminderIcon" [displayTitle]="showFiredTitle" [displayTitleText]="firedtitleText"
-    [emptyContentText]="emptyReminderText" (updateFiredRemindToUpcomingInRemindNotes)="updateUpcomingReminder($event)" (sendPinSelectedNoteToNotes)="addFiredSelectedNote($event)">
+    [parentIcon]="componentName" [displayTitle]="showFiredTitle" [displayTitleText]="firedtitleText"
+    (updateFiredRemindToUpcomingInRemindNotes)="updateUpcomingReminder($event)" (sendPinSelectedNoteToNotes)="addFiredSelectedNote($event)">
 </app-displaynote>
 
 <app-displaynote *ngIf="(upcomingReminderNotes.length > 0) ? true : false" [displayNotes]="upcomingReminderNotes"
-    [parentIcon]="reminderIcon" [displayTitle]="showUpComingTitle" [displayTitleText]="upComingTitleText"
-    [emptyContentText]="emptyReminderText"  (sendUnPinSelectedNoteToNotes)="addUpComingSelectedNote($event)">
+    [parentIcon]="componentName" [displayTitle]="showUpComingTitle" [displayTitleText]="upComingTitleText"
+    (sendUnPinSelectedNoteToNotes)="addUpComingSelectedNote($event)">
+</app-displaynote>
+
+<app-displaynote *ngIf="(firedReminderNotes.length <= 0 && upcomingReminderNotes.length <= 0) ? true : false"
+    [parentIcon]="componentName" [emptyContentText]="emptyReminderText" >
 </app-displaynote>

@@ -11,9 +11,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ReminderComponent implements OnInit {
 
   chckError: string;
-  firedReminderNotes=[];
-  upcomingReminderNotes=[];
-  reminderIcon: string;
+  firedReminderNotes = [];
+  upcomingReminderNotes = [];
+  componentName: string;
   emptyReminderText: string;
   showFiredTitle: boolean = false;
   firedtitleText: string;
@@ -29,7 +29,7 @@ export class ReminderComponent implements OnInit {
 
   ngOnInit() {
 
-    this.reminderIcon = "notification_important";
+    this.componentName = "notification_important";
     this.emptyReminderText = "Notes with upcoming reminders appear here";
     this.GetAllReminderNotes();
 
@@ -38,7 +38,7 @@ export class ReminderComponent implements OnInit {
   addFiredSelectedNote($event) {
     this.userFiredSelectedNote = $event;
 
-    if(this.userUpComingSelectedNote.length == 0) {
+    if (this.userUpComingSelectedNote.length == 0) {
       this.userSelectedNote = [];
       this.userSelectedNote = [...this.userFiredSelectedNote];
     }
@@ -46,7 +46,7 @@ export class ReminderComponent implements OnInit {
       this.userSelectedNote = [];
       this.userSelectedNote = [...this.userFiredSelectedNote, ...this.userUpComingSelectedNote];
     }
-  
+
     this.dataService.userHasSelectNote("ReminderActionNotPerformed", this.userSelectedNote);
 
   }
@@ -54,7 +54,7 @@ export class ReminderComponent implements OnInit {
   addUpComingSelectedNote($event) {
     this.userUpComingSelectedNote = $event;
 
-    if(this.userFiredSelectedNote.length == 0) {
+    if (this.userFiredSelectedNote.length == 0) {
       this.userSelectedNote = [];
       this.userSelectedNote = [...this.userUpComingSelectedNote];
     }
@@ -70,7 +70,7 @@ export class ReminderComponent implements OnInit {
 
     this.firedReminderNotes = this.firedReminderNotes.filter(note => note.noteId !== $event.noteId);
 
-    if(this.firedReminderNotes.length == 0) {
+    if (this.firedReminderNotes.length == 0) {
       this.showFiredTitle = true;
       this.firedtitleText = "Fired";
       this.showUpComingTitle = true;
@@ -82,45 +82,48 @@ export class ReminderComponent implements OnInit {
     this.upComingTitleText = "Upcoming";
   }
 
-
   GetAllReminderNotes() {
     this.notes.GetAllReminderNotes().
       subscribe(data => {
-        if(data.status)
-          this.firedReminderNotes = data.data.filter(note => {
-            var date = new Date(note.reminder);
-            if(date < new Date())
-              return true;
-            else 
-              return false;           
-          });
+        if (data.status)
 
-          if (this.firedReminderNotes.length > 0) {
-            this.showFiredTitle = true;
-            this.firedtitleText = "Fired";
-            this.showUpComingTitle = true;
-            this.upComingTitleText = "Upcoming"
+          if (data.data) {
+
+            this.firedReminderNotes = data.data.filter(note => {
+              var date = new Date(note.reminder);
+              if (date < new Date())
+                return true;
+              else
+                return false;
+            });
+
+            if (this.firedReminderNotes.length > 0) {
+              this.showFiredTitle = true;
+              this.firedtitleText = "Fired";
+              this.showUpComingTitle = true;
+              this.upComingTitleText = "Upcoming"
+            }
+
+            this.upcomingReminderNotes = data.data.filter(note => {
+              var date = new Date(note.reminder);
+              if (date > new Date())
+                return true;
+              else
+                return false;
+            })
           }
-
-          this.upcomingReminderNotes = data.data.filter(note => {
-            var date = new Date(note.reminder);
-            if(date > new Date())
-              return true;
-            else
-              return false;
-          })
       },
-      error => {
+        error => {
 
-        if(error.error.message)
-          this.chckError = error.error.message;
-        else
-          this.chckError= "Connection to the Server Failed";
+          if (error.error.message)
+            this.chckError = error.error.message;
+          else
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      })
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
   }
 
 }

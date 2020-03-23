@@ -2,14 +2,20 @@
 
 <app-displaynote *ngIf="(pinNotes.length > 0) ? true : false" [displayTitle]="showPinTitle"
     [displayTitleText]="pintitleText" [displayNotes]="pinNotes" [parentIcon]="icon"
-    [emptyContentText]="emptyNotesText" (updateUnPinNoteInNotes)="updateUnPin($event)"
+    (updateUnPinNoteInNotes)="updateUnPin($event)"
     (updateArchiveInPinNotes)="updateArchiveInPinNote($event)"
     (sendPinSelectedNoteToNotes)="addPinSelectedNote($event)"
-    (updateDeletePinNoteInNotes)="updateDeletePinNote($event)" ></app-displaynote>
+    (updateDeletePinNoteInNotes)="updateDeletePinNote($event)" >
+</app-displaynote>
 
 <app-displaynote *ngIf="(otherNotes.length > 0) ? true : false" [displayTitle]="showOtherTitle"
     [displayTitleText]="otherTitleText" [displayNotes]="otherNotes" [parentIcon]="icon"
-    [emptyContentText]="emptyNotesText" (updatePinNoteInNotes)="updatePin($event)" 
+    (updatePinNoteInNotes)="updatePin($event)" 
     (updateArchiveInOtherNotes)="updateArchiveInOtherNote($event)"
     (sendUnPinSelectedNoteToNotes)="addUnPinSelectedNote($event)"
-    (updateDeleteUnPinNoteInNotes)="updateDeleteUnPinNote($event)" ></app-displaynote>
+    (updateDeleteUnPinNoteInNotes)="updateDeleteUnPinNote($event)" >
+</app-displaynote>
+
+<app-displaynote *ngIf="(pinNotes.length <= 0 && otherNotes.length <= 0) ? true : false"
+    [parentIcon]="componentName" [emptyContentText]="emptyNotesText">
+</app-displaynote>

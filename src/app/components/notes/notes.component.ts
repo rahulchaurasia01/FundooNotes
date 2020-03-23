@@ -11,7 +11,7 @@ import { LabeldataService } from '../../services/dataservice/data.service';
 })
 export class NotesComponent implements OnInit {
 
-  icon: string;
+  componentName: string;
   pinNotes = [];
   otherNotes = [];
   chckError: string;
@@ -30,7 +30,7 @@ export class NotesComponent implements OnInit {
 
   ngOnInit() {
 
-    this.icon = "emoji_objects";
+    this.componentName = "emoji_objects";
     this.emptyNotesText = "Notes you add appear here";
     this.GetAllNotes();
 

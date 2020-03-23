@@ -242,6 +242,8 @@ export class DashboardComponent implements OnInit {
           this.UserSelectedNote = [...data.data];
           if (this.componentType == "NoteActionNotPerformed")
             this.dataServices.userHasSelectNote("NoteColorActionPerformed", this.UserSelectedNote);
+          else if (this.componentType == "ReminderActionNotPerformed")
+            this.dataServices.userHasSelectNote("ReminderColorActionPerformed", this.UserSelectedNote);
         }
         else {
           this._snackBar.open(data.message, "Close", {
@@ -285,6 +287,8 @@ export class DashboardComponent implements OnInit {
           this.UserSelectedNote = [...data.data];
           if (this.componentType == "NoteActionNotPerformed")
             this.dataServices.userHasSelectNote("NoteArchiveActionPerformed", this.UserSelectedNote);
+          else if (this.componentType == "ReminderActionNotPerformed")
+            this.dataServices.userHasSelectNote("ReminderArchiveActionPerformed", this.UserSelectedNote);
         }
         else {
           this._snackBar.open(data.message, "Close", {

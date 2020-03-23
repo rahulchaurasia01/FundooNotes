@@ -126,13 +126,19 @@ export class DisplaynoteComponent implements OnInit {
 
         this.deselectAllSelectedNote();
       }
-      else if(data.Type == "ReminderPinActionPerformed") {
+      else if(data.Type == "ReminderPinActionPerformed" || data.Type == "ReminderColorActionPerformed" || 
+        data.Type == "ReminderArchiveActionPerformed") {
 
         for (var dataNote = 0; dataNote < data.data.length; dataNote++) {
           for (var note = 0; note < this.displayNotes.length; note++) {
             if (data.data[dataNote].noteId == this.displayNotes[note].noteId) 
               this.displayNotes[note] = data.data[dataNote]
           }
+          // this.displayNotes.find(note => {
+          //   if(note.noteId == data.data[dataNote].noteId) {
+          //     note = data.data[dataNote];
+          //   }
+          // })
         }
 
         this.deselectAllSelectedNote();
@@ -412,7 +418,8 @@ export class DisplaynoteComponent implements OnInit {
   editNoteDialog(note: any) {
     const dialogRef =  this.dialog.open(NotedialogComponent, {
       data: {
-        note: note
+        note: note,
+        icon: this.parentIcon
       },
       panelClass: 'editLabelDialogContainer',
       width: '600px'

@@ -39,7 +39,7 @@
 
         </div>
         <div fxLayout="row">
-          <div (click)="editNoteDialog(note)" class="titleDescription"
+          <div (click)="editNoteDialog(note)" class="titleDescription" 
             *ngIf="(note.title == '' || note.title == null) ? false : true">
             {{ note.title }}
           </div>
@@ -87,10 +87,12 @@
           </div>
         </div>
         <div [ngStyle]="{'visibility': (note.noteId == mouseNote) ? 'visible' : 'hidden'}">
-          <app-noteicon [accessFrom]="displayFromIcon" (UpdateNoteInDisplayNote)="UpdateNote($event)"
+          <app-noteicon [accessFrom]="displayFromIcon" [grandParentNote]="note"
+            [grandParentIcon]="parentIcon"  
+            (UpdateNoteInDisplayNote)="UpdateNote($event)"
             (updateCollaboratorToDisplayNote)="updateCollabToNote($event)"
-            (sendParentRefresh)="recieveDataFromIconChild($event)" [grandParentNote]="note"
-            [grandParentIcon]="parentIcon" (updatePinNoteInNotes)="sendDatatoPinNotes($event)"
+            (sendParentRefresh)="recieveDataFromIconChild($event)" 
+            (updatePinNoteInNotes)="sendDatatoPinNotes($event)"
             (updateOtherNoteInNotes)="sendDataToOtherNotes($event)">
           </app-noteicon>
         </div>

@@ -12,14 +12,14 @@ export class TrashComponent implements OnInit {
 
   deletedNotes=[];
   chckError: string;
-  deleteIcon: string;
+  componentName: string;
   emptyDeleteContentText: string;
 
   constructor(private notes: NotesService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
-    this.deleteIcon = "delete";
+    this.componentName = "delete";
     this.emptyDeleteContentText = "No notes in Trash";
     this.GetAllDeletedNotes();
 

@@ -19,7 +19,9 @@ export class NotedialogComponent implements OnInit {
 
   chckError: string;
   note: any;
+  parentIcon: string;
   createNoteTitle: string;
+  readonlyFlag: boolean;
   createNoteDesciption: string;
 
   AccessingFrom: string;
@@ -33,6 +35,13 @@ export class NotedialogComponent implements OnInit {
     this.AccessingFrom = "Edit Note";
 
     this.note = this.data.note;
+    this.parentIcon = this.data.icon;
+
+    if (this.parentIcon == "delete")
+      this.readonlyFlag = true;
+    else
+      this.readonlyFlag = false;
+
 
     this.createNoteTitle = this.note.title;
     this.createNoteDesciption = this.note.description;
@@ -51,7 +60,7 @@ export class NotedialogComponent implements OnInit {
 
     this.notes.AddReminderToNote(this.note.noteId, reminder).
       subscribe(data => {
-        if(data.status) {
+        if (data.status) {
           this.note = data.data;
         }
         else {
@@ -60,24 +69,24 @@ export class NotedialogComponent implements OnInit {
           });
         }
       },
-      error => {
-        if(error.error.message)
+        error => {
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      })
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
   }
 
   removeLabelForDisplayNote(labelId: number) {
     this.note.labels = this.note.labels.filter(label => label.labelId !== labelId);
 
-    var labels=[];
+    var labels = [];
 
-    for(var labeled=0; labeled < this.note.labels.length; labeled++) {
+    for (var labeled = 0; labeled < this.note.labels.length; labeled++) {
       var labls: Notelabel = {
         LabelId: this.note.labels[labeled].labelId
       };
@@ -90,22 +99,22 @@ export class NotedialogComponent implements OnInit {
 
     this.notes.AddLabelToNote(this.note.noteId, listLabel).
       subscribe(data => {
-        if(!data.status) {
+        if (!data.status) {
           this._snackBar.open("Unable to remove the label", "Close", {
             duration: 5000,
           });
         }
-      }, 
-      error => {
-        if(error.error.message)
+      },
+        error => {
+          if (error.error.message)
             this.chckError = error.error.message;
           else
-            this.chckError= "Connection to the Server Failed";
+            this.chckError = "Connection to the Server Failed";
 
-        this._snackBar.open(this.chckError, "Close", {
-          duration: 3000,
-        });
-      })
+          this._snackBar.open(this.chckError, "Close", {
+            duration: 3000,
+          });
+        })
 
   }
 
@@ -156,38 +165,40 @@ export class NotedialogComponent implements OnInit {
 
   closeButtonClick() {
 
-    if ((this.createNoteTitle != this.note.title) || (this.createNoteDesciption != this.note.description)) {
+    if (this.parentIcon != "delete") {
 
-      this.note.title = this.createNoteTitle;
-      this.note.description = this.createNoteDesciption
+      if ((this.createNoteTitle != this.note.title) || (this.createNoteDesciption != this.note.description)) {
 
-      var updateNote: Updatenote = {
-        Title: this.note.title,
-        Description: this.note.description
+        this.note.title = this.createNoteTitle;
+        this.note.description = this.createNoteDesciption
+
+        var updateNote: Updatenote = {
+          Title: this.note.title,
+          Description: this.note.description
+        }
+
+        this.notes.updateNote(this.note.noteId, updateNote).
+          subscribe(data => {
+            if (!data.status) {
+              this._snackBar.open(this.chckError, "Close", {
+                duration: 3000,
+              });
+            }
+          },
+            error => {
+              if (error.error.message)
+                this.chckError = error.error.message;
+              else
+                this.chckError = "Connection to the Server Failed";
+
+              this._snackBar.open(this.chckError, "Close", {
+                duration: 3000,
+              });
+            })
+
+
       }
-
-      this.notes.updateNote(this.note.noteId, updateNote).
-        subscribe(data => {
-          if(!data.status) {
-            this._snackBar.open(this.chckError, "Close", {
-              duration: 3000,
-            });
-          }
-        },
-        error => {
-          if (error.error.message)
-            this.chckError = error.error.message;
-          else
-            this.chckError = "Connection to the Server Failed";
-
-          this._snackBar.open(this.chckError, "Close", {
-            duration: 3000,
-          });
-        })
-
-
     }
-
     this.dialogRef.close(this.note);
   }
 

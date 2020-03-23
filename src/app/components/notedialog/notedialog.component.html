@@ -1,6 +1,6 @@
 <div class="createNoteContainer" [style.border]="note.color" [style.background]="note.color" >
   <div class="noteDialogDiv" fxLayout="column">
-    <div class="pinUnpinNote"  fxLayoutAlign="center center">
+    <div class="pinUnpinNote"  fxLayoutAlign="center center" *ngIf="(parentIcon == 'delete') ? false : true">
       <img *ngIf="!note.isPin" class="pinUnpin" src="../../../assets/unpin.svg"
       (click)="userPinnedTheNote(note.noteId, true)" alt="pin Notes">
 
@@ -11,12 +11,14 @@
       <img class="notesImage" [src]="note.image" alt="note Image">
     </div>
     <div class="createTitleDiv" fxLayout="row" fxLayoutAlign="center center" fxFlex>
-      <textarea class="titleField" [style.background]="note.color" tabindex="-1" cdkTextareaAutosize [(ngModel)]="createNoteTitle"
-        cdkAutosizeMinRows="1" placeholder="Title"></textarea>
+      <textarea class="titleField" [style.background]="note.color" tabindex="-1" [readonly]="readonlyFlag"
+        cdkTextareaAutosize [(ngModel)]="createNoteTitle" cdkAutosizeMinRows="1" placeholder="Title">
+      </textarea>
     </div>
     <div class="takeANoteDiv">
-      <textarea class="descriptionField" [style.background]="note.color" tabindex="-1" [(ngModel)]="createNoteDesciption" cdkTextareaAutosize
-        cdkAutosizeMinRows="1" placeholder="Take a note..."></textarea>
+      <textarea class="descriptionField" [style.background]="note.color" tabindex="-1" [readonly]="readonlyFlag"
+        [(ngModel)]="createNoteDesciption" cdkTextareaAutosize cdkAutosizeMinRows="1" placeholder="Take a note...">
+      </textarea>
     </div>
     <div fxLayout="row wrap">
       <div fxLayoutAlign="center center" *ngIf="(note.reminder == null || note.reminder == '') ? false : true">

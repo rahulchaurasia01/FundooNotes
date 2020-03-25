@@ -61,6 +61,7 @@ describe('AppComponent', () => {
         HttpClientModule
       ],
       providers: [
+        { provide: APP_BASE_HREF },
         AuthGuard
       ]
     }).compileComponents();

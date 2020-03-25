@@ -118,11 +118,11 @@
           <button mat-menu-item *ngIf="(grandParentNote == null || grandParentNote.length <= 0) ? false : true"
             (click)="sendToTrash()">Delete note</button>
           <button mat-menu-item
-            *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false"
+            *ngIf="(grandParentNote ? (grandParentNote.labels == null || grandParentNote.labels.length <= 0) ? true : false : false)"
             (click)="$event.stopPropagation()" (click)="labelClickedByUser()">Add label</button>
           <button mat-menu-item (click)="labelClickedByUser()" (click)="$event.stopPropagation()"
-            *ngIf="(grandParentNote.labels == null || grandParentNote.labels.length <=0) ? false : true">Change
-            labels</button>
+          *ngIf="(grandParentNote ? (grandParentNote.labels == null || grandParentNote.labels.length <=0) ? false : true : false)"
+            >Change labels</button>
         </div>
         <div class="labelContainer" *ngIf="labelClicked">
           <div class="labelHeader">
@@ -133,7 +133,7 @@
               (input)="newLabels($event.target.value)" placeholder="Enter label name">
             <i class="material-icons-outlined searchLabelIcon">search</i>
           </div>
-          <div class="listOfLabel" *ngIf="(labels == null || labels.length <= 0) ? false : true">
+          <div class="listOfLabel" *ngIf="(labels.length <= 0) ? false : true">
             <div class="label" *ngFor="let label of labels">
               <mat-checkbox (click)="$event.stopPropagation()" (change)="userSelectedLabel(label, $event)"
                 [checked]="checkLabelPresent(label.labelId)"> {{ label.name }} </mat-checkbox>

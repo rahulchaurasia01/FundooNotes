@@ -42,9 +42,10 @@ export class NotedialogComponent implements OnInit {
     else
       this.readonlyFlag = false;
 
-
-    this.createNoteTitle = this.note.title;
-    this.createNoteDesciption = this.note.description;
+    if(this.note) {
+      this.createNoteTitle = this.note.title;
+      this.createNoteDesciption = this.note.description;
+    }
   }
 
   updateNoteInEditNote($event) {

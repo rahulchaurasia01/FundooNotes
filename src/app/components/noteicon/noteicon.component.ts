@@ -126,11 +126,13 @@ export class NoteiconComponent implements OnInit {
     this.isArchive = false;
     this.labelClicked = false;
 
-    if(this.grandParentNote.reminder != null)
-      this.dateTimeClicked = true;
-    else
-      this.dateTimeClicked = false;
-
+    if (this.grandParentNote) {
+      if (this.grandParentNote.reminder)
+        this.dateTimeClicked = true;
+      else
+        this.dateTimeClicked = false;
+    }
+    
     this.labelData.currentLabelData.
       subscribe(data => {
         this.labels = data;

@@ -54,7 +54,7 @@
           [matMenuTriggerFor]="menu" [ngStyle]="{'background': 'url('+profileImage+')', 'background-size': 'cover'}"
           aria-label="User icon">
         </button>
-        <mat-menu #menu="matMenu" xPosition="after" yPosition="below">
+        <mat-menu #menu="matMenu" (click)="$event.stopPropagation()"  xPosition="after" yPosition="below">
           <div class="userImageDiv" fxLayout="column" fxLayoutAlign="center center">
             <div class="userImage" fxLayoutAlign="center center">
               <button mat-fab color="warn" *ngIf="(profileImage == '') ? true : false" style="font-size: 24px;"
